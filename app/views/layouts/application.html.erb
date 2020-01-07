@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chess</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <% if current_user %>
+      <script type="text/javascript">
+        window.currentUser = { 
+          id: <%= current_user.id %>, 
+          username: "<%= current_user.username %>",
+          email: "<%= current_user.email %>",
+        };
+      </script>
+    <% end %>
+    
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/31386d0461.js" crossorigin="anonymous"></script>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>
