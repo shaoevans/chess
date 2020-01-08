@@ -7,7 +7,7 @@ import SignupFormContainer from "./session/signup_form_container";
 import NavBarContainer from "./nav_bar/navbar_container";
 import ForumIndexContainer from "./forum/forum_index_container";
 import ForumShowContainer from "./forum/forum_show_container";
-import PostFormContainer from "./forum/post_form_container.js/index.js";
+import PostFormContainer from "./forum/post_form_container.js";
 
 
 const App = () => {

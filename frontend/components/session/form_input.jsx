@@ -12,4 +12,4 @@ const FormInput = ({type, str}) => {
     }
 }
 
-export default FormInput
+export default FormInput;
