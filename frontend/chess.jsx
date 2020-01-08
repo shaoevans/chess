@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Lobby from "./components/lobby/lobby";
-import Root from "./components/root";
+import Root from "./components/Root";
 import configureStore from "./store/store";
 
 document.addEventListener("DOMContentLoaded", () => {
