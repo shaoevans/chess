@@ -22,10 +22,10 @@ const receiveErrors = errors => ({
 })
 
 export const loginUser = formUser => dispatch => login(formUser)
-    .then(user => dispatch(receiveCurrentUser(user)), errors => dispatch(receiveErrors(errors)));
+    .then(user => dispatch(receiveCurrentUser(user)), errors => dispatch(receiveErrors(errors.responseJSON)));
 
 export const logoutUser = () => dispatch => logout()
     .then(() => dispatch(logoutCurrentUser()));
 
 export const signupUser = formUser => dispatch => signup(formUser)
-    .then(user => dispatch(receiveCurrentUser(user)), errors => dispatch(receiveErrors(errors)));
+    .then(user => dispatch(receiveCurrentUser(user)), errors => dispatch(receiveErrors(errors.responseJSON)));

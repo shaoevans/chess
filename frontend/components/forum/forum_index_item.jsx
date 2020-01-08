@@ -6,10 +6,10 @@ const ForumIndexItem = ({forum, index}) => {
         return (
             <tr className="table-row white">
                 <td>
-                    <h2><Link to={`forums/${forum.id}`}>{forum.category}</Link></h2>
+                    <h2><Link to={`/forums/${forum.id}`}>{forum.category}</Link></h2>
                     <p>{forum.description}</p>
                 </td>
-                <td>{forum.post_ids.length}</td>
+                <td>{forum.postIds.length}</td>
                 <td></td>
                 <td></td>
             </tr>
@@ -18,15 +18,18 @@ const ForumIndexItem = ({forum, index}) => {
         return (
             <tr className="table-row gray">
                 <td>
-                    <h2><Link to={`forums/${forum.id}`}>{forum.category}</Link></h2>
+                    <h2><Link to={`/forums/${forum.id}`}>{forum.category}</Link></h2>
                     <p>{forum.description}</p>
                 </td>
-                <td>{forum.post_ids.length}</td>
+                <td>{forum.postIds.length}</td>
                 <td></td>
                 <td></td>
             </tr>
         )
     }
 }
+
+// page number in state
+// if page number is 10
 
 export default ForumIndexItem;

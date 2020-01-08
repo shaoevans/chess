@@ -1,4 +1,4 @@
-import { RECEIVE_ALL_FORUMS } from "./../actions/forum_actions";
+import { RECEIVE_ALL_FORUMS, RECEIVE_A_FORUM } from "./../actions/forum_actions";
 
 
 const ForumsReducer = (state = {}, action) => {
@@ -6,6 +6,8 @@ const ForumsReducer = (state = {}, action) => {
     switch (action.type) {
         case RECEIVE_ALL_FORUMS:
             return action.forums;
+        case RECEIVE_A_FORUM:
+            return Object.assign({}, state, { [action.forum.forum.id]: action.forum.forum })
         default:
             return state;
     }

@@ -36,7 +36,7 @@ gem 'pry-rails'
 gem 'annotate'
 gem 'bcrypt'
 gem 'jquery-rails'
-
+gem 'rails_12factor'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false

@@ -13,11 +13,17 @@ class ForumIndex extends React.Component {
 
     render() {
         const { forums } = this.props
-        console.log(forums)
         return (
+
             <div className="forum-table">
-                <div className="forum-table-title">Lichess Forum</div>
-                <table cellspacing="0" cellpadding="0">
+                <div className="forum-table-header">
+                    <div className="forum-table-title">
+                        <i className="fas fa-comments"></i>
+                        <span>Lichess Forum</span>
+                    </div>
+                    <input type="text" placeholder="Search"/>
+                </div>
+                <table cellSpacing="0" cellPadding="0">
                     <tbody>
                         <tr>
                             <th></th>

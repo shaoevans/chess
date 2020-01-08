@@ -26,18 +26,49 @@ class LoginForm extends React.Component {
 
     }
 
+    formInput(type) {
+        if (this.state[type] === "") {
+            if (type === "password") {
+                return <input required className="input-empty" type="password" value={this.state[type]} onChange={this.handleType(type)}/>
+            } else {
+                if (type === "username") {
+                    return <input required autoFocus className="input-empty" type="text" value={this.state[type]} onChange={this.handleType(type)}/>
+                } else {
+                    return <input required className="input-empty" type="text" value={this.state[type]} onChange={this.handleType(type)}/>
+                }
+            }
+        } else {
+            if (type === "password") {
+                return <input required type="password" value={this.state[type]} onChange={this.handleType(type)}/>
+            } else {
+                return <input required type="text" value={this.state[type]} onChange={this.handleType(type)}/>
+            }
+        }
+    }
+
+    errors() {
+        if (this.props.errors) {
+            return <p className="session-errors">{this.props.errors[0]}</p>
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return (
             <div className="session-form">
                 <h2>Sign In</h2>
-                <form>
-                    <label>User name or email
-                        <input type="text" value={this.state.username} onChange={this.handleType("username")}/>
-                    </label>
-                    <label>Password
-                        <input type="password" value={this.state.password} onChange={this.handleType("password")}/>
-                    </label>
-                    <button className="session-form-button" onClick={this.handleSubmit}>Sign In</button>
+                {this.errors()}
+                <form onSubmit={this.handleSubmit}>
+                    <div className="form-group">
+                        <label>User name or email</label>
+                        {this.formInput("username")}
+                    </div>
+                    <div className="form-group">
+                        <label>Password</label>
+                        {this.formInput("password")}
+                    </div>
+                    <button type="submit" className="session-form-button">Sign In</button>
                 </form>
                 <ul className="session-form-options">
                     <li>

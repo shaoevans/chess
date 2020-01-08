@@ -22,7 +22,6 @@ class SignupForm extends React.Component {
 
     handleSubmit(e) {
 
-        console.log(this.state)
         e.preventDefault();
         this.props.signup(this.state)   
             .then(() => this.props.history.replace("/"))
@@ -33,7 +32,11 @@ class SignupForm extends React.Component {
             if (type === "password") {
                 return <input className="input-empty" type="password" value={this.state[type]} onChange={this.handleType(type)}/>
             } else {
-                return <input className="input-empty" type="text" value={this.state[type]} onChange={this.handleType(type)}/>
+                if (type === "username") {
+                    return <input required autoFocus className="input-empty" type="text" value={this.state[type]} onChange={this.handleType(type)}/>
+                } else {
+                    return <input required className="input-empty" type="text" value={this.state[type]} onChange={this.handleType(type)}/>
+                }
             }
         } else {
             if (type === "password") {
@@ -50,7 +53,7 @@ class SignupForm extends React.Component {
         return (
             <div className="session-form">
                 <h2>Register</h2>
-                <form action="">
+                <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label>User name</label>
                         {this.formInput("username")}
@@ -71,17 +74,19 @@ class SignupForm extends React.Component {
                         strongly discouraged and excessive multi-accounting will lead to being banned.
                         By registering, you agree to be bound by our Terms of Service.
                     </p>
-
-                    <input type="checkbox"/> I agree that I will at no time receive assistance during my games 
-                    (from a chess computer, book, database or another person).
-                    <br/>
+                    <p className="signup-form-checkbox-container">
+                        <input type="checkbox"/> I agree that I will at no time receive assistance during my games 
+                        (from a chess computer, book, database or another person).
+                    </p>
+                    
                     <input type="checkbox"/> I agree that I will always be nice to other players.
                     <br/>
                     <input type="checkbox"/> I agree that I will not create multiple accounts.
                     <br/>
                     <input type="checkbox"/> I agree that I will follow all Lichess policies.
                     <br/>
-                    <button className="session-form-button" onClick={this.handleSubmit}>REGISTER</button>
+
+                    <button className="session-form-button" type="submit">REGISTER</button>
                 </form> 
             </div>
         )

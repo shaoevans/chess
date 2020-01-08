@@ -11,3 +11,11 @@ export const fetchForum = forumId => (
         url: `/api/forums/${forumId}`
     })
 )
+
+export const createPost = post => (
+    $.ajax({
+        method: "POST",
+        url: `/api/posts`,
+        data: { post },
+    })
+)
