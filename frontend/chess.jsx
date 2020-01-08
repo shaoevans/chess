@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Lobby from "./components/lobby/lobby";
 import Root from "./components/Root";
 import configureStore from "./store/store";
 
@@ -22,5 +21,5 @@ document.addEventListener("DOMContentLoaded", () => {
     window.getState = store.getState;
 
     let oldRoot = document.getElementById("root")
-    ReactDOM.render(<Root store={store}/> ,oldRoot)
+    ReactDOM.render(<Root store={store}/> , oldRoot)
 })

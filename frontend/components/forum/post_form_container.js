@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { createPost } from "./../../actions/forum_actions";
+import { createPost } from "../../actions/forum_actions";
 import PostForm from "./post_form";
 
 const mapStateToProps = (state, ownProps) => ({
