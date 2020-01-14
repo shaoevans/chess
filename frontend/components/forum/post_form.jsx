@@ -35,7 +35,6 @@ class PostForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        console.log(this.state)
         this.props.createPost(this.state)
             .then(response => this.props.history.replace(`/forums/${this.props.forum.id}/posts/${response.payload.post.id}`))
     }

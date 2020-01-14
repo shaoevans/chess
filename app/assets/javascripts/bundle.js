@@ -691,8 +691,7 @@ function () {
       while (this.isValidPos(currentPos) && this.board.getPiece(currentPos).isNullPiece()) {
         result.push(currentPos);
         currentPos = [currentPos[0] + dx, currentPos[1] + dy];
-      } // console.log(this.grid[currentPos[0]][currentPos[1]].color === this.otherColor())
-
+      }
 
       if (this.isValidPos(currentPos) && this.board.getPiece(currentPos).color === this.otherColor()) {
         result.push(currentPos);
@@ -1932,7 +1931,6 @@ function (_React$Component) {
     value: function render() {
       var _this3 = this;
 
-      console.log(this.state.validMoves);
       var _this$state = this.state,
           pieceSelected = _this$state.pieceSelected,
           board = _this$state.board,
@@ -2069,7 +2067,6 @@ function (_React$Component) {
   }, {
     key: "isLastMoveAfter",
     value: function isLastMoveAfter() {
-      // console.log(this.props.lastMoveAfter)
       if (this.props.lastMoveAfter && this.props.lastMoveAfter[0] === this.props.ind[0] && this.props.lastMoveAfter[1] === this.props.ind[1]) {
         return "last-after-tile";
       } else {
@@ -2894,7 +2891,6 @@ function (_React$Component) {
       var _this4 = this;
 
       e.preventDefault();
-      console.log(this.state);
       this.props.createPost(this.state).then(function (response) {
         return _this4.props.history.replace("/forums/".concat(_this4.props.forum.id, "/posts/").concat(response.payload.post.id));
       });
@@ -3634,7 +3630,6 @@ var mapStateToProps = function mapStateToProps(state) {
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  // console.log(fetchForums)
   return {
     fetchLatestComments: function fetchLatestComments() {
       return dispatch(Object(_actions_forum_actions__WEBPACK_IMPORTED_MODULE_2__["fetchLatestComments"])());
@@ -3668,7 +3663,6 @@ __webpack_require__.r(__webpack_exports__);
 
 var LobbyForum = function LobbyForum(_ref) {
   var comments = _ref.comments;
-  console.log(comments);
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "lobby-forum"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_table_header__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -4835,8 +4829,7 @@ function (_React$Component) {
   _createClass(UserShow, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.props.fetchUser(this.props.match.params.username); // .then(() => console.log("SLDKFJSLKDJF"))
-      // .then(() => this.setState({}))
+      this.props.fetchUser(this.props.match.params.username);
     }
   }, {
     key: "render",
@@ -5157,7 +5150,6 @@ __webpack_require__.r(__webpack_exports__);
 var PostsReducer = function PostsReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments.length > 1 ? arguments[1] : undefined;
-  console.log(action);
   Object.freeze(state);
   var nextState;
 
@@ -5223,7 +5215,6 @@ __webpack_require__.r(__webpack_exports__);
 var SessionErrorsReducer = function SessionErrorsReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments.length > 1 ? arguments[1] : undefined;
-  console.log(action);
   Object.freeze(state);
 
   switch (action.type) {

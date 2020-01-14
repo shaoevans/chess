@@ -1,7 +1,6 @@
 import { RECEIVE_A_FORUM, RECEIVE_A_POST} from "./../actions/forum_actions";
 
 const PostsReducer = (state = {}, action) => {
-    console.log(action)
     Object.freeze(state);
     let nextState;
     switch (action.type) {

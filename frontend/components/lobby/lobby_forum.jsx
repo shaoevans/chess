@@ -3,7 +3,6 @@ import LobbyTableHeader from "./lobby_table_header";
 import { Link } from "react-router-dom"
 
 export const LobbyForum = ({comments}) => {
-    console.log(comments)
     return (
         <div className="lobby-forum">
             <LobbyTableHeader title="Latest forum posts" url="/forums" icon="comments"/>

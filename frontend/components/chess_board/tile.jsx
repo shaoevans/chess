@@ -40,7 +40,6 @@ class Tile extends React.Component {
     }
 
     isLastMoveAfter() {
-        // console.log(this.props.lastMoveAfter)
         if (this.props.lastMoveAfter && (this.props.lastMoveAfter[0] === this.props.ind[0]) && (this.props.lastMoveAfter[1] === this.props.ind[1])) {
             return "last-after-tile"
         } else {

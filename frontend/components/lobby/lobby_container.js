@@ -9,7 +9,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => {
-    // console.log(fetchForums)
     return {
         fetchLatestComments: () => dispatch(fetchLatestComments()),
         fetchBlogs: () => dispatch(fetchBlogs(1))

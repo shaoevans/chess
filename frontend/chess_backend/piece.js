@@ -45,7 +45,6 @@ class Piece {
             result.push(currentPos);
             currentPos = [currentPos[0] + dx, currentPos[1] + dy];
         }
-        // console.log(this.grid[currentPos[0]][currentPos[1]].color === this.otherColor())
         if (this.isValidPos(currentPos) && this.board.getPiece(currentPos).color === this.otherColor()) {
             result.push(currentPos);
         }

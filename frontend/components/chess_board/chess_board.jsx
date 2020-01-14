@@ -39,7 +39,6 @@ class ChessBoard extends React.Component {
 
     }
     render() {
-        console.log(this.state.validMoves)
         const { pieceSelected, board, lastMovePrev, lastMoveAfter } = this.state
         return (
             <div className="chess-board">
