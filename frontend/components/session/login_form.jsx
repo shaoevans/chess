@@ -9,6 +9,7 @@ class LoginForm extends React.Component {
             password: ""
         }
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleDemoUser = this.handleDemoUser.bind(this);
     }
 
     handleType(type) {
@@ -20,10 +21,27 @@ class LoginForm extends React.Component {
     }
 
     handleSubmit(e) {
-        e.preventDefault();
+        if (e) {
+            e.preventDefault();
+        }
         this.props.login(this.state)   
             .then(() => this.props.history.replace("/"))
+    }
 
+    handleDemoUser(num) {
+        return (e) => {
+            if (num === 1) {
+                this.setState({
+                    username: "Demo User 1",
+                    password: "password"
+                }, () => setTimeout(this.handleSubmit, 500))
+            } else {
+                this.setState({
+                    username: "Demo User 2",
+                    password: "password"
+                }, () => setTimeout(this.handleSubmit, 500))
+            }
+        }
     }
 
     formInput(type) {
@@ -57,7 +75,13 @@ class LoginForm extends React.Component {
     render() {
         return (
             <div className="session-form">
-                <h2>Sign In</h2>
+                <h2>
+                    Sign In
+                </h2>
+                <div className="demo-user-section">
+                    <button className="session-form-button" onClick={this.handleDemoUser(1)}>Demo User 1</button>
+                    <button className="session-form-button" onClick={this.handleDemoUser(2)}>Demo User 2</button>
+                </div>
                 {this.errors()}
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
@@ -70,13 +94,11 @@ class LoginForm extends React.Component {
                     </div>
                     <button type="submit" className="session-form-button">Sign In</button>
                 </form>
-                <ul className="session-form-options">
-                    <li>
-                        <Link to="/signup">Register</Link>
-                        <Link to="/password/reset">Password reset</Link>
-                        <Link to="/auth/magic-link">Log in by email</Link>
-                    </li>
-                </ul>
+                <div className="session-form-options">
+                    <Link to="/signup">Register</Link>
+                    <Link to="/password/reset">Password reset</Link>
+                    <Link to="/auth/magic-link">Log in by email</Link>
+                </div>
             </div>
         )
     }

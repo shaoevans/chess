@@ -1,13 +1,110 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import PostIndexContainer from "./post_index_container";
+import queryString from 'query-string';
+
 
 class ForumShow extends React.Component {
     constructor(props) {
         super(props);
+        this.grabPage = this.grabPage.bind(this);
+        this.rightButton = this.rightButton.bind(this);
+        this.currentUserSwitch = this.currentUserSwitch.bind(this);
     }
 
     componentDidMount() {
-        this.props.fetchForum(this.props.match.params.forumId);
+        this.props.fetchForum(this.props.match.params.forumId, this.grabPage());
+    }
+    
+    componentDidUpdate(prevProps) {
+        if ((prevProps.location.search !== this.props.location.search) || (prevProps.match.params.forumId !== this.props.match.params.forumId) ){
+            this.props.fetchForum(this.props.match.params.forumId, this.grabPage());
+        }
+    }
+
+    grabPage() {
+        const queryObj = queryString.parse(this.props.location.search)
+        let page;
+        if (queryObj.page) {
+            page = queryObj.page;
+        } else {
+            page = 1;
+        }
+        return parseInt(page);
+    }
+
+    makeButtons(page) {
+        const { totalPages } = this.props.forum;
+        if (page <= 2) {
+            return (
+                <div>
+                    {this.leftButton(page)}
+                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=1`} className="page-buttons">1</NavLink>
+                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=2`} className="page-buttons">2</NavLink>
+                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=3`} className="page-buttons">3</NavLink>
+                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=4`} className="page-buttons">4</NavLink>
+                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=5`} className="page-buttons">5</NavLink>
+                    {this.rightButton(page)}
+                </div>
+            )
+        } else if (page > totalPages - 2) {
+            return (
+                <div>
+                    {this.leftButton(page)}
+                    <NavLink activeClassName="active-page-button" exact to={`${this.props.location.pathname}?page=1`} className="page-buttons">{totalPages-4}</NavLink>
+                    <NavLink activeClassName="active-page-button" exact to={`${this.props.location.pathname}?page=2`} className="page-buttons">{totalPages-3}</NavLink>
+                    <NavLink activeClassName="active-page-button" exact to={`${this.props.location.pathname}?page=3`} className="page-buttons">{totalPages-2}</NavLink>
+                    <NavLink activeClassName="active-page-button" exact to={`${this.props.location.pathname}?page=4`} className="page-buttons">{totalPages-1}</NavLink>
+                    <NavLink activeClassName="active-page-button" exact to={`${this.props.location.pathname}?page=5`} className="page-buttons">{totalPages}</NavLink>
+                    {this.rightButton(page)}
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                    {this.leftButton(page)}
+                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=${page-2}`} className="page-buttons">{page-2}</NavLink>
+                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=${page-1}`} className="page-buttons">{page-1}</NavLink>
+                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=1`} className="page-buttons">{page}</NavLink>
+                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=${page+1}`} className="page-buttons">{page+1}</NavLink>
+                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=${page+2}`} className="page-buttons">{page+2}</NavLink>
+                    {this.rightButton(page)}
+                </div>
+            )
+        }
+    }
+
+    leftButton(page) {
+        if (page === 1) {
+            return (
+                <span className="page-buttons" id="gray-button"><i className="fas fa-angle-left"></i></span>
+            )
+        } else {
+            return (
+                <Link to={`${this.props.location.pathname}?page=${page-1}`} className="page-buttons"><i className="fas fa-angle-left"></i></Link>
+            )
+        }
+    }
+
+    rightButton(page) {
+        if (page === this.props.forum.totalPages) {
+            return (
+                <span className="page-buttons" id="gray-button"><i className="fas fa-angle-right"></i></span>
+            )
+        } else {
+            return (
+                <Link to={`${this.props.location.pathname}?page=${page+1}`} className="page-buttons"><i className="fas fa-angle-right"></i></Link>
+            )
+        }
+    }
+
+    currentUserSwitch() {
+        if (this.props.loggedIn) {
+            return <Link to={`${this.props.match.params.forumId}/form`}><button className="new-post-button"><i className="fas fa-pencil-alt"></i> CREATE A NEW TOPIC</button></Link>
+        } else {
+            return <div></div>
+        }
+
     }
 
     render() {
@@ -20,27 +117,14 @@ class ForumShow extends React.Component {
                             <span> {this.props.forum.category}</span>
                         </div>
                         <div className="subforum-table-bar">
-                            <div>
-                                <button><i className="fas fa-angle-left"></i></button>
-                                <button>1</button>
-                                <button>2</button>
-                                <button>3</button>
-                                <button>4</button>
-                                <button><i className="fas fa-angle-right"></i></button>
-                            </div>
-                            <Link to={`${this.props.match.params.forumId}/form`}><button className="new-post-button"><i className="fas fa-pencil-alt"></i>CREATE A NEW TOPIC</button></Link>
+                            {this.makeButtons(this.grabPage())}
+                            {this.currentUserSwitch()}
                         </div>
                     </div>
-                    <table cellSpacing="0" cellPadding="0">
-                        <tbody>
-                            <tr>
-                                <th></th>
-                                <th>Topics</th>
-                                <th>Posts</th>
-                                <th>Last post</th>
-                            </tr>
-                        </tbody>
-                    </table>
+                    < PostIndexContainer forumId={this.props.match.params.forumId}/> 
+                    <div className="subforum-table-footer">
+                        {this.makeButtons(this.grabPage())}
+                    </div>
                 </div>
             )
         } else {

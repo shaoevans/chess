@@ -3,29 +3,22 @@ import ForumShow from "./forum_show";
 import { fetchForum } from "./../../actions/forum_actions";
 
 const mapStateToProps = (state, ownProps) => {
-    let forum;
-    let posts;
-    if (state.entities.forums[ownProps.match.params.forumId]) {
-        forum = state.entities.forums[ownProps.match.params.forumId]
-    } else {
-        forum = { postIds: []}
-    }
-    if (state.entities.forums[ownProps.match.params.forumId]) {
-        posts = state.entities.forums[ownProps.match.params.forumId]
-        .postIds.map(postId => {
-        state.entities.posts[postId]})
-    } else {
-        posts = []
-    }
+    // let forum;
+    // if (state.entities.forums[ownProps.match.params.forumId]) {
+    //     forum = state.entities.forums[ownProps.match.params.forumId]
+    // } else {
+    //     // forum = { postIds: []}
+    // }
+    // forum = state.entities.forums[ownProps.match.params.forumId]
     return {
-        forum: forum,
-        posts: posts
+        forum: state.entities.forums[ownProps.match.params.forumId],
+        loggedIn: !!state.session.username
     }
     
 }
 
 const mapDispatchToProps = dispatch => ({
-    fetchForum: forumId => dispatch(fetchForum(forumId))
+    fetchForum: (forumId, page) => dispatch(fetchForum(forumId, page))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ForumShow);

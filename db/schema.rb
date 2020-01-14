@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_06_224728) do
+ActiveRecord::Schema.define(version: 2020_01_12_113339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "blogs", force: :cascade do |t|
+    t.integer "author_id", null: false
+    t.string "title", null: false
+    t.string "description", null: false
+    t.string "category", null: false
+    t.text "body", null: false
+    t.integer "image_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_blogs_on_author_id"
+  end
 
   create_table "comments", force: :cascade do |t|
     t.integer "author_id", null: false
@@ -32,12 +44,24 @@ ActiveRecord::Schema.define(version: 2020_01_06_224728) do
     t.string "description", null: false
   end
 
+  create_table "matches", force: :cascade do |t|
+    t.integer "white_player_id", null: false
+    t.integer "black_player_id", null: false
+    t.text "move_string", default: "", null: false
+    t.string "status", default: "PENDING", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["black_player_id"], name: "index_matches_on_black_player_id"
+    t.index ["white_player_id"], name: "index_matches_on_white_player_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.integer "author_id", null: false
     t.integer "forum_id", null: false
     t.string "title", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "views", default: 0, null: false
     t.index ["author_id"], name: "index_posts_on_author_id"
     t.index ["forum_id"], name: "index_posts_on_forum_id"
   end

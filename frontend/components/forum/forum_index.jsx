@@ -13,26 +13,27 @@ class ForumIndex extends React.Component {
 
     render() {
         const { forums } = this.props
+        const now = new Date()
         return (
 
             <div className="forum-table">
                 <div className="forum-table-header">
-                    <div className="forum-table-title">
+                    <div className="subforum-table-title">
                         <i className="fas fa-comments"></i>
                         <span>Lichess Forum</span>
                     </div>
-                    <input type="text" placeholder="Search"/>
+                    <input className="forum-search-bar" type="text" placeholder="Search"/>
                 </div>
                 <table cellSpacing="0" cellPadding="0">
                     <tbody>
-                        <tr>
+                        <tr className="forum-index-table-header">
                             <th></th>
                             <th>Topics</th>
                             <th>Posts</th>
                             <th>Last post</th>
                         </tr>
                         {forums.map((forum, i) => {
-                            return <ForumIndexItem key={i} index={i} forum={forum}/>
+                            return <ForumIndexItem now={now} key={i} index={i} forum={forum}/>
                         })}
                     </tbody>
                 </table>

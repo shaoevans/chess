@@ -4,7 +4,7 @@ import LobbyLeaderboardTable from "./lobby_leaderboard_table"
 
 const LobbyLeaderboard = () => (
     <div className="lobby-leaderboard"> 
-        <LobbyTableHeader title="Leaderboard" />
+        <LobbyTableHeader title="Leaderboard" icon="trophy" url="/"/>
         <LobbyLeaderboardTable />
     </div>
 )

@@ -7,7 +7,7 @@ const ForumsReducer = (state = {}, action) => {
         case RECEIVE_ALL_FORUMS:
             return action.forums;
         case RECEIVE_A_FORUM:
-            return Object.assign({}, state, { [action.forum.forum.id]: action.forum.forum })
+            return Object.assign({}, state, { [action.payload.forum.id]: action.payload.forum })
         default:
             return state;
     }

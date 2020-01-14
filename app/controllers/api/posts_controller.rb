@@ -25,16 +25,25 @@ class Api::PostsController < ApplicationController
             @post.save
             @comment.post_id = @post.id
             @comment.save
-            @comments = @post.comments
+            @comments = @post.comments.page(1)
             render :show
         else
-            render @post.errors.full_messages + @comment.errors.full_messages, status: 402
+            if !@post.valid? && !@comment.valid?
+                render json: ["Title minmum length is 3", "Body minmum length is 3"], status: 402
+            elsif !@post.valid?
+                render json: ["Title Minimum length is 3"], status: 402
+            else
+                render json: ["Body minimum length is 3"], status: 402
+            end
         end
     end
 
+ 
+
     def show
         @post = Post.find_by(id: params[:id])
-        @comments = @post.comments
+        @post.increment!
+        @comments = @post.comments.page(params[:page])
         render :show
     end
 

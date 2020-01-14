@@ -4,6 +4,9 @@
     <title>Chess</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css"/>
+
     <% if current_user %>
       <script type="text/javascript">
         window.currentUser = { 
@@ -13,7 +16,29 @@
         };
       </script>
     <% end %>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:100&display=swap" rel="stylesheet">
+    <script type="text/javascript">
+      window._1 = "<%= image_url('_1.jpeg')  %>"
+      window._2 = "<%= image_url('_2.jpeg')  %>"
+      window._3 = "<%= image_url('_3.jpeg')  %>"
+      window._4 = "<%= image_url('_4.jpeg')  %>"
+      window._5 = "<%= image_url('_5.jpeg')  %>"
+      window._6 = "<%= image_url('_6.jpeg')  %>"
+      window._7 = "<%= image_url('_7.jpeg')  %>"
+      window._8 = "<%= image_url('_8.png')  %>"
+      window._9 = "<%= image_url('_9.jpeg')  %>"
+      window._10 = "<%= image_url('_10.jpeg')  %>"
+      window._11 = "<%= image_url('_11.png')  %>"
+      window._12 = "<%= image_url('_12.jpeg')  %>"
+      window._13 = "<%= image_url('_13.jpeg')  %>"
+      window._14 = "<%= image_url('_14.png')  %>"
+      window._15 = "<%= image_url('_15.jpeg')  %>"
+      window._16 = "<%= image_url('_16.jpg')  %>"
+      window._17 = "<%= image_url('_17.png')  %>"
+      window._18 = "<%= image_url('_18.jpg')  %>"
+    </script>
+    <%= favicon_link_tag asset_path('lichess.png') %>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP:300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/31386d0461.js" crossorigin="anonymous"></script>

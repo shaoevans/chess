@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const LobbyTableHeader = ({title}) => (
+const LobbyTableHeader = ({title, url, icon}) => (
     <div className="lobby-table-header">
-        <span><i className="fas fa-crown"></i>{title}</span>
-        <a href="#">More »</a>
+        <span><i className={`fas fa-${icon}`}></i>{title}</span>
+        <Link to={url}>More »</Link>
     </div>
 )
 

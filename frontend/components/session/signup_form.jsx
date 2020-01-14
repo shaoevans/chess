@@ -72,20 +72,55 @@ class SignupForm extends React.Component {
                         Please do not get assistance from chess engines, databases, or 
                         from other players while playing. Also note that making multiple accounts is 
                         strongly discouraged and excessive multi-accounting will lead to being banned.
-                        By registering, you agree to be bound by our Terms of Service.
+                        <p>
+                            By registering, you agree to be bound by our <a href="https://lichess.org/terms-of-service">Terms of Service.</a> 
+                        </p>
                     </p>
-                    <p className="signup-form-checkbox-container">
-                        <input type="checkbox"/> I agree that I will at no time receive assistance during my games 
+                    <div className="signup-form-input-group">
+                        <div className="pretty p-switch p-fill">
+                            <input type="checkbox" required/>
+                            <div className="state p-success">
+                                <label></label>
+                            </div>
+                        </div>
+                        <span>
+                        I agree that I will at no time receive assistance during my games 
                         (from a chess computer, book, database or another person).
-                    </p>
-                    
-                    <input type="checkbox"/> I agree that I will always be nice to other players.
-                    <br/>
-                    <input type="checkbox"/> I agree that I will not create multiple accounts.
-                    <br/>
-                    <input type="checkbox"/> I agree that I will follow all Lichess policies.
-                    <br/>
-
+                        </span>
+                    </div>
+                    <div className="signup-form-input-group">
+                        <div className="pretty p-switch p-fill">
+                            <input type="checkbox"  required/>
+                            <div className="state p-success">
+                                <label></label>
+                            </div>
+                        </div>
+                        <span>
+                            I agree that I will always be nice to other players.
+                        </span>
+                    </div>
+                    <div className="signup-form-input-group">
+                        <div className="pretty p-switch p-fill">
+                            <input type="checkbox" required/>
+                            <div className="state p-success">
+                                <label></label>
+                            </div>
+                        </div>
+                        <span>
+                            I agree that I will not create multiple accounts.
+                        </span>
+                    </div>
+                    <div className="signup-form-input-group">
+                        <div className="pretty p-switch p-fill">
+                            <input type="checkbox" required/>
+                            <div className="state p-success">
+                                <label></label>
+                            </div>
+                        </div>
+                        <span>
+                            I agree that I will follow all Lichess policies.
+                        </span>
+                    </div>
                     <button className="session-form-button" type="submit">REGISTER</button>
                 </form> 
             </div>

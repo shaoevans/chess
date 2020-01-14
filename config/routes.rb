@@ -4,6 +4,8 @@ Rails.application.routes.draw do
     resources :forums, only: [:index, :show]
     resources :users 
     resources :posts, only: [:create, :destroy, :update, :show]
+    resources :comments, only: [:create, :show, :index]
+    resources :blogs, only: [:index, :show]
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'root#root'

@@ -2,22 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Root from "./components/root";
 import configureStore from "./store/store";
+import Board from "./chess_backend/board";
 
 document.addEventListener("DOMContentLoaded", () => {
     let store;
+
     if (window.currentUser) {
         const preloadedState = {
           entities: {
-            users: { [window.currentUser.id]: window.currentUser }
+            users: { [window.currentUser.username]: window.currentUser }
           },
-          session: { id: window.currentUser.id }
+          session: { username: window.currentUser.username }
         };
         store = configureStore(preloadedState);
         delete window.currentUser;
     } else {
         store = configureStore();
     }
-    
+    window.Board = new Board();
     window.getState = store.getState;
 
     let oldRoot = document.getElementById("root")
