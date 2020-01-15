@@ -14,14 +14,28 @@ class SignupForm extends React.Component {
 
     handleType(type) {
         return (e) => {
+            console.log(this.props.errors)
             this.setState({
                 [type]: e.currentTarget.value
             });
         }
     }
 
-    handleSubmit(e) {
+    errors() {
+        if (this.props.errors) {
+            return (
+                <ul>
+                    {this.props.errors.map(error => {
+                        return <li className="session-errors">{error}</li>
+                    })}
+                </ul>
+            )
+        } else {
+            return null;
+        }
+    }
 
+    handleSubmit(e) {
         e.preventDefault();
         this.props.signup(this.state)   
             .then(() => this.props.history.replace("/"))
@@ -53,6 +67,7 @@ class SignupForm extends React.Component {
         return (
             <div className="session-form">
                 <h2>Register</h2>
+                {this.errors()}
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label>User name</label>
@@ -72,9 +87,9 @@ class SignupForm extends React.Component {
                         Please do not get assistance from chess engines, databases, or 
                         from other players while playing. Also note that making multiple accounts is 
                         strongly discouraged and excessive multi-accounting will lead to being banned.
-                        <p>
+                        <span>
                             By registering, you agree to be bound by our <a href="https://lichess.org/terms-of-service">Terms of Service.</a> 
-                        </p>
+                        </span>
                     </p>
                     <div className="signup-form-input-group">
                         <div className="pretty p-switch p-fill">
