@@ -4,6 +4,37 @@ import React from "react";
 export class Queen extends Piece {
     constructor(position, board, color) {
         super(position, board, color)
+        this.value = 90;
+    }
+
+
+    getPositionValue() {
+        let positionValues;
+        if (this.color === "black") {
+            positionValues = [
+                [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0],
+                [-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+                [-1.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+                [-0.5,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+                [ 0.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+                [-1.0,  0.5,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+                [-1.0,  0.0,  0.5,  0.0,  0.0,  0.0,  0.0, -1.0],
+                [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]
+            ]
+        } else {
+            positionValues = [
+                [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0],
+                [-1.0,  0.0,  0.5,  0.0,  0.0,  0.0,  0.0, -1.0],
+                [-1.0,  0.5,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+                [ 0.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+                [-0.5,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -0.5],
+                [-1.0,  0.0,  0.5,  0.5,  0.5,  0.5,  0.0, -1.0],
+                [-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+                [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]
+
+            ]
+        }
+        return positionValues[this.position[0]][this.position[1]]
     }
 
     moves() {
@@ -22,6 +53,36 @@ export class Queen extends Piece {
 export class Rook extends Piece {
     constructor(position, board, color) {
         super(position, board, color)
+        this.value = 50;
+    }
+
+    getPositionValue() {
+        let positionValues;
+        if (this.color === "black") {
+            positionValues = [
+                [ 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+                [ 0.5,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  0.5],
+                [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [ 0.0,  0.0,  0.0,  0.5,  0.5,  0.0,  0.0,  0.0],
+
+            ]
+        } else {
+            positionValues = [
+                [ 0.0,  0.0,  0.0,  0.5,  0.5,  0.0,  0.0,  0.0],
+                [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [-0.5,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -0.5],
+                [ 0.5,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  0.5],
+                [ 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0]
+            ]
+        }
+        return positionValues[this.position[0]][this.position[1]]
     }
 
     render() {
@@ -40,6 +101,36 @@ export class Rook extends Piece {
 export class Bishop extends Piece {
     constructor(position, board, color) {
         super(position, board, color)
+        this.value = 30
+    }
+
+    getPositionValue() {
+        let positionValues;
+        if (this.color === "black") {
+            positionValues = [
+                [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0],
+                [-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+                [-1.0,  0.0,  0.5,  1.0,  1.0,  0.5,  0.0, -1.0],
+                [-1.0,  0.5,  0.5,  1.0,  1.0,  0.5,  0.5, -1.0],
+                [-1.0,  0.0,  1.0,  1.0,  1.0,  1.0,  0.0, -1.0],
+                [-1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0, -1.0],
+                [-1.0,  0.5,  0.0,  0.0,  0.0,  0.0,  0.5, -1.0],
+                [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0]
+            ]
+        } else {
+            positionValues = [
+                [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0],
+                [-1.0,  0.5,  0.0,  0.0,  0.0,  0.0,  0.5, -1.0],
+                [-1.0,  1.0,  1.0,  1.0,  1.0,  1.0,  1.0, -1.0],
+                [-1.0,  0.0,  1.0,  1.0,  1.0,  1.0,  0.0, -1.0],
+                [-1.0,  0.5,  0.5,  1.0,  1.0,  0.5,  0.5, -1.0],
+                [-1.0,  0.0,  0.5,  1.0,  1.0,  0.5,  0.0, -1.0],
+                [-1.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0, -1.0],
+                [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0]
+
+            ]
+        }
+        return positionValues[this.position[0]][this.position[1]]
     }
 
     render() {
@@ -58,6 +149,36 @@ export class Bishop extends Piece {
 export class Knight extends Piece {
     constructor(position, board, color) {
         super(position, board, color)
+        this.value = 30
+    }
+
+
+    getPositionValue() {
+        let positionValues;
+        if (this.color === "black") {
+            positionValues = [
+                [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0],
+                [-4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0],
+                [-3.0,  0.0,  1.0,  1.5, -1.5,  1.0,  0.0, -3.0],
+                [-3.0,  0.5,  1.5,  2.0,  2.0,  1.5,  0.5, -3.0],
+                [-3.0,  0.0,  1.5,  2.0,  2.0,  1.5,  0.0, -3.0],
+                [-3.0,  0.5,  1.5,  2.0,  2.0,  1.5,  0.5, -3.0],
+                [-4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0],
+                [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0],
+            ]
+        } else {
+            positionValues = [
+                [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
+                [-4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0],
+                [-3.0,  0.5,  1.5,  2.0,  2.0,  1.5,  0.5, -3.0],
+                [-3.0,  0.0,  1.5,  2.0,  2.0,  1.5,  0.0, -3.0],
+                [-3.0,  0.5,  1.5,  2.0,  2.0,  1.5,  0.5, -3.0],
+                [-3.0,  0.0,  1.0,  1.5, -1.5,  1.0,  0.0, -3.0],
+                [-4.0, -2.0,  0.0,  0.0,  0.0,  0.0, -2.0, -4.0],
+                [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
+            ]
+        }
+        return positionValues[this.position[0]][this.position[1]]
     }
 
     moveDirsArr() {
@@ -90,6 +211,35 @@ export class Knight extends Piece {
 export class King extends Piece {
     constructor(position, board, color) {
         super(position, board, color)
+        this.value = 900;
+    }
+
+    getPositionValue() {
+        let positionValues;
+        if (this.color === "black") {
+            positionValues = [
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+                [-2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0],
+                [-1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0],
+                [ 2.0,  2.0,  0.0,  0.0,  0.0,  0.0,  2.0,  2.0],
+                [ 2.0,  3.0,  1.0,  0.0,  0.0,  1.0,  3.0,  2.0]
+            ]
+        } else {
+            positionValues = [
+                [ 2.0,  3.0,  1.0,  0.0,  0.0,  1.0,  3.0,  2.0],
+                [ 2.0,  2.0,  0.0,  0.0,  0.0,  0.0,  2.0,  2.0],
+                [-1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0],
+                [-2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0],
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0],
+                [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0]
+            ]
+        }
+        return positionValues[this.position[0]][this.position[1]]
     }
 
     forwardDir() {
@@ -202,6 +352,7 @@ export class King extends Piece {
 export class Pawn extends Piece{
     constructor(position, board, color) {
         super(position, board, color)
+        this.value = 10;
     }
 
     atStartRow() {
@@ -220,11 +371,42 @@ export class Pawn extends Piece{
         }
     }
 
+    getPositionValue() {
+        let positionValues;
+        if (this.color === "black") {
+            positionValues = [
+                [ 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+                [ 5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0],
+                [ 1.0,  1.0,  2.0,  3.0,  3.0,  2.0,  1.0,  1.0],
+                [ 0.5,  0.5,  1.0,  2.5,  2.5,  1.0,  0.5,  0.5],
+                [ 0.0,  0.0,  0.0,  2.0,  2.0,  0.0,  0.0,  0.0],
+                [ 0.5, -0.5, -1.0,  0.0,  0.0, -1.0, -0.5,  0.5],
+                [ 0.5,  1.0,  1.0, -2.0, -2.0,  1.0,  1.0,  0.5],
+                [ 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0]
+            ]
+        } else {
+            positionValues = [
+                [ 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+                [ 0.5,  1.0,  1.0, -2.0, -2.0,  1.0,  1.0,  0.5],
+                [ 0.5, -0.5, -1.0,  0.0,  0.0, -1.0, -0.5,  0.5],
+                [ 0.0,  0.0,  0.0,  2.0,  2.0,  0.0,  0.0,  0.0],
+                [ 0.5,  0.5,  1.0,  2.5,  2.5,  1.0,  0.5,  0.5],
+                [ 1.0,  1.0,  2.0,  3.0,  3.0,  2.0,  1.0,  1.0],
+                [ 5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0,  5.0],
+                [ 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
+            ]
+        }
+        return positionValues[this.position[0]][this.position[1]]
+    }
+
+
     forwardSteps() {
         const x = this.position[0];
         const y = this.position[1];
         const forward = this.forwardDir();
-        if (this.atStartRow()) {
+        if (!(this.board.getPiece([x + forward, y]) instanceof NullPiece)) {
+            return [];
+        } else if (this.atStartRow() && (this.board.getPiece([x + forward + forward, y]) instanceof NullPiece)) {
             return [[x + forward, y],[x + forward + forward, y]];
         } else {
             return [[x + forward, y]]
@@ -262,6 +444,7 @@ export class Pawn extends Piece{
 export class NullPiece extends Piece{
     constructor(position, board) {
         super(position, board, null)
+        this.value = 0;
     }
 
     render() {

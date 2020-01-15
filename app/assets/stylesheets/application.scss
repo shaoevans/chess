@@ -99,6 +99,29 @@ h1, h2, p {
 .white {
     background-color: #FFFFFF;
 }
+
+i.white {
+    color: black;
+}
+
+i.black {
+    color: black;
+}
+
+.number-label {
+    position: absolute;
+    font-size: 0.25em;
+    right: 3px;
+    top: 3px;
+    // float: right;
+}
+
+.letter-label {
+    font-size: 0.25em;
+    position: absolute;
+    left: 3px;
+    bottom: 3px;
+}
 /* Root */
 
 .hidden {
@@ -352,6 +375,7 @@ h1, h2, p {
 
 .left-nav-dropdown {
     display: none;
+    z-index: 5100;
     position: absolute;
     white-space: nowrap;
     left: -2px;
@@ -636,16 +660,41 @@ li:hover ul {
 /* Lobby Leaderboard Table */
 
 .chess-game-container {
+    z-index: -50;
     display: grid;
-    width: 90%;
+    width: 97%;
     margin: 0 auto;
     grid-gap: 2vmin;
     grid-template-columns: repeat(4, 1fr);
     grid-auto-rows: minmax(min-content, max-content);
     grid-template-areas:
         'info game game sidebar';
-    /* grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 12em repeat(2, fit-content(0)); */
+}
+
+.chess-info {
+    grid-area: info;
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
+    background-color: $white;
+    height: 20%;
+    padding: 1em;
+    box-sizing: border-box;
+    border-radius: 3px;
+    display: flex;
+    flex-wrap: wrap;
+    div {
+        width: 100%;
+        i {
+            font-size: 3em;
+            margin-bottom: 20px
+        }
+    }
+    span {
+        width: 100%;
+        display: block;
+        i {
+            font-size: 1em;
+        }
+    }
 }
 
 .chess-body {
@@ -660,15 +709,83 @@ li:hover ul {
 .chess-sidebar {
     grid-area: sidebar;
     width: 100%;
-    height: 40%;
-    background-color: $white;
+    font-family: "Noto Sans";
+    font-size: 3em;
+    // background-color: $white;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    justify-content: space-between;
-    .chess-clock {
-    box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
+    justify-content: center;
+    .chess-clock-top {
+        display: flex;
+        justify-content: center;
+        line-height: 1em;
+        box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
+        padding: 0.3em 0.2em;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+        background-color: $white;
+        width: 40%;
+        font-family: "Roboto";
+        font-weight: 400;
+        color: black;
 
+    }
+    .chess-clock-bottom {
+        display: flex;
+        justify-content: center;
+        background-color: $white;
+        line-height: 1em;
+        box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
+        padding: 0.3em 0.2em;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        width: 40%;
+        font-family: "Roboto";
+        font-weight: 400;
+        color: black;
+    }
+    .chess-sidebar-info {
+        display: flex;
+        // justify-content: space-between;
+        flex-direction: column;
+        width: 100%;
+        background-color: $white;
+        box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
+        .chess-sidebar-moves {
+            height: 10em;
+            font-size: 0.3em;
+            box-sizing: border-box;
+            padding-left: 10px;
+            span {
+                background-color: #D0E4F6;
+            }
+            
+        }
+        .chess-sidebar-name {
+            border-top: 1px solid lightgray;
+            border-bottom: 1px solid lightgray;
+            display: flex;
+            align-items: center;
+            font-size: 0.5em;
+            box-sizing: border-box;
+            padding-left: 10px;
+            i {
+                margin-right: 1em;
+                font-size: 0.5em;
+            }
+        }
+        .chess-sidebar-buttons {
+            display: flex;
+            justify-content: center;
+            i {
+                padding: 1em;
+                font-size: 1.5em;
+                &:hover {
+                    background-color: $green
+                }
+            }
+        }
     }
 }
 /* Chess Game */
@@ -698,7 +815,15 @@ i.valid {
     // background-color: green;
 }
 
+.odd {
+    color: #F0D8B5;
 
+}
+
+.even {
+    color: #B58763;
+
+}
 
 .odd-tile {
     i {
@@ -709,6 +834,7 @@ i.valid {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 .even-tile {
@@ -716,6 +842,7 @@ i.valid {
         padding-top: 0.3em;
         padding-bottom: 0.3em;
     }
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1493,11 +1620,138 @@ textarea {
         height: 100%;
         font-size: 1.5em;
     }
-
     
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 5px;  
+    background: #d3d3d3;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    padding: 0;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%; 
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
 }
 
 /* Class Modification */
 
+.modal-screen {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 4;
+    background-color: rgba(254,254,254,0.6);
+}
+.modal-content {
+    position: absolute;
+    width: 50%;
+    background: #fff;
+    box-shadow: 0 8px 16px rgba(0,0,0,.1);
+    border-radius: 10px;
+    text-align: center;
+    box-sizing: border-box;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    padding: 3em;
+    .mode-input {
+        box-sizing: border-box;
+        padding-left: 1em;
+        padding-right: 1em;
+        display: flex;
+        margin-bottom: 1em;
+        label {
+            margin-right: 1em;
+        }
+    }
+    .rated-input {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+        div {
+            position: relative;
+            
+            input[type="radio"] {
+                background-color: #F7F6F5;
+                width: 50%;
+                -webkit-appearance: none;
+                box-shadow: 0 2px 5px 0 rgba(0,0,0,0.225);
+                padding: 1em 3em;
+                cursor: pointer;
+                margin: 0;
+                z-index: 3;
+                &:hover {
+                    background-color: $white
+                }
+            }
+            label {
+                position: absolute;
+                left: 25%;
+                top: 25%;
 
+            }
+        }
+
+    }
+    .color-submit-buttons {
+        button {      
+            border-radius: 3px;
+            background-color: #F7F6F5;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,0.225);
+            padding: 1em; 
+            font-size: 2.5em;
+            margin-left: 15px;
+            margin-right: 15px;
+            &:hover {
+                background-color: $white;
+                i.white {
+                    background-color: $white;
+                    color: black;
+                }
+                i.black-to-white {
+                    background-color: $white;
+                }
+            }
+            i.white {
+                color: $white;
+                background-color: #F7F6F5;
+
+            }
+            i.black-to-white {
+                // background-color: linear-gradient(to right, black, white);
+                color: gray;
+                background-color: #F7F6F5;
+            }
+        }
+
+        
+    }
+}
+
+// Modal 
 // Pretty Checkbox

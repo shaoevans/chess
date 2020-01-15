@@ -50,8 +50,17 @@ class User < ApplicationRecord
         class_name: :Blog,
         dependent: :destroy
 
-    # has_many :matches,
-    #     primary_key: :id,
+    def matches
+        Match.where("black_player_id = ? OR white_player_id = ?", self.id, self.id)
+    end
+
+    def current_matches
+        self.matches.where("pending = ?", true)
+    end
+
+    def previous_matches
+        self.matches.where("pending = ?", false)
+    end
 
 
 end

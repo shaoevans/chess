@@ -47,6 +47,49 @@ class Tile extends React.Component {
         }
     }
 
+    tileLabels() {
+        if (this.props.ind[0] === 7) {
+            if (this.props.ind[1] === 0) {
+                return <span className="letter-label odd">h</span>
+            } else if (this.props.ind[1] === 1) {
+                return <span className="letter-label even">g</span>
+            } else if (this.props.ind[1] === 2) {
+                return <span className="letter-label odd">f</span>
+            } else if (this.props.ind[1] === 3) {
+                return <span className="letter-label even">e</span>
+            } else if (this.props.ind[1] === 4) {
+                return <span className="letter-label odd">d</span>
+            } else if (this.props.ind[1] === 5) {
+                return <span className="letter-label even">c</span>
+            } else if (this.props.ind[1] === 6) {
+                return <span className="letter-label odd">b</span>
+            } else if (this.props.ind[1] === 7) {
+                return (
+                    <div>   
+                        <span className="letter-label even">a</span>
+                        <span className="number-label even">8</span>
+                    </div>
+                )
+            }
+        } else if (this.props.ind[1] === 7) {
+            if (this.props.ind[0] === 0) {
+                return <span className="number-label odd">1</span>
+            } else if (this.props.ind[0] === 1) {
+                return <span className="number-label even">2</span>
+            } else if (this.props.ind[0] === 2) {
+                return <span className="number-label odd">3</span>
+            } else if (this.props.ind[0] === 3) {
+                return <span className="number-label even">4</span>
+            } else if (this.props.ind[0] === 4) {
+                return <span className="number-label odd">5</span>
+            } else if (this.props.ind[0] === 5) {
+                return <span className="number-label even">6</span>
+            } else if (this.props.ind[0] === 6) {
+                return <span className="number-label odd">7</span>
+            }
+        } 
+    }
+
     render() {
         const { piece, selectPiece, ind, pieceSelected } = this.props
         if ((ind[0] + ind[1]) % 2 === 0) {
@@ -54,6 +97,7 @@ class Tile extends React.Component {
                 <li onClick={selectPiece(ind)} className={`odd-tile ${this.validTile()} ${this.isSelected()} ${this.isLastMovePrev()} ${this.isLastMoveAfter()}`}>
                     {this.greenDot()}
                     {piece.render()}
+                    {this.tileLabels()}
                 </li>
             )
         } else {
@@ -61,6 +105,7 @@ class Tile extends React.Component {
                 <li onClick={selectPiece(ind)} className={`even-tile ${this.validTile()} ${this.isSelected()} ${this.isLastMovePrev()} ${this.isLastMoveAfter()}`}>
                     {this.greenDot()}
                     {piece.render()}
+                    {this.tileLabels()}
                 </li>   
             )
         }

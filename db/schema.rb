@@ -48,7 +48,11 @@ ActiveRecord::Schema.define(version: 2020_01_12_113339) do
     t.integer "white_player_id", null: false
     t.integer "black_player_id", null: false
     t.text "move_string", default: "", null: false
-    t.string "status", default: "PENDING", null: false
+    t.boolean "pending", default: true, null: false
+    t.string "match_type", null: false
+    t.integer "winner_id"
+    t.integer "white_player_time"
+    t.integer "black_player_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["black_player_id"], name: "index_matches_on_black_player_id"

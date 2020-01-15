@@ -12,22 +12,27 @@ import PostShowContainer from "./forum/post_show_container.js";
 import BlogBody from "./blog/blog_body";
 import UserShowContainer from "./user/user_show_container";
 import ErrorPage from "./errors_page/error_page";
-import ChessGame from "./chess_game/chess_game";
+import ChessBoard from "./chess_board/chess_board";
+import CreateGameForm from "./modal/create_game_form";
+import ChallengeFriendForm from "./modal/challenge_friend_form";
+import Modal from "./modal/modal";
 
 
 
 const App = () => {
     return (
         <div>
+            <Modal />
             <Route path="/" component={NavBarContainer} />  
             <Switch>
+                <Route path="/test" component={ChallengeFriendForm} />
                 <Route path="/errors" component={ErrorPage}/>
                 <Route exact path="/forums/:forumId/form" component={PostFormContainer}/>
                 <Route exact path="/" component={LobbyContainer} />
                 <Route exact path="/forums" component={ForumIndexContainer}/>
                 <Route exact path="/forums/:forumId" component={ForumShowContainer}/>
                 <Route exact path="/forums/:forumId/posts/:postId" component={PostShowContainer}/>
-                <Route path="/chess" component={ChessGame} />
+                <Route path="/chess" component={ChessBoard} />
                 <Route path="/users/:username" component={UserShowContainer}/>
                 <Route path="/blog" component={BlogBody}/>
                 <AuthRoute path="/login" component={LoginFormContainer}/>

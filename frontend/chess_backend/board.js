@@ -12,12 +12,47 @@ class Board {
         this.selectPieceToPlace = this.selectPieceToPlace.bind(this);
         this.grid = [];
         this.createBoard();
-        // if (moveString) {
-        //     this.setupBoard()
-        // }
+        if (moveString) {
+            this.setupBoard(moveString)
+        }
         // this.getPiece = this.getPiece.bind(this);
         // this.createBoard = this.createBoard.bind(this);
 
+    }
+    // moveString format: "A4-B5 C4-H5"
+
+    convertLettersToNumbers() {
+        return {
+            A: 7,
+            B: 6,
+            C: 5,
+            D: 4,
+            E: 3,
+            F: 2,
+            G: 1,
+            H: 0
+        }
+    } 
+    
+    setupBoard(moveString) {
+        const moveArr = moveString.split(" ");
+        // ["A4-B5, C4-H5"]
+        moveArr.forEach(move => {
+            // "A4-B5"
+            const moveHalves = move.split("-");
+            // ["A4, B5"]
+            const firstMoveString = moveHalves[0];
+            // "A4"
+            const firstMoveX = this.convertLettersToNumbers()[firstMoveString[0]];
+            // 7
+            const firstMoveY = parseInt(firstMoveString[1]) - 1
+            // 3    
+            const secondMoveString = moveHalves[1];
+            const secondMoveX = this.convertLettersToNumbers()[secondMoveString[0]];
+            const secondMoveY = parseInt(secondMoveString[1]) - 1
+
+            this.movePiece([firstMoveY, firstMoveX], [secondMoveY, secondMoveX]);
+        })
     }
 
     createBoard() {
@@ -37,9 +72,9 @@ class Board {
         }
     }
 
-    // setupBoard() {
-    //     return null;
-    // }
+
+
+   
 
     getPiece(pos) {
         return this.grid[pos[0]][pos[1]];

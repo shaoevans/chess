@@ -2,6 +2,7 @@ import { connect } from "react-redux";
 import Lobby from "./lobby";
 import { fetchLatestComments } from "./../../actions/forum_actions";
 import { fetchBlogs } from "./../../actions/blog_actions";
+import { fetchUserCurrentMatches } from "./../../actions/match_actions";
 
 const mapStateToProps = state => ({
     comments: Object.values(state.entities.comments),
@@ -11,7 +12,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
     return {
         fetchLatestComments: () => dispatch(fetchLatestComments()),
-        fetchBlogs: () => dispatch(fetchBlogs(1))
+        fetchBlogs: () => dispatch(fetchBlogs(1)),
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Lobby)

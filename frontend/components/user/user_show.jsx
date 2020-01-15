@@ -5,11 +5,20 @@ import { Link, NavLink } from "react-router-dom";
 class UserShow extends React.Component {
     constructor(props) {
         super(props)
-        // this.state = {}
+        this.state = {}
     }
 
     componentDidMount() {
         this.props.fetchUser(this.props.match.params.username)
+            .then(() => this.setState(this.state), () => this.props.history.replace("/errors"));
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.match.params.username !== prevProps.match.params.username) {
+            this.props.fetchUser(this.props.match.params.username)
+                .then(() => this.setState(this.state), () => this.props.history.replace("/errors"));
+
+        }
     }
 
     render() {

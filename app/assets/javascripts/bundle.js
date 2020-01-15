@@ -260,6 +260,115 @@ var createComment = function createComment(comment) {
 
 /***/ }),
 
+/***/ "./frontend/actions/match_actions.js":
+/*!*******************************************!*\
+  !*** ./frontend/actions/match_actions.js ***!
+  \*******************************************/
+/*! exports provided: RECEIVE_MATCHES, RECEIVE_MATCH, fetchUserPreviousMatches, fetchUserCurrentMatches, fetchUserMatches, createMatch */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_MATCHES", function() { return RECEIVE_MATCHES; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_MATCH", function() { return RECEIVE_MATCH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUserPreviousMatches", function() { return fetchUserPreviousMatches; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUserCurrentMatches", function() { return fetchUserCurrentMatches; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUserMatches", function() { return fetchUserMatches; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createMatch", function() { return createMatch; });
+/* harmony import */ var _util_match_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../util/match_api_util */ "./frontend/util/match_api_util.js");
+var RECEIVE_MATCHES = "RECEIVE_MATCHES";
+var RECEIVE_MATCH = "RECEIVE_MATCH";
+
+
+var receiveMatches = function receiveMatches(matches) {
+  return {
+    type: RECEIVE_MATCHES,
+    matches: matches
+  };
+};
+
+var receiveAMatch = function receiveAMatch(match) {
+  return {
+    type: RECEIVE_MATCH,
+    match: match
+  };
+};
+
+var fetchUserPreviousMatches = function fetchUserPreviousMatches(userId) {
+  return function (dispatch) {
+    return _util_match_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchUserPreviousMatches"](userId).then(function (matches) {
+      return dispatch(receiveMatches(matches));
+    });
+  };
+};
+var fetchUserCurrentMatches = function fetchUserCurrentMatches(userId) {
+  return function (dispatch) {
+    return _util_match_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchUserCurrentMatches"](userId).then(function (matches) {
+      return dispatch(receiveMatches(matches));
+    });
+  };
+};
+var fetchUserMatches = function fetchUserMatches(userId) {
+  return function (dispatch) {
+    return _util_match_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchUserMatches"](userId).then(function (matches) {
+      return dispatch(receiveMatches(matches));
+    });
+  };
+};
+var createMatch = function createMatch(match) {
+  return function (dispatch) {
+    return _util_match_api_util__WEBPACK_IMPORTED_MODULE_0__["createMatch"](match).then(function (match) {
+      return dispatch(receiveAMatch(match));
+    });
+  };
+};
+
+/***/ }),
+
+/***/ "./frontend/actions/modal_actions.js":
+/*!*******************************************!*\
+  !*** ./frontend/actions/modal_actions.js ***!
+  \*******************************************/
+/*! exports provided: CLOSE_MODAL, CREATE_GAME_MODAL, CHALLENGE_FRIEND_MODAL, PLAY_COMPUTER_MODAL, closeModal, createGameModal, challengeFriendModal, playComputerModal */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLOSE_MODAL", function() { return CLOSE_MODAL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CREATE_GAME_MODAL", function() { return CREATE_GAME_MODAL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CHALLENGE_FRIEND_MODAL", function() { return CHALLENGE_FRIEND_MODAL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PLAY_COMPUTER_MODAL", function() { return PLAY_COMPUTER_MODAL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "closeModal", function() { return closeModal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createGameModal", function() { return createGameModal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "challengeFriendModal", function() { return challengeFriendModal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "playComputerModal", function() { return playComputerModal; });
+var CLOSE_MODAL = "CLOSE_MODAL";
+var CREATE_GAME_MODAL = "CREATE_GAME_MODAL";
+var CHALLENGE_FRIEND_MODAL = "CHALLENGE_FRIEND_MODAL";
+var PLAY_COMPUTER_MODAL = "PLAY_COMPUTER_MODAL";
+var closeModal = function closeModal() {
+  return {
+    type: CLOSE_MODAL
+  };
+};
+var createGameModal = function createGameModal() {
+  return {
+    type: CREATE_GAME_MODAL
+  };
+};
+var challengeFriendModal = function challengeFriendModal() {
+  return {
+    type: CHALLENGE_FRIEND_MODAL
+  };
+};
+var playComputerModal = function playComputerModal() {
+  return {
+    type: PLAY_COMPUTER_MODAL
+  };
+};
+
+/***/ }),
+
 /***/ "./frontend/actions/session_actions.js":
 /*!*********************************************!*\
   !*** ./frontend/actions/session_actions.js ***!
@@ -453,14 +562,58 @@ function () {
     this.blackLostPieces = [];
     this.selectPieceToPlace = this.selectPieceToPlace.bind(this);
     this.grid = [];
-    this.createBoard(); // if (moveString) {
-    //     this.setupBoard()
-    // }
-    // this.getPiece = this.getPiece.bind(this);
+    this.createBoard();
+
+    if (moveString) {
+      this.setupBoard(moveString);
+    } // this.getPiece = this.getPiece.bind(this);
     // this.createBoard = this.createBoard.bind(this);
-  }
+
+  } // moveString format: "A4-B5 C4-H5"
+
 
   _createClass(Board, [{
+    key: "convertLettersToNumbers",
+    value: function convertLettersToNumbers() {
+      return {
+        A: 7,
+        B: 6,
+        C: 5,
+        D: 4,
+        E: 3,
+        F: 2,
+        G: 1,
+        H: 0
+      };
+    }
+  }, {
+    key: "setupBoard",
+    value: function setupBoard(moveString) {
+      var _this = this;
+
+      var moveArr = moveString.split(" "); // ["A4-B5, C4-H5"]
+
+      moveArr.forEach(function (move) {
+        // "A4-B5"
+        var moveHalves = move.split("-"); // ["A4, B5"]
+
+        var firstMoveString = moveHalves[0]; // "A4"
+
+        var firstMoveX = _this.convertLettersToNumbers()[firstMoveString[0]]; // 7
+
+
+        var firstMoveY = parseInt(firstMoveString[1]) - 1; // 3    
+
+        var secondMoveString = moveHalves[1];
+
+        var secondMoveX = _this.convertLettersToNumbers()[secondMoveString[0]];
+
+        var secondMoveY = parseInt(secondMoveString[1]) - 1;
+
+        _this.movePiece([firstMoveY, firstMoveX], [secondMoveY, secondMoveX]);
+      });
+    }
+  }, {
     key: "createBoard",
     value: function createBoard() {
       for (var i = 0; i < 8; i++) {
@@ -479,10 +632,7 @@ function () {
       } else {
         return this.whitePieces;
       }
-    } // setupBoard() {
-    //     return null;
-    // }
-
+    }
   }, {
     key: "getPiece",
     value: function getPiece(pos) {
@@ -780,12 +930,29 @@ function (_Piece) {
   _inherits(Queen, _Piece);
 
   function Queen(position, board, color) {
+    var _this;
+
     _classCallCheck(this, Queen);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Queen).call(this, position, board, color));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Queen).call(this, position, board, color));
+    _this.value = 90;
+    return _this;
   }
 
   _createClass(Queen, [{
+    key: "getPositionValue",
+    value: function getPositionValue() {
+      var positionValues;
+
+      if (this.color === "black") {
+        positionValues = [[-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0], [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0], [-1.0, 0.0, 0.5, 0.5, 0.5, 0.5, 0.0, -1.0], [-0.5, 0.0, 0.5, 0.5, 0.5, 0.5, 0.0, -0.5], [0.0, 0.0, 0.5, 0.5, 0.5, 0.5, 0.0, -0.5], [-1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.0, -1.0], [-1.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, -1.0], [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]];
+      } else {
+        positionValues = [[-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0], [-1.0, 0.0, 0.5, 0.0, 0.0, 0.0, 0.0, -1.0], [-1.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.0, -1.0], [0.0, 0.0, 0.5, 0.5, 0.5, 0.5, 0.0, -0.5], [-0.5, 0.0, 0.5, 0.5, 0.5, 0.5, 0.0, -0.5], [-1.0, 0.0, 0.5, 0.5, 0.5, 0.5, 0.0, -1.0], [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0], [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]];
+      }
+
+      return positionValues[this.position[0]][this.position[1]];
+    }
+  }, {
     key: "moves",
     value: function moves() {
       return this.horizontals().concat(this.diagonals());
@@ -813,12 +980,29 @@ function (_Piece2) {
   _inherits(Rook, _Piece2);
 
   function Rook(position, board, color) {
+    var _this2;
+
     _classCallCheck(this, Rook);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Rook).call(this, position, board, color));
+    _this2 = _possibleConstructorReturn(this, _getPrototypeOf(Rook).call(this, position, board, color));
+    _this2.value = 50;
+    return _this2;
   }
 
   _createClass(Rook, [{
+    key: "getPositionValue",
+    value: function getPositionValue() {
+      var positionValues;
+
+      if (this.color === "black") {
+        positionValues = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5], [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5], [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5], [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5], [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5], [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5], [0.0, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0]];
+      } else {
+        positionValues = [[0.0, 0.0, 0.0, 0.5, 0.5, 0.0, 0.0, 0.0], [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5], [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5], [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5], [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5], [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -0.5], [0.5, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.5], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]];
+      }
+
+      return positionValues[this.position[0]][this.position[1]];
+    }
+  }, {
     key: "render",
     value: function render() {
       if (this.color === "black") {
@@ -846,12 +1030,29 @@ function (_Piece3) {
   _inherits(Bishop, _Piece3);
 
   function Bishop(position, board, color) {
+    var _this3;
+
     _classCallCheck(this, Bishop);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Bishop).call(this, position, board, color));
+    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(Bishop).call(this, position, board, color));
+    _this3.value = 30;
+    return _this3;
   }
 
   _createClass(Bishop, [{
+    key: "getPositionValue",
+    value: function getPositionValue() {
+      var positionValues;
+
+      if (this.color === "black") {
+        positionValues = [[-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0], [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0], [-1.0, 0.0, 0.5, 1.0, 1.0, 0.5, 0.0, -1.0], [-1.0, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5, -1.0], [-1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, -1.0], [-1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0], [-1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5, -1.0], [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0]];
+      } else {
+        positionValues = [[-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0], [-1.0, 0.5, 0.0, 0.0, 0.0, 0.0, 0.5, -1.0], [-1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0], [-1.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, -1.0], [-1.0, 0.5, 0.5, 1.0, 1.0, 0.5, 0.5, -1.0], [-1.0, 0.0, 0.5, 1.0, 1.0, 0.5, 0.0, -1.0], [-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0], [-2.0, -1.0, -1.0, -1.0, -1.0, -1.0, -1.0, -2.0]];
+      }
+
+      return positionValues[this.position[0]][this.position[1]];
+    }
+  }, {
     key: "render",
     value: function render() {
       if (this.color === "black") {
@@ -879,12 +1080,29 @@ function (_Piece4) {
   _inherits(Knight, _Piece4);
 
   function Knight(position, board, color) {
+    var _this4;
+
     _classCallCheck(this, Knight);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Knight).call(this, position, board, color));
+    _this4 = _possibleConstructorReturn(this, _getPrototypeOf(Knight).call(this, position, board, color));
+    _this4.value = 30;
+    return _this4;
   }
 
   _createClass(Knight, [{
+    key: "getPositionValue",
+    value: function getPositionValue() {
+      var positionValues;
+
+      if (this.color === "black") {
+        positionValues = [[-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0], [-4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0], [-3.0, 0.0, 1.0, 1.5, -1.5, 1.0, 0.0, -3.0], [-3.0, 0.5, 1.5, 2.0, 2.0, 1.5, 0.5, -3.0], [-3.0, 0.0, 1.5, 2.0, 2.0, 1.5, 0.0, -3.0], [-3.0, 0.5, 1.5, 2.0, 2.0, 1.5, 0.5, -3.0], [-4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0], [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]];
+      } else {
+        positionValues = [[-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0][(-4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0)], [-3.0, 0.5, 1.5, 2.0, 2.0, 1.5, 0.5, -3.0], [-3.0, 0.0, 1.5, 2.0, 2.0, 1.5, 0.0, -3.0], [-3.0, 0.5, 1.5, 2.0, 2.0, 1.5, 0.5, -3.0], [-3.0, 0.0, 1.0, 1.5, -1.5, 1.0, 0.0, -3.0], [-4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0], [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]];
+      }
+
+      return positionValues[this.position[0]][this.position[1]];
+    }
+  }, {
     key: "moveDirsArr",
     value: function moveDirsArr() {
       return [[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [1, -2], [-1, 2], [-1, -2]];
@@ -917,12 +1135,29 @@ function (_Piece5) {
   _inherits(King, _Piece5);
 
   function King(position, board, color) {
+    var _this5;
+
     _classCallCheck(this, King);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(King).call(this, position, board, color));
+    _this5 = _possibleConstructorReturn(this, _getPrototypeOf(King).call(this, position, board, color));
+    _this5.value = 900;
+    return _this5;
   }
 
   _createClass(King, [{
+    key: "getPositionValue",
+    value: function getPositionValue() {
+      var positionValues;
+
+      if (this.color === "black") {
+        positionValues = [[-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0], [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0], [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0], [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0], [-2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0], [-1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0], [2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0], [2.0, 3.0, 1.0, 0.0, 0.0, 1.0, 3.0, 2.0]];
+      } else {
+        positionValues = [[2.0, 3.0, 1.0, 0.0, 0.0, 1.0, 3.0, 2.0], [2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 2.0, 2.0], [-1.0, -2.0, -2.0, -2.0, -2.0, -2.0, -2.0, -1.0], [-2.0, -3.0, -3.0, -4.0, -4.0, -3.0, -3.0, -2.0], [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0], [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0], [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0], [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0]];
+      }
+
+      return positionValues[this.position[0]][this.position[1]];
+    }
+  }, {
     key: "forwardDir",
     value: function forwardDir() {
       if (this.color === "black") {
@@ -934,7 +1169,7 @@ function (_Piece5) {
   }, {
     key: "inCheck",
     value: function inCheck() {
-      var _this = this;
+      var _this6 = this;
 
       var diag1 = this.growUnblockedMovesInDir(1, 1);
       var diag2 = this.growUnblockedMovesInDir(1, -1);
@@ -943,7 +1178,7 @@ function (_Piece5) {
       var diagonals = [diag1[diag1.length - 1], diag2[diag2.length - 1], diag3[diag3.length - 1], diag4[diag4.length - 1]];
       diagonals.forEach(function (diagPos) {
         if (diagPos) {
-          var checkPiece = _this.board.getPiece(diagPos);
+          var checkPiece = _this6.board.getPiece(diagPos);
 
           if (checkPiece instanceof Bishop || checkPiece instanceof Queen) {
             return true;
@@ -957,7 +1192,7 @@ function (_Piece5) {
       var horizontals = [horiz1[horiz1.length - 1], horiz2[horiz2.length - 1], horiz3[horiz3.length - 1], horiz4[horiz4.length - 1]];
       horizontals.forEach(function (horizPos) {
         if (horizPos) {
-          var checkPiece = _this.board.getPiece(horizPos);
+          var checkPiece = _this6.board.getPiece(horizPos);
 
           if (checkPiece instanceof Queen || checkPiece instanceof Rook) {
             return true;
@@ -966,7 +1201,7 @@ function (_Piece5) {
       });
       var knights = this.steppableMoves(this.knightMoveDirsArr());
       knights.forEach(function (knightPos) {
-        var checkPiece = _this.board.getPiece(knightPos);
+        var checkPiece = _this6.board.getPiece(knightPos);
 
         if (checkPiece instanceof Knight) {
           return true;
@@ -977,7 +1212,7 @@ function (_Piece5) {
       var forward = this.forwardDir();
       var pawns = [[x + forward, y + 1], [x + forward, y - 1]];
       pawns.forEach(function (pawnPos) {
-        var checkPiece = _this.board.getPiece(pawnPos);
+        var checkPiece = _this6.board.getPiece(pawnPos);
 
         if (checkPiece instanceof Pawn) {
           return true;
@@ -1023,9 +1258,13 @@ function (_Piece6) {
   _inherits(Pawn, _Piece6);
 
   function Pawn(position, board, color) {
+    var _this7;
+
     _classCallCheck(this, Pawn);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(Pawn).call(this, position, board, color));
+    _this7 = _possibleConstructorReturn(this, _getPrototypeOf(Pawn).call(this, position, board, color));
+    _this7.value = 10;
+    return _this7;
   }
 
   _createClass(Pawn, [{
@@ -1047,13 +1286,28 @@ function (_Piece6) {
       }
     }
   }, {
+    key: "getPositionValue",
+    value: function getPositionValue() {
+      var positionValues;
+
+      if (this.color === "black") {
+        positionValues = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0], [1.0, 1.0, 2.0, 3.0, 3.0, 2.0, 1.0, 1.0], [0.5, 0.5, 1.0, 2.5, 2.5, 1.0, 0.5, 0.5], [0.0, 0.0, 0.0, 2.0, 2.0, 0.0, 0.0, 0.0], [0.5, -0.5, -1.0, 0.0, 0.0, -1.0, -0.5, 0.5], [0.5, 1.0, 1.0, -2.0, -2.0, 1.0, 1.0, 0.5], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]];
+      } else {
+        positionValues = [[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], [0.5, 1.0, 1.0, -2.0, -2.0, 1.0, 1.0, 0.5], [0.5, -0.5, -1.0, 0.0, 0.0, -1.0, -0.5, 0.5], [0.0, 0.0, 0.0, 2.0, 2.0, 0.0, 0.0, 0.0], [0.5, 0.5, 1.0, 2.5, 2.5, 1.0, 0.5, 0.5], [1.0, 1.0, 2.0, 3.0, 3.0, 2.0, 1.0, 1.0], [5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]];
+      }
+
+      return positionValues[this.position[0]][this.position[1]];
+    }
+  }, {
     key: "forwardSteps",
     value: function forwardSteps() {
       var x = this.position[0];
       var y = this.position[1];
       var forward = this.forwardDir();
 
-      if (this.atStartRow()) {
+      if (!(this.board.getPiece([x + forward, y]) instanceof NullPiece)) {
+        return [];
+      } else if (this.atStartRow() && this.board.getPiece([x + forward + forward, y]) instanceof NullPiece) {
         return [[x + forward, y], [x + forward + forward, y]];
       } else {
         return [[x + forward, y]];
@@ -1105,9 +1359,13 @@ function (_Piece7) {
   _inherits(NullPiece, _Piece7);
 
   function NullPiece(position, board) {
+    var _this8;
+
     _classCallCheck(this, NullPiece);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(NullPiece).call(this, position, board, null));
+    _this8 = _possibleConstructorReturn(this, _getPrototypeOf(NullPiece).call(this, position, board, null));
+    _this8.value = 0;
+    return _this8;
   }
 
   _createClass(NullPiece, [{
@@ -1148,7 +1406,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _blog_blog_body__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./blog/blog_body */ "./frontend/components/blog/blog_body.jsx");
 /* harmony import */ var _user_user_show_container__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./user/user_show_container */ "./frontend/components/user/user_show_container.js");
 /* harmony import */ var _errors_page_error_page__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./errors_page/error_page */ "./frontend/components/errors_page/error_page.jsx");
-/* harmony import */ var _chess_game_chess_game__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./chess_game/chess_game */ "./frontend/components/chess_game/chess_game.jsx");
+/* harmony import */ var _chess_board_chess_board__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./chess_board/chess_board */ "./frontend/components/chess_board/chess_board.jsx");
+/* harmony import */ var _modal_create_game_form__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./modal/create_game_form */ "./frontend/components/modal/create_game_form.jsx");
+/* harmony import */ var _modal_challenge_friend_form__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./modal/challenge_friend_form */ "./frontend/components/modal/challenge_friend_form.jsx");
+/* harmony import */ var _modal_modal__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./modal/modal */ "./frontend/components/modal/modal.jsx");
+
+
+
 
 
 
@@ -1166,10 +1430,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var App = function App() {
-  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_modal_modal__WEBPACK_IMPORTED_MODULE_17__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "/",
     component: _nav_bar_navbar_container__WEBPACK_IMPORTED_MODULE_6__["default"]
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Switch"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
+    path: "/test",
+    component: _modal_challenge_friend_form__WEBPACK_IMPORTED_MODULE_16__["default"]
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "/errors",
     component: _errors_page_error_page__WEBPACK_IMPORTED_MODULE_13__["default"]
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
@@ -1194,7 +1461,7 @@ var App = function App() {
     component: _forum_post_show_container_js__WEBPACK_IMPORTED_MODULE_10__["default"]
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "/chess",
-    component: _chess_game_chess_game__WEBPACK_IMPORTED_MODULE_14__["default"]
+    component: _chess_board_chess_board__WEBPACK_IMPORTED_MODULE_14__["default"]
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Route"], {
     path: "/users/:username",
     component: _user_user_show_container__WEBPACK_IMPORTED_MODULE_12__["default"]
@@ -1844,7 +2111,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _chess_backend_board__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../chess_backend/board */ "./frontend/chess_backend/board.js");
 /* harmony import */ var _tile__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./tile */ "./frontend/components/chess_board/tile.jsx");
-/* harmony import */ var _util_array_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../util/array_util */ "./frontend/util/array_util.js");
+/* harmony import */ var react_compound_timer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-compound-timer */ "./node_modules/react-compound-timer/build/index.js");
+/* harmony import */ var react_compound_timer__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react_compound_timer__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _util_array_util__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../util/array_util */ "./frontend/util/array_util.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1868,6 +2137,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var ChessBoard =
 /*#__PURE__*/
 function (_React$Component) {
@@ -1881,55 +2151,110 @@ function (_React$Component) {
     _this = _possibleConstructorReturn(this, _getPrototypeOf(ChessBoard).call(this, props));
     _this.state = {
       board: new _chess_backend_board__WEBPACK_IMPORTED_MODULE_1__["default"](),
+      moveString: "",
       pieceSelected: null,
       validMoves: [],
       lastMovePrev: null,
       lastMoveAfter: null,
       turn: ["black", "white"]
     };
-    _this.selectPiece = _this.selectPiece.bind(_assertThisInitialized(_this));
+    _this.selectPiece = _this.selectPiece.bind(_assertThisInitialized(_this)); // this.moveChessPiece = this.moveChessPiece.bind(this);
+
     return _this;
   }
 
   _createClass(ChessBoard, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      // document.getElementById("move-string").addEventListener("DOMSubtreeModified", this.moveChessPiece);
+      App.cable.subscriptions.create({
+        channel: "GameRoomChannel"
+      }, {
+        received: function received(data) {
+          _this2.state.board.setupBoard(data.move);
+
+          _this2.setState({
+            moveString: _this2.state.moveString.concat(data.move)
+          });
+        },
+        speak: function speak(data) {
+          return this.perform("speak", data);
+        }
+      });
+    } // componentWillUnmount() {
+    //     document.getElementById("move-string").removeEventListener("DOMSubtreeModified", this.moveChessPiece)
+    // }
+    // moveChessPiece() {
+    //     const moveStringSpan = document.getElementById("move-string");
+    //     let moveStringText = moveStringSpan.innerHTML
+    //     this.state.board.setupBoard( moveStringText.substring(moveStringText.length - 5) )
+    //     this.setState({board: this.state.board})
+    // }
+
+  }, {
     key: "selectPiece",
     value: function selectPiece(pos) {
-      var _this2 = this;
+      var _this3 = this;
 
       return function (e) {
         var validMoves;
 
-        var piece = _this2.state.board.getPiece(pos);
+        var piece = _this3.state.board.getPiece(pos);
 
-        var lastMovePrev = null;
-        var lastMoveAfter = null;
+        var lastMovePrev = _this3.state.lastMovePrev;
+        var lastMoveAfter = _this3.state.lastMoveAfter;
+        var moveString = _this3.state.moveString;
 
-        if (!_this2.state.pieceSelected && piece.color === _this2.state.turn[0]) {
+        var turn = _this3.state.turn.slice();
+
+        if (!_this3.state.pieceSelected && piece.color === _this3.state.turn[0]) {
           validMoves = piece.validMoves();
         } else {
-          if (Object(_util_array_util__WEBPACK_IMPORTED_MODULE_3__["isMoveInValidMoves"])(_this2.state.validMoves, pos)) {
-            lastMovePrev = _this2.state.pieceSelected.position.slice();
+          if (Object(_util_array_util__WEBPACK_IMPORTED_MODULE_4__["isMoveInValidMoves"])(_this3.state.validMoves, pos)) {
+            lastMovePrev = _this3.state.pieceSelected.position.slice();
             lastMoveAfter = piece.position.slice();
+            var move1 = _this3.state.pieceSelected.position;
+            var move2 = pos; // moveString += `${this.moveToString(move1, move2)}`;
 
-            _this2.state.board.movePiece(_this2.state.pieceSelected.position, pos);
+            App.cable.subscriptions.subscriptions[0].speak({
+              matchId: 1,
+              move: _this3.moveToString(move1, move2)
+            }); // change matchid later
+            // this.state.board.movePiece(this.state.pieceSelected.position, pos);
+
+            turn.push(turn.shift());
           }
 
           piece = null;
           validMoves = [];
         }
 
-        _this2.setState({
+        _this3.setState({
           pieceSelected: piece,
           validMoves: validMoves,
           lastMovePrev: lastMovePrev,
-          lastMoveAfter: lastMoveAfter
+          lastMoveAfter: lastMoveAfter,
+          moveString: moveString,
+          turn: turn
         });
       };
     }
   }, {
+    key: "moveToString",
+    value: function moveToString(move1, move2) {
+      var alphabet = "ABCDEFGH";
+      var firstXNumber = (move1[0] + 1).toString();
+      var firstYLetter = alphabet[7 - move1[1]];
+      var secondXNumber = (move2[0] + 1).toString();
+      var secondYLetter = alphabet[7 - move2[1]];
+      return " ".concat(firstYLetter).concat(firstXNumber, "-").concat(secondYLetter).concat(secondXNumber);
+    }
+  }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       var _this$state = this.state,
           pieceSelected = _this$state.pieceSelected,
@@ -1937,19 +2262,31 @@ function (_React$Component) {
           lastMovePrev = _this$state.lastMovePrev,
           lastMoveAfter = _this$state.lastMoveAfter;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chess-game-container"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chess-info"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-cogs"
+      }), "info"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "far fa-circle"
+      }), "Sami"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "black fas fa-circle"
+      }), "Evans")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chess-body"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "chess-board"
       }, board.grid.map(function (row, i) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
           className: "chess-row",
           key: i
         }, row.map(function (tile, j) {
-          if (Object(_util_array_util__WEBPACK_IMPORTED_MODULE_3__["isMoveInValidMoves"])(_this3.state.validMoves, [i, j])) {
+          if (Object(_util_array_util__WEBPACK_IMPORTED_MODULE_4__["isMoveInValidMoves"])(_this4.state.validMoves, [i, j])) {
             return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_tile__WEBPACK_IMPORTED_MODULE_2__["default"], {
               validMove: true,
               lastMoveAfter: lastMoveAfter,
               lastMovePrev: lastMovePrev,
               pieceSelected: pieceSelected,
-              selectPiece: _this3.selectPiece,
+              selectPiece: _this4.selectPiece,
               ind: [i, j],
               key: j,
               piece: board.getPiece([i, j])
@@ -1960,14 +2297,66 @@ function (_React$Component) {
               lastMoveAfter: lastMoveAfter,
               lastMovePrev: lastMovePrev,
               pieceSelected: pieceSelected,
-              selectPiece: _this3.selectPiece,
+              selectPiece: _this4.selectPiece,
               ind: [i, j],
               key: j,
               piece: board.getPiece([i, j])
             });
           }
         }));
-      }));
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chess-sidebar"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_3___default.a, {
+        initialTime: 59000,
+        startImmediately: false,
+        direction: "backward"
+      }, function (_ref) {
+        var start = _ref.start,
+            resume = _ref.resume,
+            pause = _ref.pause,
+            stop = _ref.stop,
+            reset = _ref.reset,
+            timerState = _ref.timerState;
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "chess-clock-top"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_3___default.a.Minutes, null), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_3___default.a.Seconds, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null)));
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chess-sidebar-info"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chess-sidebar-name"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-circle"
+      }), "Sami"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chess-sidebar-moves"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        id: "move-string"
+      }, this.state.moveString)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chess-sidebar-buttons"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-times"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "far fa-hand-paper"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "far fa-flag"
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chess-sidebar-name"
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+        className: "fas fa-circle"
+      }), "Evans")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_3___default.a, {
+        initialTime: 59000,
+        startImmediately: false,
+        direction: "backward"
+      }, function (_ref2) {
+        var start = _ref2.start,
+            resume = _ref2.resume,
+            pause = _ref2.pause,
+            stop = _ref2.stop,
+            reset = _ref2.reset,
+            timerState = _ref2.timerState;
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "chess-clock-bottom"
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_3___default.a.Minutes, null), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_3___default.a.Seconds, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null)));
+      })));
     }
   }]);
 
@@ -2074,6 +2463,77 @@ function (_React$Component) {
       }
     }
   }, {
+    key: "tileLabels",
+    value: function tileLabels() {
+      if (this.props.ind[0] === 7) {
+        if (this.props.ind[1] === 0) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "letter-label odd"
+          }, "h");
+        } else if (this.props.ind[1] === 1) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "letter-label even"
+          }, "g");
+        } else if (this.props.ind[1] === 2) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "letter-label odd"
+          }, "f");
+        } else if (this.props.ind[1] === 3) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "letter-label even"
+          }, "e");
+        } else if (this.props.ind[1] === 4) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "letter-label odd"
+          }, "d");
+        } else if (this.props.ind[1] === 5) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "letter-label even"
+          }, "c");
+        } else if (this.props.ind[1] === 6) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "letter-label odd"
+          }, "b");
+        } else if (this.props.ind[1] === 7) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "letter-label even"
+          }, "a"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "number-label even"
+          }, "8"));
+        }
+      } else if (this.props.ind[1] === 7) {
+        if (this.props.ind[0] === 0) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "number-label odd"
+          }, "1");
+        } else if (this.props.ind[0] === 1) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "number-label even"
+          }, "2");
+        } else if (this.props.ind[0] === 2) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "number-label odd"
+          }, "3");
+        } else if (this.props.ind[0] === 3) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "number-label even"
+          }, "4");
+        } else if (this.props.ind[0] === 4) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "number-label odd"
+          }, "5");
+        } else if (this.props.ind[0] === 5) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "number-label even"
+          }, "6");
+        } else if (this.props.ind[0] === 6) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "number-label odd"
+          }, "7");
+        }
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       var _this$props = this.props,
@@ -2086,12 +2546,12 @@ function (_React$Component) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           onClick: selectPiece(ind),
           className: "odd-tile ".concat(this.validTile(), " ").concat(this.isSelected(), " ").concat(this.isLastMovePrev(), " ").concat(this.isLastMoveAfter())
-        }, this.greenDot(), piece.render());
+        }, this.greenDot(), piece.render(), this.tileLabels());
       } else {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           onClick: selectPiece(ind),
           className: "even-tile ".concat(this.validTile(), " ").concat(this.isSelected(), " ").concat(this.isLastMovePrev(), " ").concat(this.isLastMoveAfter())
-        }, this.greenDot(), piece.render());
+        }, this.greenDot(), piece.render(), this.tileLabels());
       }
     }
   }]);
@@ -2100,109 +2560,6 @@ function (_React$Component) {
 }(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
 
 /* harmony default export */ __webpack_exports__["default"] = (Tile);
-
-/***/ }),
-
-/***/ "./frontend/components/chess_game/chess_game.jsx":
-/*!*******************************************************!*\
-  !*** ./frontend/components/chess_game/chess_game.jsx ***!
-  \*******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _chess_board_chess_board__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../chess_board/chess_board */ "./frontend/components/chess_board/chess_board.jsx");
-/* harmony import */ var react_compound_timer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-compound-timer */ "./node_modules/react-compound-timer/build/index.js");
-/* harmony import */ var react_compound_timer__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_compound_timer__WEBPACK_IMPORTED_MODULE_2__);
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-
-
-
-
-var ChessGame =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(ChessGame, _React$Component);
-
-  function ChessGame(props) {
-    _classCallCheck(this, ChessGame);
-
-    return _possibleConstructorReturn(this, _getPrototypeOf(ChessGame).call(this, props));
-  }
-
-  _createClass(ChessGame, [{
-    key: "render",
-    value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "chess-game-container"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "chess-body"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_chess_board_chess_board__WEBPACK_IMPORTED_MODULE_1__["default"], null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-        className: "chess-sidebar"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_2___default.a, {
-        initialTime: 55000,
-        startImmediately: false,
-        direction: "backward"
-      }, function (_ref) {
-        var start = _ref.start,
-            resume = _ref.resume,
-            pause = _ref.pause,
-            stop = _ref.stop,
-            reset = _ref.reset,
-            timerState = _ref.timerState;
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "chess-clock"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_2___default.a.Minutes, null), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_2___default.a.Seconds, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          onClick: start
-        }, "Start"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          onClick: stop
-        }, "Stop"))));
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_2___default.a, {
-        initialTime: 55000,
-        startImmediately: false,
-        direction: "backward"
-      }, function (_ref2) {
-        var start = _ref2.start,
-            resume = _ref2.resume,
-            pause = _ref2.pause,
-            stop = _ref2.stop,
-            reset = _ref2.reset,
-            timerState = _ref2.timerState;
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-          className: "chess-clock"
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_2___default.a.Minutes, null), ":", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_compound_timer__WEBPACK_IMPORTED_MODULE_2___default.a.Seconds, null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          onClick: start
-        }, "Start"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          onClick: stop
-        }, "Stop"))));
-      })));
-    }
-  }]);
-
-  return ChessGame;
-}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
-
-/* harmony default export */ __webpack_exports__["default"] = (ChessGame);
 
 /***/ }),
 
@@ -3528,7 +3885,6 @@ function (_React$Component) {
   _createClass(Lobby, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      // this.props.fetchForums();
       this.props.fetchLatestComments();
       this.props.fetchBlogs();
     }
@@ -3543,7 +3899,7 @@ function (_React$Component) {
         comments: this.props.comments
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_blog__WEBPACK_IMPORTED_MODULE_5__["default"], {
         blogs: this.props.blogs
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_chess_board_chess_board__WEBPACK_IMPORTED_MODULE_6__["default"], null)));
+      })));
     }
   }]);
 
@@ -3617,6 +3973,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lobby__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lobby */ "./frontend/components/lobby/lobby.jsx");
 /* harmony import */ var _actions_forum_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../actions/forum_actions */ "./frontend/actions/forum_actions.js");
 /* harmony import */ var _actions_blog_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../actions/blog_actions */ "./frontend/actions/blog_actions.js");
+/* harmony import */ var _actions_match_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../actions/match_actions */ "./frontend/actions/match_actions.js");
+
 
 
 
@@ -3748,15 +4106,42 @@ var LobbyLeaderboardTable = function LobbyLeaderboardTable() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../actions/modal_actions */ "./frontend/actions/modal_actions.js");
 
 
-var LobbyTable = function LobbyTable() {
+
+
+var LobbyTable = function LobbyTable(_ref) {
+  var createGameModal = _ref.createGameModal,
+      challengeFriendModal = _ref.challengeFriendModal,
+      playComputerModal = _ref.playComputerModal;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "lobby-table"
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", null, "CREATE A GAME"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", null, "PLAY WITH A FRIEND"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", null, "PLAY WITH THE COMPUTER"));
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    onClick: createGameModal
+  }, "CREATE A GAME"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    onClick: challengeFriendModal
+  }, "PLAY WITH A FRIEND"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    onClick: playComputerModal
+  }, "PLAY WITH THE COMPUTER"));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (LobbyTable);
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    createGameModal: function createGameModal() {
+      return dispatch(Object(_actions_modal_actions__WEBPACK_IMPORTED_MODULE_2__["createGameModal"])());
+    },
+    challengeFriendModal: function challengeFriendModal() {
+      return dispatch(Object(_actions_modal_actions__WEBPACK_IMPORTED_MODULE_2__["challengeFriendModal"])());
+    },
+    playComputerModal: function playComputerModal() {
+      return dispatch(Object(_actions_modal_actions__WEBPACK_IMPORTED_MODULE_2__["playComputerModal"])());
+    }
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["connect"])(null, mapDispatchToProps)(LobbyTable));
 
 /***/ }),
 
@@ -3870,6 +4255,329 @@ var QuickPairingTableItem = function QuickPairingTableItem(_ref) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (QuickPairingTableItem);
+
+/***/ }),
+
+/***/ "./frontend/components/modal/challenge_friend_form.jsx":
+/*!*************************************************************!*\
+  !*** ./frontend/components/modal/challenge_friend_form.jsx ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+var ChallengeFriendForm =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(ChallengeFriendForm, _React$Component);
+
+  function ChallengeFriendForm(props) {
+    var _this;
+
+    _classCallCheck(this, ChallengeFriendForm);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ChallengeFriendForm).call(this, props));
+    _this.state = {
+      matchType: "classical",
+      player2Name: "",
+      player1Name: ""
+    };
+    _this.handleType = _this.handleType.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(ChallengeFriendForm, [{
+    key: "handleType",
+    value: function handleType(type) {
+      var _this2 = this;
+
+      return function (e) {
+        _this2.setState(_defineProperty({}, type, e.currentTarget.value));
+      };
+    }
+  }, {
+    key: "handleColorSelect",
+    value: function handleColorSelect(color) {
+      var _this3 = this;
+
+      return function (e) {
+        _this3.setState({});
+      };
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      e.preventDefault();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", {
+        onSubmit: this.handleSubmit
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("h2", null, "Play with a friend"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "form-group"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Friend Name"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        type: "text",
+        value: this.state.player2Name,
+        onChange: this.handleType("player2Name")
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "mode-input"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Variant"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        defaultValue: true,
+        value: "books"
+      }, "Standard"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        disabled: true,
+        value: "html"
+      }, "Crazyhouse"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        disabled: true,
+        value: "css"
+      }, "Chess960"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        disabled: true,
+        value: "php"
+      }, "King of the Hill"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        disabled: true,
+        value: "js"
+      }, "Three-check"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "mode-input"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Time control"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        disabled: true,
+        value: "books"
+      }, "Real time"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        disabled: true,
+        value: "html"
+      }, "Correspondance"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        defaultValue: true,
+        value: "css"
+      }, "Unlimited"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "rated-input"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        type: "radio"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Casual")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        type: "radio"
+      }), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("label", null, "Rated"))), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("div", {
+        className: "color-submit-buttons"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        className: "color-submit-button",
+        type: "submit"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+        className: "black fas fa-chess-king"
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        className: "color-submit-button",
+        type: "submit"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+        className: "black-to-white fas fa-chess-king"
+      })), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("button", {
+        className: "color-submit-button",
+        type: "submit"
+      }, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("i", {
+        className: "white fas fa-chess-king"
+      }))));
+    }
+  }]);
+
+  return ChallengeFriendForm;
+}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (ChallengeFriendForm); // const mapStateToProps = ({
+// })
+// const mapDispatchToProps = ({
+// })
+// export default connect(mapStateToProps, mapDispatchToProps)(CreateGameForm)
+
+/***/ }),
+
+/***/ "./frontend/components/modal/create_game_form.jsx":
+/*!********************************************************!*\
+  !*** ./frontend/components/modal/create_game_form.jsx ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+var CreateGameForm =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(CreateGameForm, _React$Component);
+
+  function CreateGameForm(props) {
+    var _this;
+
+    _classCallCheck(this, CreateGameForm);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(CreateGameForm).call(this, props));
+    _this.state = {
+      matchType: "classical"
+    };
+    return _this;
+  }
+
+  _createClass(CreateGameForm, [{
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("select", null, react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        value: "books"
+      }, "Books"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        value: "html"
+      }, "HTML"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        value: "css"
+      }, "CSS"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        value: "php"
+      }, "PHP"), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("option", {
+        value: "js"
+      }, "JavaScript")), react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement("input", {
+        type: "range",
+        className: "slider"
+      }));
+    }
+  }]);
+
+  return CreateGameForm;
+}(react__WEBPACK_IMPORTED_MODULE_1___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (CreateGameForm); // const mapStateToProps = ({
+// })
+// const mapDispatchToProps = ({
+// })
+// export default connect(mapStateToProps, mapDispatchToProps)(CreateGameForm)
+
+/***/ }),
+
+/***/ "./frontend/components/modal/modal.jsx":
+/*!*********************************************!*\
+  !*** ./frontend/components/modal/modal.jsx ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../actions/modal_actions */ "./frontend/actions/modal_actions.js");
+/* harmony import */ var _create_game_form__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./create_game_form */ "./frontend/components/modal/create_game_form.jsx");
+/* harmony import */ var _challenge_friend_form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./challenge_friend_form */ "./frontend/components/modal/challenge_friend_form.jsx");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+
+
+
+
+
+
+
+var Modal = function Modal(_ref) {
+  var modal = _ref.modal,
+      closeModal = _ref.closeModal;
+
+  if (!modal) {
+    return null;
+  }
+
+  var component;
+
+  switch (modal) {
+    case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_1__["CREATE_GAME_MODAL"]:
+      component = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_create_game_form__WEBPACK_IMPORTED_MODULE_2__["default"], null);
+      break;
+
+    case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_1__["PLAY_COMPUTER_MODAL"]:
+      component = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(PlayComputerForm, null);
+      break;
+
+    case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_1__["CHALLENGE_FRIEND_MODAL"]:
+      component = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_challenge_friend_form__WEBPACK_IMPORTED_MODULE_3__["default"], null);
+      break;
+
+    default:
+      return null;
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "modal-screen",
+    onClick: closeModal
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "modal-content",
+    onClick: function onClick(e) {
+      return e.stopPropagation();
+    }
+  }, component));
+};
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    modal: state.ui.modal
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    closeModal: function closeModal() {
+      return dispatch(Object(_actions_modal_actions__WEBPACK_IMPORTED_MODULE_1__["closeModal"])());
+    },
+    createGameModal: function createGameModal() {
+      return dispatch(Object(_actions_modal_actions__WEBPACK_IMPORTED_MODULE_1__["createGameModal"])());
+    },
+    challengeFriendModal: function challengeFriendModal() {
+      return dispatch(Object(_actions_modal_actions__WEBPACK_IMPORTED_MODULE_1__["challengeFriendModal"])());
+    },
+    playComputerModal: function playComputerModal() {
+      return dispatch(Object(_actions_modal_actions__WEBPACK_IMPORTED_MODULE_1__["playComputerModal"])());
+    }
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["connect"])(mapStateToProps, mapDispatchToProps)(Modal));
 
 /***/ }),
 
@@ -4821,15 +5529,38 @@ function (_React$Component) {
   _inherits(UserShow, _React$Component);
 
   function UserShow(props) {
+    var _this;
+
     _classCallCheck(this, UserShow);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(UserShow).call(this, props)); // this.state = {}
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(UserShow).call(this, props));
+    _this.state = {};
+    return _this;
   }
 
   _createClass(UserShow, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      this.props.fetchUser(this.props.match.params.username);
+      var _this2 = this;
+
+      this.props.fetchUser(this.props.match.params.username).then(function () {
+        return _this2.setState(_this2.state);
+      }, function () {
+        return _this2.props.history.replace("/errors");
+      });
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      var _this3 = this;
+
+      if (this.props.match.params.username !== prevProps.match.params.username) {
+        this.props.fetchUser(this.props.match.params.username).then(function () {
+          return _this3.setState(_this3.state);
+        }, function () {
+          return _this3.props.history.replace("/errors");
+        });
+      }
     }
   }, {
     key: "render",
@@ -5135,6 +5866,45 @@ var ForumsReducer = function ForumsReducer() {
 
 /***/ }),
 
+/***/ "./frontend/reducers/modal_reducer.js":
+/*!********************************************!*\
+  !*** ./frontend/reducers/modal_reducer.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/modal_actions */ "./frontend/actions/modal_actions.js");
+
+
+var ModalReducer = function ModalReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+
+  switch (action.type) {
+    case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_0__["CLOSE_MODAL"]:
+      return null;
+
+    case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_0__["CREATE_GAME_MODAL"]:
+      return _actions_modal_actions__WEBPACK_IMPORTED_MODULE_0__["CREATE_GAME_MODAL"];
+
+    case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_0__["CHALLENGE_FRIEND_MODAL"]:
+      return _actions_modal_actions__WEBPACK_IMPORTED_MODULE_0__["CHALLENGE_FRIEND_MODAL"];
+
+    case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_0__["PLAY_COMPUTER_MODAL"]:
+      return _actions_modal_actions__WEBPACK_IMPORTED_MODULE_0__["PLAY_COMPUTER_MODAL"];
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (ModalReducer);
+
+/***/ }),
+
 /***/ "./frontend/reducers/posts_reducer.js":
 /*!********************************************!*\
   !*** ./frontend/reducers/posts_reducer.js ***!
@@ -5188,6 +5958,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _entities_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./entities_reducer */ "./frontend/reducers/entities_reducer.js");
 /* harmony import */ var _session_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./session_reducer */ "./frontend/reducers/session_reducer.js");
 /* harmony import */ var _errors_reducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./errors_reducer */ "./frontend/reducers/errors_reducer.js");
+/* harmony import */ var _ui_reducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ui_reducer */ "./frontend/reducers/ui_reducer.js");
+
 
 
 
@@ -5195,7 +5967,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
   entities: _entities_reducer__WEBPACK_IMPORTED_MODULE_1__["default"],
   session: _session_reducer__WEBPACK_IMPORTED_MODULE_2__["default"],
-  errors: _errors_reducer__WEBPACK_IMPORTED_MODULE_3__["default"]
+  errors: _errors_reducer__WEBPACK_IMPORTED_MODULE_3__["default"],
+  ui: _ui_reducer__WEBPACK_IMPORTED_MODULE_4__["default"]
 }));
 
 /***/ }),
@@ -5269,6 +6042,25 @@ var SessionReducer = function SessionReducer() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (SessionReducer);
+
+/***/ }),
+
+/***/ "./frontend/reducers/ui_reducer.js":
+/*!*****************************************!*\
+  !*** ./frontend/reducers/ui_reducer.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var _modal_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modal_reducer */ "./frontend/reducers/modal_reducer.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
+  modal: _modal_reducer__WEBPACK_IMPORTED_MODULE_1__["default"]
+}));
 
 /***/ }),
 
@@ -5540,6 +6332,55 @@ var fetchComments = function fetchComments(page) {
     url: "/api/comments",
     data: {
       page: page
+    }
+  });
+};
+
+/***/ }),
+
+/***/ "./frontend/util/match_api_util.js":
+/*!*****************************************!*\
+  !*** ./frontend/util/match_api_util.js ***!
+  \*****************************************/
+/*! exports provided: fetchUserCurrentMatches, fetchUserPreviousMatches, fetchUserMatches, createMatch */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUserCurrentMatches", function() { return fetchUserCurrentMatches; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUserPreviousMatches", function() { return fetchUserPreviousMatches; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUserMatches", function() { return fetchUserMatches; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createMatch", function() { return createMatch; });
+var fetchUserCurrentMatches = function fetchUserCurrentMatches(userId) {
+  return $.ajax({
+    method: "GET",
+    url: "/api/users/".concat(userId, "/matches"),
+    data: {
+      current: true
+    }
+  });
+};
+var fetchUserPreviousMatches = function fetchUserPreviousMatches(userId) {
+  return $.ajax({
+    method: "GET",
+    url: "/api/users/".concat(userId, "/matches"),
+    data: {
+      previous: true
+    }
+  });
+};
+var fetchUserMatches = function fetchUserMatches(userId) {
+  return $.ajax({
+    method: "GET",
+    url: "/api/users/".concat(userId, "/matches")
+  });
+};
+var createMatch = function createMatch(match) {
+  return $.ajax({
+    method: "POST",
+    url: "/api/matches",
+    data: {
+      match: match
     }
   });
 };

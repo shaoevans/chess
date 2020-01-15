@@ -12,7 +12,6 @@ class Lobby extends React.Component {
     }
 
     componentDidMount() {
-        // this.props.fetchForums();
         this.props.fetchLatestComments();
         this.props.fetchBlogs();
     }
@@ -28,7 +27,7 @@ class Lobby extends React.Component {
                     <LobbyLeaderBoard />
                     <LobbyForum comments={this.props.comments} />
                     <LobbyBlog blogs={this.props.blogs} />
-                    <ChessBoard />
+                    {/* <ChessBoard /> */}
 
                 </div>
             </div>
