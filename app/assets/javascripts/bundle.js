@@ -3994,6 +3994,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     fetchBlogs: function fetchBlogs() {
       return dispatch(Object(_actions_blog_actions__WEBPACK_IMPORTED_MODULE_3__["fetchBlogs"])(1));
+    },
+    fetchUserCurrentMatches: function fetchUserCurrentMatches(userId) {
+      return dispatch(Object(_actions_match_actions__WEBPACK_IMPORTED_MODULE_4__["fetchUserCurrentMatches"])(userId));
     }
   };
 };

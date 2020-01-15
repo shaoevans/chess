@@ -13,6 +13,7 @@ const mapDispatchToProps = dispatch => {
     return {
         fetchLatestComments: () => dispatch(fetchLatestComments()),
         fetchBlogs: () => dispatch(fetchBlogs(1)),
+        fetchUserCurrentMatches: userId => dispatch(fetchUserCurrentMatches(userId))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Lobby)
