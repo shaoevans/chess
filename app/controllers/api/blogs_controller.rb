@@ -8,6 +8,7 @@ class Api::BlogsController < ApplicationController
         if params[:page] != 1 
             sleep 0.5
         end
+        
         @latest_blog = @blogs.first
         render :index
     end
