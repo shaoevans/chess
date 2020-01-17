@@ -106,7 +106,7 @@ post = Post.create(title: "Converting Glicko to Elo", author_id: (11..28).to_a.s
 Comment.create(body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco", post_id: post.id, author_id: post.author_id)
 post = Post.create(title: "Lichess Chat/Forum/Private messages translator", author_id: (11..28).to_a.sample, forum_id: 1)
 Comment.create(body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco", post_id: post.id, author_id: post.author_id)
-post = Post.create(title: "Add "is typing..." to private chat!", author_id: (11..28).to_a.sample, forum_id: 1)
+post = Post.create(title: "Add is typing... to private chat!", author_id: (11..28).to_a.sample, forum_id: 1)
 Comment.create(body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco", post_id: post.id, author_id: post.author_id)
 post = Post.create(title: "CONGRATULATIONS MAGNUS", author_id: (11..28).to_a.sample, forum_id: 1)
 Comment.create(body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco", post_id: post.id, author_id: post.author_id)
@@ -164,7 +164,7 @@ Comment.create(body: "What a game this was! As a low-rated player, getting to ac
 
 
 post = Post.create(title: "confidence interval", author_id: (11..28).to_a.sample, forum_id: 3)
-Comment.create(body: "Is it possible to know what glicko's "confidence interval" is for any of my ratings? I'm just curious as to how quickly glicko starts to trust its numbers, or how far I am away from provisional in some ratings.
+Comment.create(body: "Is it possible to know what glicko's confidence interval is for any of my ratings? I'm just curious as to how quickly glicko starts to trust its numbers, or how far I am away from provisional in some ratings.
     If you can point me to some general information, that would be sufficient.", post_id: post.id, author_id: post.author_id)
 post = Post.create(title: "Post the last song you listened to.", author_id: (11..28).to_a.sample, forum_id: 4)
 Comment.create(body: "I want to experience new music. This song came on a random radio station I was listening to. Not my usual taste and never heard of the band before (bit before my time) but I like it.", post_id: post.id, author_id: post.author_id)
