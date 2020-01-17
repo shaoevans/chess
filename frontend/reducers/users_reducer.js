@@ -10,7 +10,7 @@ const UsersReducer = (state = {}, action) => {
         case RECEIVE_A_USER:
             return Object.assign({}, state, { [action.payload.username]: action.payload })
         case RECEIVE_USERS:
-            nextState = {};
+            nextState = Object.assign({}, state);
             action.payload.forEach(user => {
                 nextState[user.username] = user
             })

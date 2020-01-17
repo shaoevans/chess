@@ -26,7 +26,6 @@ class ChallengeFriendForm extends React.Component {
     }
     
     handleColorSelect(color) {
-        debugger
         if (color === "black") {
             return "blackPlayerId"
         } else if (color === "white") {

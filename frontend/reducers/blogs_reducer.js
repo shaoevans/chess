@@ -12,7 +12,7 @@ const BlogsReducer = (state = {}, action ) => {
             nextState[action.payload.latestBlog.id] = action.payload.latestBlog;
             return nextState;
         case RECEIVE_BLOGS_BY_YEAR:
-            nextState = {};
+            nextState = Object.assign({}, state);
             action.payload.blogs.forEach(blog => {
                 nextState[blog.id] = blog
             }) 

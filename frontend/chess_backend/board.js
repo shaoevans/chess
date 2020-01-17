@@ -207,10 +207,7 @@ class Board {
     }
 
     movePiece(pos1, pos2) {
-        console.log("whitepieces", this.whitePieces)
-        console.log("blackpieces", this.blackPieces)
-        console.log("whitelost", this.whiteLostPieces)
-        console.log("blacklost", this.blackLostPieces)
+       
         const initialPos = pos1.slice();
         const piece = this.getPiece(pos1);
         const temp = this.getPiece(pos2);

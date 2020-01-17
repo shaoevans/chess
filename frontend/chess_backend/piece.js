@@ -71,9 +71,6 @@ class Piece {
         })
         return result;
     }
-
- 
-
 }
 
 export default Piece

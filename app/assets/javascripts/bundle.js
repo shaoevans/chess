@@ -890,10 +890,6 @@ function () {
   }, {
     key: "movePiece",
     value: function movePiece(pos1, pos2) {
-      console.log("whitepieces", this.whitePieces);
-      console.log("blackpieces", this.blackPieces);
-      console.log("whitelost", this.whiteLostPieces);
-      console.log("blacklost", this.blackLostPieces);
       var initialPos = pos1.slice();
       var piece = this.getPiece(pos1);
       var temp = this.getPiece(pos2);
@@ -2314,6 +2310,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _blog_index_item__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./blog_index_item */ "./frontend/components/blog/blog_index_item.jsx");
+/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash.debounce */ "./node_modules/lodash.debounce/index.js");
+/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_debounce__WEBPACK_IMPORTED_MODULE_2__);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2335,6 +2333,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var BlogYearIndex =
 /*#__PURE__*/
 function (_React$Component) {
@@ -2347,7 +2346,9 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(BlogYearIndex).call(this, props));
     _this.state = {
-      page: 1
+      page: 1,
+      isLoading: true,
+      hasMore: false
     };
     return _this;
   }
@@ -2355,7 +2356,33 @@ function (_React$Component) {
   _createClass(BlogYearIndex, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+      var _this2 = this;
+
       this.props.fetchBlogsByYear(this.state.page, this.props.match.params.blogYear);
+      window.onscroll = lodash_debounce__WEBPACK_IMPORTED_MODULE_2___default()(function () {
+        if (_this2.state.isLoading || !_this2.state.hasMore) return;
+
+        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
+          _this2.setState({
+            isLoading: true,
+            page: _this2.state.page + 1
+          }, function () {
+            _this2.props.fetchBlogsByYear(_this2.state.page, _this2.props.match.params.blogYear).then(function () {
+              return _this2.setState({
+                isLoading: false
+              });
+            }, function () {
+              return _this2.setState({
+                isLoading: false,
+                hasMore: false
+              });
+            });
+          });
+        }
+      }, 100);
+      this.props.fetchBlogsByYear(this.state.page, this.props.match.params.blogYear).then(function () {
+        return _this2.setState(_this2.state);
+      });
     }
   }, {
     key: "componentDidUpdate",
@@ -4456,7 +4483,6 @@ function (_React$Component) {
   _createClass(PostIndex, [{
     key: "render",
     value: function render() {
-      console.log(this.props.posts);
       var _this$props = this.props,
           posts = _this$props.posts,
           forumId = _this$props.forumId;
@@ -5573,8 +5599,6 @@ function (_React$Component) {
   }, {
     key: "handleColorSelect",
     value: function handleColorSelect(color) {
-      debugger;
-
       if (color === "black") {
         return "blackPlayerId";
       } else if (color === "white") {
@@ -7154,7 +7178,7 @@ var BlogsReducer = function BlogsReducer() {
       return nextState;
 
     case _actions_blog_actions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_BLOGS_BY_YEAR"]:
-      nextState = {};
+      nextState = Object.assign({}, state);
       action.payload.blogs.forEach(function (blog) {
         nextState[blog.id] = blog;
       });
@@ -7585,7 +7609,7 @@ var UsersReducer = function UsersReducer() {
       return Object.assign({}, state, _defineProperty({}, action.payload.username, action.payload));
 
     case _actions_users_actions__WEBPACK_IMPORTED_MODULE_1__["RECEIVE_USERS"]:
-      nextState = {};
+      nextState = Object.assign({}, state);
       action.payload.forEach(function (user) {
         nextState[user.username] = user;
       });
