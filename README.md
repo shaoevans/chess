@@ -14,6 +14,7 @@ The inspiration for this project came from Lichess.org, the free Correspondence 
 * The chess match board is rotated depending on which side if you are white or black
 * Hard AI uses a tree of all possible game outcomes to play a flawless game
 * Leave current game at anytime and come back later to replay the game; every submitted move is saved to the db
+* Users can undo previously made moves
 * Spectators can currently only visit the game by its link, but once there they can spectate the game live and will not be able to interact with the board in any way to affect the match
 * Users can open any previous game, to view the ending state of the game, and will eventually be able to scroll over the board see the game progression
 * Users can post on the forums to discuss their thoughts or review their chess games, will be eventually able to directly post   a chess game to the forum
