@@ -5,6 +5,7 @@ export const RECEIVE_A_FORUM = "RECEIVE_A_FORUM";
 export const RECEIVE_A_POST = "RECEIVE_A_POST";
 export const RECEIVE_A_COMMENT = "RECEIVE_A_COMMENT";
 export const RECEIVE_COMMENTS = "RECEIVE_COMMENTS";
+export const RECEIVE_SEARCH_COMMENTS = "RECEIVE_SEARCH_COMMENTS"
 
 const receiveAllForums = forums => ({
     type: RECEIVE_ALL_FORUMS,
@@ -32,6 +33,11 @@ const receiveComments = payload => ({
     payload
 })
 
+const receiveSearchComments = payload => ({
+    type: RECEIVE_SEARCH_COMMENTS,
+    payload
+})
+
 
 
 export const fetchAllForums = () => dispatch => ForumAPIUtil.fetchForums()
@@ -49,7 +55,12 @@ export const createPost = post => dispatch => ForumAPIUtil.createPost(post)
 export const fetchLatestComments = () => dispatch => ForumAPIUtil.fetchComments(1)
     .then(payload => dispatch(receiveComments(payload)))
 
+export const fetchSearchComments = search => dispatch => ForumAPIUtil.fetchSearchComments(search)
+    .then(payload => dispatch(receiveSearchComments(payload)));
 
 export const createComment = comment => dispatch => ForumAPIUtil.createComment(comment)
+    .then(comment => dispatch(receiveAComment(comment)));
+
+export const updateComment = comment => dispatch => ForumAPIUtil.updateComment(comment)
     .then(comment => dispatch(receiveAComment(comment)));
 

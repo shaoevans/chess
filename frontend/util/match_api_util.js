@@ -1,10 +1,10 @@
-export const fetchUserCurrentMatches = userId => (
-    $.ajax({
+export const fetchUserCurrentMatches = userId => {
+    return $.ajax({
         method: "GET",
         url: `/api/users/${userId}/matches`,
         data: { current: true }
     })
-)
+}
 
 export const fetchUserPreviousMatches = userId => (
     $.ajax({
@@ -18,6 +18,13 @@ export const fetchUserMatches = userId => (
     $.ajax({
         method: "GET",
         url: `/api/users/${userId}/matches`,
+    })
+)
+
+export const fetchAMatch = matchId => (
+    $.ajax({
+        method: "GET",
+        url: `/api/matches/${matchId}`
     })
 )
 

@@ -31,12 +31,6 @@ class BlogIndex extends React.Component {
             .then(() => this.setState(this.state))
     }
 
-    
- 
-    // componentWillUnmount() {
-    //     window.scroll = null;
-    // }
-    
     render() {
         const { blogs } = this.props;
         if (blogs.length) {

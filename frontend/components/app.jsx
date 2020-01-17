@@ -16,6 +16,8 @@ import ChessBoard from "./chess_board/chess_board";
 import CreateGameForm from "./modal/create_game_form";
 import ChallengeFriendForm from "./modal/challenge_friend_form";
 import Modal from "./modal/modal";
+import ForumSearchContainer from "./forum/forum_search_container";
+import ChessBoardContainer from "./chess_board/chess_board_container";
 
 
 
@@ -30,9 +32,10 @@ const App = () => {
                 <Route exact path="/forums/:forumId/form" component={PostFormContainer}/>
                 <Route exact path="/" component={LobbyContainer} />
                 <Route exact path="/forums" component={ForumIndexContainer}/>
+                <Route exact path="/forums/search" component={ForumSearchContainer}/>
                 <Route exact path="/forums/:forumId" component={ForumShowContainer}/>
                 <Route exact path="/forums/:forumId/posts/:postId" component={PostShowContainer}/>
-                <Route path="/chess" component={ChessBoard} />
+                <Route path="/matches/:matchId" component={ChessBoardContainer} />
                 <Route path="/users/:username" component={UserShowContainer}/>
                 <Route path="/blog" component={BlogBody}/>
                 <AuthRoute path="/login" component={LoginFormContainer}/>

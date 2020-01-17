@@ -4,12 +4,14 @@ import { CREATE_GAME_MODAL, PLAY_COMPUTER_MODAL, CHALLENGE_FRIEND_MODAL } from "
 import CreateGameForm from "./create_game_form";
 import ChallengeFriendForm from "./challenge_friend_form";
 import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
 
-const  Modal = ({ modal, closeModal }) => {
+const  Modal = ({ modal, closeModal, currentUser, history }) => {
 
     if (!modal) {
         return null;
     }
+
     let component;
     switch (modal) {
         case CREATE_GAME_MODAL:
@@ -34,7 +36,8 @@ const  Modal = ({ modal, closeModal }) => {
 }
 
 const mapStateToProps = state => ({
-    modal: state.ui.modal
+    modal: state.ui.modal,
+    currentUser: state.entities.users[state.session.username]
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -45,4 +48,4 @@ const mapDispatchToProps = dispatch => ({
     
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Modal);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Modal));

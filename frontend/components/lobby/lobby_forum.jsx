@@ -10,8 +10,12 @@ export const LobbyForum = ({comments}) => {
             {comments.map((comment, i) => {
                     return (
                         <li key={i}>
-                            <span>{comment.postId}</span>
-                            <span><Link to={`/users/${comment.author.username}`}>{comment.author.username}</Link></span>
+                            {comment.post && comment.post.title ? (
+                                <span><Link className="post-link" to={`/forums/${comment.post.forumId}/posts/${comment.post.id}`}>{comment.post.title.length > 24 ? `${comment.post.title.slice(0,24)}...` : comment.post.title }</Link></span>
+                            ) : (
+                                null
+                            )}
+                            <span><Link className="username-link" to={`/users/${comment.author.username}`}>{comment.author.username}</Link></span>
                             <span>{comment.body}</span>
                         </li>
                     )

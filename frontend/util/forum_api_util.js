@@ -45,3 +45,19 @@ export const fetchComments = page => (
         data: { page }
     })
 )
+
+export const fetchSearchComments = search => (
+    $.ajax({
+        method: "GET",
+        url: "/api/comments",
+        data: { search }
+    })
+)
+
+export const updateComment = comment => (
+    $.ajax({
+        method: "PATCH",
+        url: `/api/comments/${comment.id}`,
+        data: { comment }
+    })
+)

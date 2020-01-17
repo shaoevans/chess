@@ -14,7 +14,6 @@ class SignupForm extends React.Component {
 
     handleType(type) {
         return (e) => {
-            console.log(this.props.errors)
             this.setState({
                 [type]: e.currentTarget.value
             });

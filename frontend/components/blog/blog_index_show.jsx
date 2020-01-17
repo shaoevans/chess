@@ -1,5 +1,8 @@
 import React from "react";
 import { formatDate } from "./../../util/date_util";
+import { getYear } from "./../../util/date_util";
+import { Link } from "react-router-dom";
+
 
 const BlogIndexShow = ({blog}) => {
     return (
@@ -35,9 +38,11 @@ const BlogIndexShow = ({blog}) => {
                     <span>
                         {blog.body.slice(0, 350) + "..."}
                     </span>
-                    <button className="session-form-button">
-                        <i className="fas fa-play"></i> CONTINUE READING THIS POST
-                    </button>
+                    <Link className="session-form-button-link" to={`/blog/${getYear(blog.createdAt)}/${blog.id}`}>
+                        <button className="session-form-button">
+                            <i className="fas fa-play"></i> CONTINUE READING THIS POST
+                        </button>
+                    </Link>
 
                 </div>
 

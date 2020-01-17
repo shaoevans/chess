@@ -14,6 +14,11 @@ class Api::UsersController < ApplicationController
         @user = User.find_by(username: params[:id])
         render :show
     end
+
+    def index
+        @users = User.all.page(params[:page])
+        render :index
+    end
     def update
 
     end

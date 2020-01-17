@@ -16,7 +16,7 @@ end
 
 json.posts do 
     json.array! @posts do |post|
-        json.extract! post, :id, :title, :views
+        json.extract! post, :id, :title, :views, :updated_at
         json.comment_count post.comments.length
         last_comment = post.comments.last
         last_comment_index = post.comments.length - 1

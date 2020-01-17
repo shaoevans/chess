@@ -8,9 +8,9 @@ Rails.application.routes.draw do
       resources :matches, only: [:index]
     end
     resources :posts, only: [:create, :destroy, :update, :show]
-    resources :comments, only: [:create, :show, :index]
+    resources :comments, only: [:create, :show, :index, :update]
     resources :blogs, only: [:index, :show]
-    resources :matches, only: [:create]
+    resources :matches, only: [:create, :show]
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'root#root'

@@ -7,7 +7,7 @@ class PostIndex extends React.Component {
     }
 
     render() {
-
+        console.log(this.props.posts)
         const { posts, forumId } = this.props;
         const now = new Date();
         return (

@@ -4,7 +4,9 @@ import PostIndex from "./post_index";
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        posts: Object.values(state.entities.posts)
+        posts: Object.values(state.entities.posts).sort((a, b) => {
+            return new Date(b.updatedAt) - new Date(a.updatedAt)
+        })
     }
 }
 

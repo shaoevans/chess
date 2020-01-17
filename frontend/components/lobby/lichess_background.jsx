@@ -2,9 +2,9 @@ import React from "react";
 import QuickPairingTable from "./quick_pairing_table";
 
 const LichessBackground = () => (
-    <div className="lichess-background-container">
+    <div className="lobby-app">
         <div className="lichess-background-nav">
-            <span>Quick Pairing</span>
+            <span className="active-lichess-nav">Quick Pairing</span>
             <span>Lobby</span>
             <span>Correspondance</span>
             </div>

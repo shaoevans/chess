@@ -15,7 +15,7 @@ const PostIndexItem = ({post, forumId, index, now}) => {
                 <td>{post.commentCount}</td>
                 <td>
                     <p><HashLink smooth to={`/forums/${forumId}/posts/${post.id}#${post.lastCommentIndex}`}>{dateMaker(difference)}</HashLink></p>
-                    <p>{post.lastAuthor.username}</p>
+                    <p className="username-link"><Link to={`/users/${post.lastAuthor.username}`}>{post.lastAuthor.username}</Link></p>
                 </td>
             </tr>
         )   
@@ -27,7 +27,7 @@ const PostIndexItem = ({post, forumId, index, now}) => {
                 <td>{post.commentCount}</td>
                 <td>
                     <p><HashLink smooth to={`/forums/${forumId}/posts/${post.id}#${post.lastCommentIndex}`}>{dateMaker(difference)}</HashLink></p>
-                    <p>{post.lastAuthor.username}</p>     
+                    <p><Link className="username-link" to={`/users/${post.lastAuthor.username}`}>{post.lastAuthor.username}</Link></p>
                </td>
             </tr>
         )

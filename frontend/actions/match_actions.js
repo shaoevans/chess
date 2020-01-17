@@ -23,3 +23,6 @@ export const fetchUserMatches = userId => dispatch => MatchAPIUtil.fetchUserMatc
 
 export const createMatch = match => dispatch => MatchAPIUtil.createMatch(match)
     .then(match => dispatch(receiveAMatch(match)));
+
+export const fetchAMatch = matchId => dispatch => MatchAPIUtil.fetchAMatch(matchId)
+    .then(match => dispatch(receiveAMatch(match)));

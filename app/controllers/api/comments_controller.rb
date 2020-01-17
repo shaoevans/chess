@@ -22,6 +22,7 @@ class Api::CommentsController < ApplicationController
         @comment = Comment.new(comment_params)
         if @comment.save
             @comment.post.touch(:updated_at)
+            @comment.post.save
             render :show
         else
             render json: @comment.errors.full_messages, status: 402
@@ -29,11 +30,38 @@ class Api::CommentsController < ApplicationController
     end
 
     def index
-        @comments = Comment.order("updated_at DESC").page(params[:page])
+        if params[:search] 
+            @comments2 = []
+            @posts = Post.where("title ILIKE ?", "%#{params[:search]}%").includes(:comments)
+            @posts.each do |post|
+                @comments2.concat(post.comments)
+            end
+            @comments = Comment.where("body ILIKE ?", "%#{params[:search]}%")
+            @comments = (@comments2 + @comments).uniq.sort_by(&:updated_at)
+        else
+            @comments = Comment.order("updated_at DESC").page(params[:page])
+        end
+        @page = params[:page]
         render :index
     end
-    private
 
+
+
+    def show
+        @comment = Comment.find_by(id: params[:id])
+        render :show
+    end
+
+    def update
+        @comment = Comment.find_by(id: params[:id])
+        if @comment.update(comment_params)
+            render :show
+        else
+            render json: @comment.errors.full_messages, status: 402
+        end
+    end
+
+    private
     def comment_params
         params.require(:comment).permit(:body, :author_id, :post_id)
     end

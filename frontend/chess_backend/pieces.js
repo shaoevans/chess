@@ -34,7 +34,7 @@ export class Queen extends Piece {
 
             ]
         }
-        return positionValues[this.position[0]][this.position[1]]
+        return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
     moves() {
@@ -47,6 +47,10 @@ export class Queen extends Piece {
         } else {
             return <i className='white-piece fas fa-chess-queen'></i>
         }
+    }
+
+    clone() {
+        return new Queen(this.position, this.board, this.color)
     }
 }
 
@@ -82,7 +86,7 @@ export class Rook extends Piece {
                 [ 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0]
             ]
         }
-        return positionValues[this.position[0]][this.position[1]]
+        return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
     render() {
@@ -95,6 +99,10 @@ export class Rook extends Piece {
 
     moves() {
         return this.horizontals();
+    }
+
+    clone() {
+        return new Rook(this.position, this.board, this.color)
     }
 }
 
@@ -130,7 +138,7 @@ export class Bishop extends Piece {
 
             ]
         }
-        return positionValues[this.position[0]][this.position[1]]
+        return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
     render() {
@@ -143,6 +151,10 @@ export class Bishop extends Piece {
 
     moves() {
         return this.diagonals();
+    }
+
+    clone() {
+        return new Bishop(this.position, this.board, this.color)
     }
 }
 
@@ -178,7 +190,7 @@ export class Knight extends Piece {
                 [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
             ]
         }
-        return positionValues[this.position[0]][this.position[1]]
+        return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
     moveDirsArr() {
@@ -204,6 +216,10 @@ export class Knight extends Piece {
 
     moves() {
         return this.steppableMoves(this.moveDirsArr())
+    }
+
+    clone() {
+        return new Knight(this.position, this.board, this.color)
     }
 
 }
@@ -239,7 +255,7 @@ export class King extends Piece {
                 [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0]
             ]
         }
-        return positionValues[this.position[0]][this.position[1]]
+        return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
     forwardDir() {
@@ -261,14 +277,15 @@ export class King extends Piece {
             diag3[diag3.length-1],
             diag4[diag4.length-1]
         ];
-        diagonals.forEach(diagPos => {
-            if (diagPos) {
-                const checkPiece = this.board.getPiece(diagPos);
-                if (checkPiece instanceof Bishop || checkPiece instanceof Queen) {
+        for (let i = 0; i < diagonals.length; i++) {
+            if (diagonals[i]) {
+                const checkPiece = this.board.getPiece(diagonals[i]);
+                if ((checkPiece instanceof Bishop || checkPiece instanceof Queen) && checkPiece.color === this.otherColor()) {
                     return true;
                 }
             }
-        })
+        }
+   
         const horiz1 = this.growUnblockedMovesInDir(-1, 0);
         const horiz2 = this.growUnblockedMovesInDir(0, -1);
         const horiz3 = this.growUnblockedMovesInDir(0, 1);
@@ -279,31 +296,34 @@ export class King extends Piece {
             horiz3[horiz3.length-1],
             horiz4[horiz4.length-1]
         ]
-        horizontals.forEach(horizPos => {
-            if (horizPos) {
-                const checkPiece = this.board.getPiece(horizPos);
-                if (checkPiece instanceof Queen || checkPiece instanceof Rook) {
+        for (let i = 0; i < horizontals.length; i++) {
+            if (horizontals[i]) {
+                const checkPiece = this.board.getPiece(horizontals[i])
+                if ((checkPiece instanceof Queen || checkPiece instanceof Rook) && checkPiece.color === this.otherColor()) {
                     return true;
                 }
             }
-        })
+        }
+
         const knights = this.steppableMoves(this.knightMoveDirsArr());
-        knights.forEach(knightPos => {
-            const checkPiece = this.board.getPiece(knightPos);
-            if (checkPiece instanceof Knight) {
+        for (let i = 0; i < knights.length; i++) {
+            const checkPiece = this.board.getPiece(knights[i]);
+            if (checkPiece instanceof Knight && checkPiece.color === this.otherColor()) {
                 return true;
             }
-        });
+        }
+ 
         const x = this.position[0];
         const y = this.position[1];
         const forward = this.forwardDir();
         const pawns = [[x + forward, y + 1], [x + forward, y - 1]];
-        pawns.forEach(pawnPos => {
-            const checkPiece = this.board.getPiece(pawnPos);
-            if (checkPiece instanceof Pawn) {
+        for (let i = 0; i < pawns.length; i++) {
+            const checkPiece = this.board.getPiece(pawns[i]);
+            if (checkPiece instanceof Pawn && checkPiece.color === this.otherColor()) {
                 return true;
             }
-        })
+        }
+ 
         return false;
     }
 
@@ -344,6 +364,10 @@ export class King extends Piece {
 
     moves() {
         return this.steppableMoves(this.moveDirsArr())
+    }
+
+    clone() {
+        return new King(this.position, this.board, this.color)
     }
 
 
@@ -396,7 +420,7 @@ export class Pawn extends Piece{
                 [ 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
             ]
         }
-        return positionValues[this.position[0]][this.position[1]]
+        return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
 
@@ -439,6 +463,10 @@ export class Pawn extends Piece{
         return this.forwardSteps().concat(this.sideAttacks());
     }
 
+    clone() {
+        return new Pawn(this.position, this.board, this.color)
+    }
+
 }
 
 export class NullPiece extends Piece{
@@ -450,9 +478,9 @@ export class NullPiece extends Piece{
     render() {
         return null;
     }
+
+    clone() {
+        return new NullPiece(this.position, this.board, this.color)
+    }
 }
 
-// if king is in check, then check for checkmate
-
-// checkmate is when no pieces of the color being checked have any valid moves
-// else just check valid moves for other pieces

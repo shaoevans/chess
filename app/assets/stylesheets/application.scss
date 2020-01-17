@@ -16,6 +16,7 @@
 
 
 $buttonblue: #1A78D0;
+$lighterblue: #2A8AE3;
 $white: #FFFFFF; 
 $orange: #DB632A;
 $green: #629923;
@@ -90,6 +91,7 @@ h1, h2, p {
 .lobby {
     width: 85%;
     margin: 0 auto;
+    margin-bottom: 30px;
 }
 
 .gray {
@@ -303,6 +305,25 @@ i.black {
 }
 
 
+.battle-dropdown {
+    // position: relative;
+    span {
+        position: relative;
+        top: 25%;
+        right: 25%;
+        font-size: 1em;
+        color: $white;
+        // line-height: 5px;
+        border-radius: 2px;
+        background-color: red;
+        font-family: "Roboto";
+        font-size: 0.7em;
+        padding: 0.2em;
+
+        // background-color: $lightergray;
+        // color: red;
+    }
+}
 
 .navbar-battle-dropdown {
     position: absolute;
@@ -316,15 +337,35 @@ i.black {
     border-top-right-radius: 0px;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
     font-size: 1em;
     line-height: 50px;
-    padding: 1em;
     box-sizing: border-box;
     align-items: center;
+    overflow: scroll;
+    overflow-x: hidden;
+    max-height: 300px;
+    font-family: "Roboto";
+    font-size: 1.5em;
+    li {
+        width: 100%;
+        &:hover {
+            background-color: $green;
+            cursor: pointer;
+        }
+    }
     i {
         padding-right: 1em;
     }
 
+}
+
+.match-link {
+    width: 100%;
+    button {
+        font-family: "Noto Sans";
+        font-size: 0.7em;
+    }
 }
 
 .navbar-user-dropdown {
@@ -391,8 +432,6 @@ i.black {
     box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
     overflow: hidden;
     li {
-
-
         &:hover {
             background-color: $buttonblue;
             cursor: pointer;
@@ -435,11 +474,12 @@ li:hover ul {
     grid-auto-rows: minmax(min-content, max-content);
     grid-template-areas:
         'side app app table2'
-        'tv leader winner puzzle'
-        'about tours tours support'
-        '. simuls simuls .'
+        'tv leader leader puzzle'
+        // 'about tours tours support'
+        // '. simuls simuls .'
         '. forum forum .'
         '. blog blog .';
+        // removed winners and added 2nd leader
     /* grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 12em repeat(2, fit-content(0)); */
 }
@@ -447,7 +487,6 @@ li:hover ul {
 .lobby-app {
     grid-area: app;
     min-height: 300px;
-    box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
 }
 
 
@@ -468,21 +507,30 @@ li:hover ul {
 .lichess-background-nav {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    font-size: 1em;
+    font-family: "Roboto";
+    span {
+        text-align: center;
+        width: 100%;
+        display: block;
+        padding-bottom: 5px;
+        font-weight: 300;
+        &:hover {
+            cursor: pointer;
+            color: #D6784F;
+            border-bottom: 1px solid #D6784F;
+        }
+    }
 }
 
-.lichess-background-nav span:hover {
-    cursor: pointer;
+.active-lichess-nav {
     color: #D6784F;
     border-bottom: 1px solid #D6784F;
 }
 
-.lichess-background-nav span{
-    display: block;
-    margin: 0 auto;
-    padding: .5em .2em;
-}
-
 .lichess-background {
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
+
     background-image: image-url('lichess.png');
     background-repeat: no-repeat;
     background-position: center;
@@ -509,6 +557,7 @@ li:hover ul {
 }
 
 .quick-pairing-table-item {
+    cursor: pointer;
     /* width: 30%; */
     padding-top: 25%;
     padding-bottom: 25%;
@@ -524,10 +573,17 @@ li:hover ul {
 }
 
 .match-type-number {
-    display: block;
-    font-size: 1.5em;
-    line-height: 1.6em;
+    font-size: 2.5em;
+    line-height: 1.3em;
     letter-spacing: .1em;
+    font-weight: 300;
+}
+
+.match-type-text {
+    font-size: 1.5em;
+    letter-spacing: .1em;
+    font-weight: 300;
+
 }
 
 /* Lobby Game Quickplay */
@@ -540,6 +596,7 @@ li:hover ul {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    position: relative;
     button {
         color: $lightergray;
         font-family: "Roboto";
@@ -548,8 +605,9 @@ li:hover ul {
         font-size: 1.1em;
         text-align: center;
         margin: .2em 0;
-        padding: .5em;
+        padding: .8em;
         cursor: pointer;
+        border-radius: 3px;
         margin: 1.2em 0;
         box-shadow: 0 2px 5px 0 rgba(0,0,0,0.225);
         background-color: #F1F1F1;
@@ -557,10 +615,24 @@ li:hover ul {
             background-color: #FFFFFF;
             box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
         }
+        &:focus {
+            outline: none;
+            border: none;
+            box-shadow: none;
+            background-color: orange;
+        }
     }
     .lobby-table-info {
-        position: relative;
-        // bottom: 0;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        p {
+            color: $lightergray;
+            line-height: 0.8em;
+            span {
+                font-weight: 700;
+            }
+        }
     }
     
 }
@@ -578,6 +650,23 @@ li:hover ul {
         white-space: nowrap;
         span {
             margin-right: 10px;
+        }
+    }
+    .post-link {
+        color: $buttonblue;
+
+        &:visited {
+            color: $buttonblue
+        }
+    }
+    .username-link {
+        color: $darkergray;
+        font-weight: 700;
+        &:visited {
+            color: $darkergray;
+        }
+        &:hover {
+            color: $buttonblue;
         }
     }
 }
@@ -649,13 +738,38 @@ li:hover ul {
     font-family: "Noto Sans";
     grid-area: leader;
     box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
+    ul {
+        height: 250px;
+        overflow: scroll;
+        overflow-x: hidden;
+    }
+    li {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 0.5px solid lightgray;
+        width: 100%;
+        padding: 1em;
+        box-sizing: border-box;
+        cursor: pointer;
+        i {
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+        span {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+        &:hover {
+            background-color: $green;
+            i {
+                color: $white;
+            }
+            color: $white;
+        }
+    }
 }
 
-.lobby-leaderboard-table tr {
-    display: flex;
-    justify-content: space-around;
-    border-bottom: 0.5px solid lightgray;
-}
+
 
 /* Lobby Leaderboard Table */
 
@@ -675,24 +789,33 @@ li:hover ul {
     grid-area: info;
     box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
     background-color: $white;
-    height: 20%;
+    height: 12vw;
     padding: 1em;
     box-sizing: border-box;
     border-radius: 3px;
     display: flex;
     flex-wrap: wrap;
+    i {
+        margin-right: 30px;
+    }
     div {
+        display: flex;
         width: 100%;
         i {
-            font-size: 3em;
-            margin-bottom: 20px
+            font-size: 4vw;
+            margin-bottom: 2vw;
         }
     }
     span {
         width: 100%;
         display: block;
+        font-size: 1.5vw;
+        a {
+            color: black;
+        }
         i {
-            font-size: 1em;
+            color: black;
+            font-size: 1.5vw;
         }
     }
 }
@@ -753,6 +876,8 @@ li:hover ul {
         background-color: $white;
         box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
         .chess-sidebar-moves {
+            overflow: scroll;
+            overflow-x: hidden;
             height: 10em;
             font-size: 0.3em;
             box-sizing: border-box;
@@ -778,15 +903,49 @@ li:hover ul {
         .chess-sidebar-buttons {
             display: flex;
             justify-content: center;
+            button {
+
+                &:focus {
+                    border: none;
+                    outline: none;
+                }
+            }
             i {
                 padding: 1em;
                 font-size: 1.5em;
+                border-radius: 3px;
                 &:hover {
                     background-color: $green
                 }
             }
         }
     }
+}
+.chess-body {
+    position: relative;
+}
+
+.game-over {
+    z-index: 10;
+    background-color: rgba(0,0,255,0.5);
+    width: 100%;
+    height: 100%;
+    // width: 46.6vw;
+    // height: 44.5VW;
+    opacity: 0.4;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    font-family: "Noto Sans";
+    p {
+        background-color: rgba(0,0,255,0);
+        color: black;
+    }
+    // bottom: 0;
+    // right: 0;
+
 }
 /* Chess Game */
 
@@ -824,6 +983,8 @@ i.valid {
     color: #B58763;
 
 }
+
+
 
 .odd-tile {
     i {
@@ -868,6 +1029,18 @@ i.valid {
 .last-after-tile {
     background-color: #CDD27B;
 }
+
+.in-check-odd {
+    background-color: inherit;
+
+    background-image: radial-gradient(#EB4233, #F0D8B5)
+}
+
+.in-check-even {
+    background-color: inherit;
+
+    background-image: radial-gradient(#EB4233, #B58763)
+}
 /* Chess Board */
 
 .black-piece {
@@ -879,6 +1052,10 @@ i.valid {
 }
 
 /* Chess Pieces */
+
+.session-form-button-link {
+    width: 60%;
+}
 .session-form {
     width: 30em;
     margin: auto;
@@ -974,6 +1151,7 @@ i.valid {
     margin: 0 auto;
     margin-bottom: 30px;
     border: 1px solid lightgray;
+
 }
 
 .forum-table-header {
@@ -982,6 +1160,10 @@ i.valid {
     padding: 50px;
     display: flex;
     justify-content: space-between;
+    form {
+        display: flex;
+        justify-content: flex-end;
+    }
 }
 
 .forum-table-title {
@@ -1032,6 +1214,21 @@ i.valid {
     &:last-child {
         border-bottom: 1px solid lightgray;
     }
+    h2 {
+        font-weight: 400;
+        line-height: 40px;
+        margin-bottom: 10px;
+    }
+    p {
+        font-weight: 300;
+        line-height: 20px;
+        margin-top: 10px;
+    }
+    a {
+        &:hover {
+            color: #2A8AE3;
+        }
+    }
 }
 
 .forum-table-title span {
@@ -1081,6 +1278,8 @@ i.valid {
 
 }
 
+
+
 // .active-page-button {
 //     background-color: $buttonblue;
 //     color: $white;
@@ -1113,9 +1312,57 @@ i.valid {
 
 
 
+
+.forum-search-table {
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
+    border-radius: 3px;
+    width: 77.5%;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    border: 1px solid lightgray;
+    .subforum-table-header {
+        .subforum-table-title {
+            display: flex;
+            justify-content: space-between;
+            form {
+                font-size: 0.4em;
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+    }
+
+}
 .forum-search-bar {
     width: 30%;
     font-size: 17px;
+    a {
+        color: $buttonblue;
+
+    }
+}
+
+.forum-search-th {
+    padding-left: 1em;
+    width: 100%;
+}
+
+.forum-search-row {
+    width: 100%;
+    td {
+        &:first-child {
+            padding-left: 3em;
+        }
+        &:last-child {
+            padding-right: 1.5em;
+        }
+    }
+    a {
+        color: $buttonblue;
+        &:hover {
+            color: $lighterblue;
+        }
+    }
 }
 
 .subform-table-bar {
@@ -1127,6 +1374,52 @@ i.valid {
     color: #629923;
     padding: .8em 1em;
     border-radius: 3px;
+}
+
+.edit-post-button {
+    color: #3784D4;
+    padding: .8em 1em;
+    border-radius: 3px;
+    position: relative;
+    top: -8px;
+    i {
+        margin-right: 5px;
+    }
+}
+
+.update-comment-buttons {
+    display: flex;
+    justify-content: flex-end;
+    .update-comment-cancel-button {
+        color: $buttonblue;
+        font-size: 0.9em;
+        margin-right: 20px;
+        line-height: 30px;
+        &:hover {
+            cursor: pointer;
+            color: #2A8AE3;
+        }
+    }
+    .session-form-button {
+        width: 15%;
+    }
+}
+
+.update-comment-form {
+    margin-top: 15px;
+    textarea {
+        color: $lightergray;
+        height: 300px;
+    }
+}
+
+.fa-circle {
+    margin-right: 5px;
+}
+
+.edit-post-button:hover {
+    background-color: #EFEFEF;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.225)
 }
 
 .new-post-button:hover {
@@ -1175,6 +1468,9 @@ i.valid {
         div {
             margin-right: 1em;
         }
+    }
+    a {
+        color: $buttonblue;
     }
 }
 
@@ -1339,9 +1635,10 @@ i.valid {
                 display: flex;
                 width: 50%;
                 flex-wrap: wrap;
+                justify-content: center;
                 span {
                     font-size: 1.3em;
-                    height: 80%
+                    height: 50%
                 }
                 button {
                     margin: 0 auto;
@@ -1396,6 +1693,7 @@ i.valid {
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
+
 
 .blog-show-body {
     padding: 4em;
@@ -1663,12 +1961,14 @@ textarea {
     left: 0;
     right: 0;
     z-index: 4;
-    background-color: rgba(254,254,254,0.6);
+    background-color: rgba(0,0,0,0.8);
 }
 .modal-content {
     position: absolute;
-    width: 50%;
-    background: #fff;
+    width: 30%;
+    // background-color: #EDEBE9;
+    background-color: #ffffff;
+    // background: #fff;
     box-shadow: 0 8px 16px rgba(0,0,0,.1);
     border-radius: 10px;
     text-align: center;
@@ -1688,6 +1988,11 @@ textarea {
         label {
             margin-right: 1em;
         }
+    }
+    .time-control {
+        // background-color: #F7F6F5;
+        // border-top: 1px solid lightgray;
+        // border-bottom: 1px solid lightgray;
     }
     .rated-input {
         display: flex;
@@ -1723,8 +2028,8 @@ textarea {
             border-radius: 3px;
             background-color: #F7F6F5;
             box-shadow: 0 2px 5px 0 rgba(0,0,0,0.225);
-            padding: 1em; 
-            font-size: 2.5em;
+            padding: 0.5em; 
+            font-size: 2em;
             margin-left: 15px;
             margin-right: 15px;
             &:hover {
@@ -1748,10 +2053,153 @@ textarea {
                 background-color: #F7F6F5;
             }
         }
-
-        
     }
 }
 
 // Modal 
 // Pretty Checkbox
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.lds-roller {
+    // background-color: #EDEBE9;
+    background-color: #ffffff;
+
+    // color: $buttonblue;
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-roller div {
+    animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    transform-origin: 40px 40px;
+  }
+  .lds-roller div:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: $buttonblue;
+    margin: -4px 0 0 -4px;
+  }
+  .lds-roller div:nth-child(1) {
+    animation-delay: -0.036s;
+  }
+  .lds-roller div:nth-child(1):after {
+    top: 63px;
+    left: 63px;
+  }
+  .lds-roller div:nth-child(2) {
+    animation-delay: -0.072s;
+  }
+  .lds-roller div:nth-child(2):after {
+    top: 68px;
+    left: 56px;
+  }
+  .lds-roller div:nth-child(3) {
+    animation-delay: -0.108s;
+  }
+  .lds-roller div:nth-child(3):after {
+    top: 71px;
+    left: 48px;
+  }
+  .lds-roller div:nth-child(4) {
+    animation-delay: -0.144s;
+  }
+  .lds-roller div:nth-child(4):after {
+    top: 72px;
+    left: 40px;
+  }
+  .lds-roller div:nth-child(5) {
+    animation-delay: -0.18s;
+  }
+  .lds-roller div:nth-child(5):after {
+    top: 71px;
+    left: 32px;
+  }
+  .lds-roller div:nth-child(6) {
+    animation-delay: -0.216s;
+  }
+  .lds-roller div:nth-child(6):after {
+    top: 68px;
+    left: 24px;
+  }
+  .lds-roller div:nth-child(7) {
+    animation-delay: -0.252s;
+  }
+  .lds-roller div:nth-child(7):after {
+    top: 63px;
+    left: 17px;
+  }
+  .lds-roller div:nth-child(8) {
+    animation-delay: -0.288s;
+  }
+  .lds-roller div:nth-child(8):after {
+    top: 56px;
+    left: 12px;
+  }
+  @keyframes lds-roller {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+a.current-page-button {
+    background-color: $buttonblue;
+    color: $white;
+    cursor: pointer;
+    font-size: 0.55em;
+    font-family: "Noto Sans";
+    padding-left: 0.45em;
+    padding-right: 0.45em;
+    border-radius: 3px;
+    width: 80%;
+    &:hover {
+        color: $white;
+        background-color: $buttonblue;
+    }
+}
+
+.queue-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    p {
+        width: 100%;
+    }
+}
+
+.time {
+    font-size: 3vw;
+}
+
+.chess-turn-string {
+    font-size: 1.5vw;
+}
+  
+// loader

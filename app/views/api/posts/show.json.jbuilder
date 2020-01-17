@@ -1,5 +1,5 @@
 json.post do 
-    json.extract! @post, :id, :title, :views
+    json.extract! @post, :id, :title, :views, :updated_at
     json.comment_count @comments.length
     last_comment = @comments.last
     last_comment_index = @comments.length - 1
@@ -20,7 +20,11 @@ json.comments do
         json.author do
             json.extract! comment.author, :username
         end
+        json.post do
+            json.extract! comment.post, :id, :title, :forum_id
+        end
     end
 
 end
+
 

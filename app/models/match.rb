@@ -1,6 +1,7 @@
 class Match < ApplicationRecord
-    validates :black_player_id, :white_player_id, :pending, presence: true
-    validates :match_type, inclusion: ["bullet", "blitz", "rapid", "classical"]
+    validates :black_player_id, :white_player_id, presence: true
+    validates :match_type, inclusion: {in: ["bullet", "blitz", "rapid", "classical"]}
+    validates :pending, inclusion: {in: [true, false]}
 
     belongs_to :black_player,
         primary_key: :id,

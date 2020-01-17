@@ -6,7 +6,7 @@ class Api::BlogsController < ApplicationController
             @blogs = Blog.all.reverse_order.page(params[:page])
         end
         if params[:page] != 1 
-            sleep 1
+            sleep 0.5
         end
         @latest_blog = @blogs.first
         render :index

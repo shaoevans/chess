@@ -6,6 +6,7 @@ class Blog < ApplicationRecord
     def ensure_image_id
         self.image_id ||= (1..18).to_a.sample
     end
+    
 
     scope :by_year, lambda { |year| where('extract(year from created_at) = ?', year) }
 

@@ -1,4 +1,4 @@
-import { RECEIVE_A_POST, RECEIVE_A_COMMENT, RECEIVE_COMMENTS } from "../actions/forum_actions";
+import { RECEIVE_A_POST, RECEIVE_A_COMMENT, RECEIVE_COMMENTS, RECEIVE_SEARCH_COMMENTS } from "../actions/forum_actions";
 
 const CommentsReducer = (state = {}, action) => {
     Object.freeze(state);
@@ -12,13 +12,19 @@ const CommentsReducer = (state = {}, action) => {
             return nextState;
         case RECEIVE_COMMENTS:
             nextState = {};
-            action.payload.forEach(comment => {
+            action.payload.comments.forEach(comment => {
                 nextState[comment.id] = comment
             }) 
             return nextState;
         case RECEIVE_A_COMMENT:
             nextState = Object.assign({}, state);
             nextState[action.comment.id] = action.comment;
+            return nextState;
+        case RECEIVE_SEARCH_COMMENTS:
+            nextState = {};
+            action.payload.comments.forEach(comment => {
+                nextState[comment.id] = comment
+            })
             return nextState;
         default: 
             return state;

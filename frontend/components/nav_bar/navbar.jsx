@@ -24,6 +24,8 @@ class NavBar extends React.Component {
         this.userDropDownSwitch = this.userDropDownSwitch.bind(this);
         this.handleClickType = this.handleClickType.bind(this);
         this.handleClickOutsideType = this.handleClickOutsideType.bind(this);
+        this.bringToUserPage = this.bringToUserPage.bind(this);
+        this.ensureLoggedIn = this.ensureLoggedIn.bind(this);
     }
 
     logoutUser() {
@@ -37,6 +39,14 @@ class NavBar extends React.Component {
         }
     }
 
+    ensureLoggedIn() {
+        if (this.props.currentUser) {
+            this.props.createGameModal()
+        } else {
+            this.props.history.push("/login")
+        }
+    }
+
 
 
 
@@ -47,11 +57,22 @@ class NavBar extends React.Component {
     }
 
     componentDidMount() {
+        if (this.props.currentUser) {
+            this.props.fetchUserCurrentMatches(this.props.currentUser.id)
+        }
         document.addEventListener("mousedown", this.handleClickOutsideType("search"));
         document.addEventListener("mousedown", this.handleClickOutsideType("userDropDown"));
         document.addEventListener("mousedown", this.handleClickOutsideType("battleDropDown"));
         document.addEventListener("mousedown", this.handleClickOutsideType("notificationDropDown"))
         document.addEventListener("mousedown", this.handleClickOutsideType("settingDropDown"))
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.currentUser !== prevProps.currentUser) {
+            if (this.props.currentUser) {
+                this.props.fetchUserCurrentMatches(this.props.currentUser.id)
+            }
+        }
     }
     componentWillUnmount() {
         document.removeEventListener("mousedown", this.handleClickOutsideType("search"));
@@ -73,10 +94,23 @@ class NavBar extends React.Component {
 
 
 
+
     searchBarSubmit(event) {
         event.preventDefault();
         this.props.history.replace(`/users/${this.state.searchInput}`)
         this.setState({search: false, searchInput: "d"})
+    }
+
+
+    bringToMatchPage(matchId) {
+        return (e) => {
+            e.preventDefault();
+            this.props.history.replace(`/matches/${matchId}`)
+        }
+    }
+    bringToUserPage(e) {
+        e.preventDefault();
+        this.props.history.replace(`/users/${this.props.currentUser.username}`)
     }
 
     currentUserLoginSwitch() {
@@ -99,6 +133,12 @@ class NavBar extends React.Component {
         }
     }
 
+    matchesToListItems() {
+       return this.props.matches.map(match => {
+        // return <li className="match-link" key={match.id}><Link to={`/matches/${match.id}`}>Match {match.id} against {match.blackPlayerName}</Link></li>
+        return <li className="match-link" key={match.id} onClick={this.bringToMatchPage(match.id)}><button>Match {match.id} against {match.blackPlayerName}</button></li>
+       })
+    }
     currentUserSwitch() {
         return (
             <ul className="right-nav">
@@ -141,12 +181,17 @@ class NavBar extends React.Component {
 
     battleDropDownSwitch() {
         return (
-            <div className={this.state.battleDropDown ? "white" : ""} onClick={this.handleClickType("battleDropDown")} ref={this.battleDropDown}>
+            <div className={this.state.battleDropDown ? "white battle-dropdown" : "battle-dropdown"} onClick={this.handleClickType("battleDropDown")} ref={this.battleDropDown}>
                 <button className="right-nav-button"><i className="fas fa-fist-raised"></i></button>
+                {this.props.matches.length && (
+                    <span className="battles-count">{this.props.matches.length ? this.props.matches.length : null}</span>
+                )}
                 {this.state.battleDropDown && (
-                    <div className="navbar-battle-dropdown">
-                        <i className="fas fa-info-circle"></i> No challenges
-                    </div>
+                    <ul className="navbar-battle-dropdown">
+                        {!this.props.matches.length ? (
+                            <li><i className="fas fa-info-circle"></i> No challenges</li>
+                        ) : this.matchesToListItems()}
+                    </ul>
                 )}
             </div>
         )
@@ -172,7 +217,7 @@ class NavBar extends React.Component {
                 <button className="right-nav-button right-nav-user">{this.props.currentUser.username}</button>
                 {this.state.userDropDown && (
                     <ul className="navbar-user-dropdown">
-                        <li className="first-child"><button><i className="fas fa-circle"></i>Profile</button></li>
+                        <li className="first-child"><button onClick={this.bringToUserPage}><i className="fas fa-circle"></i>Profile</button></li>
                         <li><button><i className="fas fa-envelope"></i>Inbox</button></li>
                         <li><button><i className="fas fa-cog"></i>Preferences</button></li>
                         <li><button className="last-child" onClick={this.logoutUser}><i className="fas fa-power-off"></i> Sign Out</button></li>
@@ -211,7 +256,7 @@ class NavBar extends React.Component {
                     <li className="left-nav-dropdown-item">
                         <Link className="left-nav-button" to="/">PLAY</Link>
                         <ul className="left-nav-dropdown">
-                            <li><Link to="/">Create a game</Link></li>
+                            <li onClick={this.ensureLoggedIn}><Link to="/">Create a game</Link></li>
                             <li><Link to="/">Tournaments</Link></li>
                             <li><Link to="/">Simultaneous exhibitions</Link></li>
                         </ul>

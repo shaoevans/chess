@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
 import PostIndexContainer from "./post_index_container";
-import queryString from 'query-string';
+import queryString from "query-string";
 
 
 class ForumShow extends React.Component {
@@ -10,6 +10,7 @@ class ForumShow extends React.Component {
         this.grabPage = this.grabPage.bind(this);
         this.rightButton = this.rightButton.bind(this);
         this.currentUserSwitch = this.currentUserSwitch.bind(this);
+        this.state = { page: this.grabPage()}
     }
 
     componentDidMount() {
@@ -19,6 +20,7 @@ class ForumShow extends React.Component {
     componentDidUpdate(prevProps) {
         if ((prevProps.location.search !== this.props.location.search) || (prevProps.match.params.forumId !== this.props.match.params.forumId) ){
             this.props.fetchForum(this.props.match.params.forumId, this.grabPage());
+            this.setState({ page: this.grabPage() });
         }
     }
 
@@ -33,17 +35,25 @@ class ForumShow extends React.Component {
         return parseInt(page);
     }
 
+    isSamePage(num) {
+        if (this.state.page === num) {
+            return "current-page-button"
+        } else {
+            return "page-buttons"
+        }
+    }
+
     makeButtons(page) {
         const { totalPages } = this.props.forum;
         if (page <= 2) {
             return (
                 <div>
                     {this.leftButton(page)}
-                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=1`} className="page-buttons">1</NavLink>
-                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=2`} className="page-buttons">2</NavLink>
-                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=3`} className="page-buttons">3</NavLink>
-                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=4`} className="page-buttons">4</NavLink>
-                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=5`} className="page-buttons">5</NavLink>
+                    <Link to={`${this.props.location.pathname}?page=1`} className={this.isSamePage(1)}>1</Link>
+                    <Link to={`${this.props.location.pathname}?page=2`} className={this.isSamePage(2)}>2</Link>
+                    <Link to={`${this.props.location.pathname}?page=3`} className={this.isSamePage(3)}>3</Link>
+                    <Link to={`${this.props.location.pathname}?page=4`} className={this.isSamePage(4)}>4</Link>
+                    <Link to={`${this.props.location.pathname}?page=5`} className={this.isSamePage(5)}>5</Link>
                     {this.rightButton(page)}
                 </div>
             )
@@ -51,11 +61,11 @@ class ForumShow extends React.Component {
             return (
                 <div>
                     {this.leftButton(page)}
-                    <NavLink activeClassName="active-page-button" exact to={`${this.props.location.pathname}?page=1`} className="page-buttons">{totalPages-4}</NavLink>
-                    <NavLink activeClassName="active-page-button" exact to={`${this.props.location.pathname}?page=2`} className="page-buttons">{totalPages-3}</NavLink>
-                    <NavLink activeClassName="active-page-button" exact to={`${this.props.location.pathname}?page=3`} className="page-buttons">{totalPages-2}</NavLink>
-                    <NavLink activeClassName="active-page-button" exact to={`${this.props.location.pathname}?page=4`} className="page-buttons">{totalPages-1}</NavLink>
-                    <NavLink activeClassName="active-page-button" exact to={`${this.props.location.pathname}?page=5`} className="page-buttons">{totalPages}</NavLink>
+                    <Link to={`${this.props.location.pathname}?page=1`} className={this.isSamePage(totalPages-4)}>{totalPages-4}</Link>
+                    <Link to={`${this.props.location.pathname}?page=2`} className={this.isSamePage(totalPages-3)}>{totalPages-3}</Link>
+                    <Link to={`${this.props.location.pathname}?page=3`} className={this.isSamePage(totalPages-2)}>{totalPages-2}</Link>
+                    <Link to={`${this.props.location.pathname}?page=4`} className={this.isSamePage(totalPages-1)}>{totalPages-1}</Link>
+                    <Link to={`${this.props.location.pathname}?page=5`} className={this.isSamePage(totalPages)}>{totalPages}</Link>
                     {this.rightButton(page)}
                 </div>
             )
@@ -63,11 +73,11 @@ class ForumShow extends React.Component {
             return (
                 <div>
                     {this.leftButton(page)}
-                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=${page-2}`} className="page-buttons">{page-2}</NavLink>
-                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=${page-1}`} className="page-buttons">{page-1}</NavLink>
-                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=1`} className="page-buttons">{page}</NavLink>
-                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=${page+1}`} className="page-buttons">{page+1}</NavLink>
-                    <NavLink activeClassName="active-page-button" to={`${this.props.location.pathname}?page=${page+2}`} className="page-buttons">{page+2}</NavLink>
+                    <Link to={`${this.props.location.pathname}?page=${page-2}`} className={this.isSamePage(page-2)}>{page-2}</Link>
+                    <Link to={`${this.props.location.pathname}?page=${page-1}`} className={this.isSamePage(page-1)}>{page-1}</Link>
+                    <Link to={`${this.props.location.pathname}?page=1`} className={this.isSamePage(page)}>{page}</Link>
+                    <Link to={`${this.props.location.pathname}?page=${page+1}`} className={this.isSamePage(page+1)}>{page+1}</Link>
+                    <Link to={`${this.props.location.pathname}?page=${page+2}`} className={this.isSamePage(page+2)}>{page+2}</Link>
                     {this.rightButton(page)}
                 </div>
             )

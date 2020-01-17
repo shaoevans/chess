@@ -14,5 +14,8 @@ const receiveAUser = payload => ({
 
 // export const fetchUsers = () => dispatch => 
 
-export const fetchUser = userId => dispatch => UsersAPIUtil.fetchUser(userId)
+export const fetchUser = username => dispatch => UsersAPIUtil.fetchUser(username)
     .then(payload => dispatch(receiveAUser(payload)));
+
+export const fetchUsers = (page) => dispatch => UsersAPIUtil.fetchUsers(page)
+    .then(payload => dispatch(receiveUsers(payload)));

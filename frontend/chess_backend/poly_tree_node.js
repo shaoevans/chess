@@ -1,33 +1,67 @@
 class PolyTreeNode {
-    constructor(board, color, levels, highestValue) {
-        this.parent = null;
+    constructor(board, color, levels, parent) {
         this.children = [];
         this.board = board;
-        this.color = color;
+        this.Color = color;
         this.levels = levels;
-        this.currentMin = null;
-    }
-
-    getBoardValue() {
-        
-    }
-
-    addChild(child) {
-        child.parent = this;
-        this.children.push(child);
-    }
-
-    removeChild(child) {
-        this.children.splice(this.children.indexOf(child), 1);
-    }
-
-    dfs(value) {
+        this.parent = parent;
 
     }
 
-    children() {
+    getBoardValue(currentMin) {
+        if (this.levels === 0) {
+            const value = 0;
+            this.board.getPieces(this.color).forEach(piece => {
+                value += piece.getPositionValue();
+            })
+            return value;
+        } else {
+            this.addChildren();
 
+            this.getMinChildrenValue(currentMin)
+        }
     }
+
+    dupe() {
+        let result = [];
+        for (let i = 0; i < 8; i++) {
+            result.push([]);
+            for (let j = 0; j < 8; j++) {
+                result[0].push(this.board.getPiece([i, j]).clone())
+            }
+        }
+        return result;
+    }
+
+    addChildren() {
+        const validMoves = []
+        this.board.getPieces(this.color).forEach(piece => {
+            piece.validMoves.forEach(move => {
+                validMoves.push([piece.position, move])
+            })
+        })
+        validMoves.forEach(move => {
+            let dupedBoard = this.dupe();
+            dupedBoard.movePiece(move[0], move[1]);
+            this.children.push(new PolyTreeNode(dupedBoard, this.color, this.otherColor, levels-1, ))
+        })
+    }
+
+    getMinChildrenValue(currentMin) {
+        let max;
+        this.children.forEach(child => {
+            let value = child.getBoardValue(currentMin);
+            if (currentMin && value < currentMin) {
+                return;
+            } else {
+                if (!max || value > max) {
+                    max = value;
+                }
+            }
+        })
+        return max;
+    }
+
 }
 
 export default PolyTreeNode;

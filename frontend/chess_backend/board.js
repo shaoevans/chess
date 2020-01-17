@@ -4,22 +4,18 @@ import * as Pieces from "./pieces";
 
 class Board {
     constructor(moveString) {
-        // this.setupBoard = this.setupBoard.bind(this);
         this.whitePieces = [];
         this.blackPieces = [];
         this.whiteLostPieces = [];
         this.blackLostPieces = [];
         this.selectPieceToPlace = this.selectPieceToPlace.bind(this);
         this.grid = [];
+        this.turn = ["black", "white"]
         this.createBoard();
         if (moveString) {
             this.setupBoard(moveString)
         }
-        // this.getPiece = this.getPiece.bind(this);
-        // this.createBoard = this.createBoard.bind(this);
-
     }
-    // moveString format: "A4-B5 C4-H5"
 
     convertLettersToNumbers() {
         return {
@@ -35,25 +31,31 @@ class Board {
     } 
     
     setupBoard(moveString) {
+        if (moveString === "") {
+            return;
+        }
         const moveArr = moveString.split(" ");
-        // ["A4-B5, C4-H5"]
         moveArr.forEach(move => {
-            // "A4-B5"
-            const moveHalves = move.split("-");
-            // ["A4, B5"]
-            const firstMoveString = moveHalves[0];
-            // "A4"
-            const firstMoveX = this.convertLettersToNumbers()[firstMoveString[0]];
-            // 7
-            const firstMoveY = parseInt(firstMoveString[1]) - 1
-            // 3    
-            const secondMoveString = moveHalves[1];
-            const secondMoveX = this.convertLettersToNumbers()[secondMoveString[0]];
-            const secondMoveY = parseInt(secondMoveString[1]) - 1
-
-            this.movePiece([firstMoveY, firstMoveX], [secondMoveY, secondMoveX]);
+            const movesArr = this.moveStringToMovePos(move)
+            this.movePiece(movesArr[0], movesArr[1]);
+            this.turn.push(this.turn.shift());
         })
     }
+
+    moveStringToMovePos(move) {
+        if (move === "") {
+            return [];
+        }
+        const moveHalves = move.split("-");
+        const firstMoveString = moveHalves[0];
+        const firstMoveX = this.convertLettersToNumbers()[firstMoveString[0]];
+        const firstMoveY = parseInt(firstMoveString[1]) - 1
+        const secondMoveString = moveHalves[1];
+        const secondMoveX = this.convertLettersToNumbers()[secondMoveString[0]];
+        const secondMoveY = parseInt(secondMoveString[1]) - 1
+        return [[firstMoveY, firstMoveX], [secondMoveY, secondMoveX]];
+    }
+
 
     createBoard() {
         for (let i = 0; i < 8; i++) {
@@ -88,24 +90,34 @@ class Board {
         }
     }
 
-    isGameOver(color) {
-        if (this.getKing(color).inCheck()) {
-            this.isCheckMate(color);
-        } else {
-            return false;
-        }
+    isGameOver() {
+        // if (this.getKing(this.turn[0]).inCheck()) {
+        //     this.isCheckMate(this.turn[0]);
+        // } else {
+        //     return false;
+        // }
+        return this.isCheckMate(this.turn[0]);
+
     }
 
     isCheckMate(color) {
         const pieces = this.getPieces(color);
         let checkMate = true;
-        pieces.forEach(piece => {
-            if (piece.validMoves().length) {
+        for (let i = 0; i < pieces.length; i++) {
+            
+            if (pieces[i].validMoves().length) {
             // if (piece && piece.validMoves().length) {
                 checkMate = false;
-                return;
+                break;
             }
-        })
+        }
+        // pieces.forEach(piece => {
+        //     if (piece.validMoves().length) {
+        //     // if (piece && piece.validMoves().length) {
+        //         checkMate = false;
+        //         break;
+        //     }
+        // })
         return checkMate;
     }
 
@@ -160,11 +172,19 @@ class Board {
         return piece;
     }
 
-    addLostPiece(color, piece) {
-        if (color === "black") {
-            this.blackLostPieces.push(this.blackPieces.splice(this.blackPieces.indexOf(piece, 1)));
+    addLostPiece(piece) {
+        if (piece.color === "black") {
+            this.blackLostPieces.push(this.blackPieces.splice(this.blackPieces.indexOf(piece), 1)[0]);
         } else {
-            this.whiteLostPieces.push(this.whitePieces.splice(this.whitePieces.indexOf(piece, 1)));
+            this.whiteLostPieces.push(this.whitePieces.splice(this.whitePieces.indexOf(piece), 1)[0]);
+        }
+    }
+
+    getPieces(color) {
+        if (color === "black") {
+            return this.blackPieces;
+        } else {
+            return this.whitePieces;
         }
     }
 
@@ -187,11 +207,15 @@ class Board {
     }
 
     movePiece(pos1, pos2) {
+        console.log("whitepieces", this.whitePieces)
+        console.log("blackpieces", this.blackPieces)
+        console.log("whitelost", this.whiteLostPieces)
+        console.log("blacklost", this.blackLostPieces)
         const initialPos = pos1.slice();
         const piece = this.getPiece(pos1);
         const temp = this.getPiece(pos2);
         if (!(temp instanceof Pieces.NullPiece)) {
-            this.addLostPiece(temp.color, temp);
+            this.addLostPiece(temp);
         }
         this.grid[pos2[0]][pos2[1]] = piece;
         piece.position = pos2;
