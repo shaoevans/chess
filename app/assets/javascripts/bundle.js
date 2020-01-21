@@ -618,8 +618,8 @@ function () {
       }
     }
   }, {
-    key: "getMove",
-    value: function getMove() {
+    key: "getMove0",
+    value: function getMove0() {
       // if (this.level === 0) {
       var pieces = this.board.getPieces(this.color);
       var possibleMoves = [];
@@ -633,6 +633,32 @@ function () {
       // let moves = treeNode.getMove()
       // return moves;
       // }
+    }
+  }, {
+    key: "getMove1",
+    value: function getMove1() {
+      var _this = this;
+
+      var pieces = this.board.getPieces(this.color);
+      var possibleMoves = [];
+      var bestMove;
+      var max;
+      pieces.forEach(function (piece) {
+        piece.validMoves().forEach(function (move) {
+          possibleMoves.push([piece.position, move]);
+        });
+      });
+      possibleMoves.forEach(function (move) {
+        var dupedBoard = _this.board.dupe();
+
+        dupedBoard.movePiece(move[0], move[1]);
+        var dupedBoardValue = dupedBoard.getBoardValue(_this.color);
+
+        if (!max || dupedBoardValue > max) {
+          bestMove = move;
+        }
+      });
+      return bestMove;
     }
   }]);
 
@@ -677,7 +703,10 @@ function () {
     this.createBoard();
 
     if (moveString) {
+      this.moveString === moveString;
       this.setupBoard(moveString);
+    } else {
+      this.moveString === "";
     }
   }
 
@@ -781,18 +810,10 @@ function () {
 
       for (var i = 0; i < pieces.length; i++) {
         if (pieces[i].validMoves().length) {
-          // if (piece && piece.validMoves().length) {
           checkMate = false;
           break;
         }
-      } // pieces.forEach(piece => {
-      //     if (piece.validMoves().length) {
-      //     // if (piece && piece.validMoves().length) {
-      //         checkMate = false;
-      //         break;
-      //     }
-      // })
-
+      }
 
       return checkMate;
     }
@@ -901,6 +922,39 @@ function () {
       this.grid[pos2[0]][pos2[1]] = piece;
       piece.position = pos2;
       this.grid[initialPos[0]][initialPos[1]] = new _pieces__WEBPACK_IMPORTED_MODULE_0__["NullPiece"](initialPos, this);
+    }
+  }, {
+    key: "dupe",
+    value: function dupe() {
+      return new Board(this.moveString); // let result = [];
+      // for (let i = 0; i < 8; i++) {
+      //     result.push([]);
+      //     for (let j = 0; j < 8; j++) {
+      //         result[i].push(this.getPiece([i, j]).clone())
+      //     }
+      // }
+      // return result;
+    }
+  }, {
+    key: "otherColor",
+    value: function otherColor(color) {
+      if (color === "black") {
+        return "white";
+      } else {
+        return "black";
+      }
+    }
+  }, {
+    key: "getBoardValue",
+    value: function getBoardValue(color) {
+      var value = 0;
+      this.getPieces(color).forEach(function (piece) {
+        value += piece.getPositionValue();
+      });
+      this.getPieces(this.otherColor(color)).forEach(function (piece) {
+        value -= piece.getPositionValue();
+      });
+      return value;
     }
   }]);
 
@@ -1247,7 +1301,7 @@ function (_Piece4) {
       if (this.color === "black") {
         positionValues = [[-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0], [-4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0], [-3.0, 0.0, 1.0, 1.5, -1.5, 1.0, 0.0, -3.0], [-3.0, 0.5, 1.5, 2.0, 2.0, 1.5, 0.5, -3.0], [-3.0, 0.0, 1.5, 2.0, 2.0, 1.5, 0.0, -3.0], [-3.0, 0.5, 1.5, 2.0, 2.0, 1.5, 0.5, -3.0], [-4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0], [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]];
       } else {
-        positionValues = [[-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0][(-4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0)], [-3.0, 0.5, 1.5, 2.0, 2.0, 1.5, 0.5, -3.0], [-3.0, 0.0, 1.5, 2.0, 2.0, 1.5, 0.0, -3.0], [-3.0, 0.5, 1.5, 2.0, 2.0, 1.5, 0.5, -3.0], [-3.0, 0.0, 1.0, 1.5, -1.5, 1.0, 0.0, -3.0], [-4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0], [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]];
+        positionValues = [[-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0], [-4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0], [-3.0, 0.5, 1.5, 2.0, 2.0, 1.5, 0.5, -3.0], [-3.0, 0.0, 1.5, 2.0, 2.0, 1.5, 0.0, -3.0], [-3.0, 0.5, 1.5, 2.0, 2.0, 1.5, 0.5, -3.0], [-3.0, 0.0, 1.0, 1.5, -1.5, 1.0, 0.0, -3.0], [-4.0, -2.0, 0.0, 0.0, 0.0, 0.0, -2.0, -4.0], [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]];
       }
 
       return positionValues[this.position[0]][this.position[1]] * this.value;
@@ -1989,7 +2043,7 @@ function (_React$Component) {
             });
           });
         }
-      }, 100); // window.addEventListener("onscroll", infiniteScroll())
+      }, 500); // window.addEventListener("onscroll", infiniteScroll())
 
       this.props.fetchBlogs(this.state.page).then(function () {
         return _this2.setState(_this2.state);
@@ -2356,33 +2410,23 @@ function (_React$Component) {
   _createClass(BlogYearIndex, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var _this2 = this;
-
-      this.props.fetchBlogsByYear(this.state.page, this.props.match.params.blogYear);
-      window.onscroll = lodash_debounce__WEBPACK_IMPORTED_MODULE_2___default()(function () {
-        if (_this2.state.isLoading || !_this2.state.hasMore) return;
-
-        if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
-          _this2.setState({
-            isLoading: true,
-            page: _this2.state.page + 1
-          }, function () {
-            _this2.props.fetchBlogsByYear(_this2.state.page, _this2.props.match.params.blogYear).then(function () {
-              return _this2.setState({
-                isLoading: false
-              });
-            }, function () {
-              return _this2.setState({
-                isLoading: false,
-                hasMore: false
-              });
-            });
-          });
-        }
-      }, 100);
-      this.props.fetchBlogsByYear(this.state.page, this.props.match.params.blogYear).then(function () {
-        return _this2.setState(_this2.state);
-      });
+      this.props.fetchBlogsByYear(this.state.page, this.props.match.params.blogYear); // window.onscroll = debounce(() => {
+      //     if ( this.state.isLoading || !this.state.hasMore) return;
+      //     if (
+      //       window.innerHeight + document.documentElement.scrollTop
+      //       === document.documentElement.offsetHeight) {
+      //         this.setState({ isLoading: true, page: this.state.page+1 }, () => { 
+      //             this.props.fetchBlogsByYear(this.state.page, this.props.match.params.blogYear)
+      //                 .then(
+      //                     () => this.setState({ isLoading: false}),
+      //                     () => this.setState({ isLoading: false, hasMore: false})
+      //                 )
+      //             }
+      //         )
+      //     }
+      // } , 100);
+      // this.props.fetchBlogsByYear(this.state.page, this.props.match.params.blogYear)
+      //     .then(() => this.setState(this.state))
     }
   }, {
     key: "componentDidUpdate",
@@ -2666,13 +2710,26 @@ function (_React$Component) {
 
       if (this.props.currentUser.username === this.convertTurnToOtherPlayer() && this.convertTurnToPlayer() === "ai_player_0") {
         var aiPlayer = new _chess_backend_ai_player__WEBPACK_IMPORTED_MODULE_6__["default"](this.state.board, this.state.board.turn[0]);
-        var aiMove = aiPlayer.getMove();
+        var aiMove = aiPlayer.getMove0();
         var move1 = aiMove[0];
         var move2 = aiMove[1];
         setTimeout(function () {
           return App.cable.subscriptions.subscriptions[0].speak({
             matchId: _this4.props.chessMatch.id,
             move: _this4.moveToString(move1, move2)
+          });
+        }, 1000);
+      } else if (this.props.currentUser.username === this.convertTurnToOtherPlayer() && this.convertTurnToPlayer() === "ai_player_1") {
+        var _aiPlayer = new _chess_backend_ai_player__WEBPACK_IMPORTED_MODULE_6__["default"](this.state.board, this.state.board.turn[0]);
+
+        var _aiMove = _aiPlayer.getMove1();
+
+        var _move = _aiMove[0];
+        var _move2 = _aiMove[1];
+        setTimeout(function () {
+          return App.cable.subscriptions.subscriptions[0].speak({
+            matchId: _this4.props.chessMatch.id,
+            move: _this4.moveToString(_move, _move2)
           });
         }, 1000);
       }
@@ -3882,7 +3939,12 @@ function (_React$Component) {
           key: comment.id,
           index: i
         });
-      }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("td", null, "\"No results found\"")))));
+      }) : null // <tr>
+      //     <td>
+      //     "No results found"
+      //     </td>
+      // </tr>
+      )));
     }
   }]);
 
@@ -5199,6 +5261,8 @@ var LobbyLeaderboard = function LobbyLeaderboard(_ref) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
 
 
 var LobbyLeaderboardTable = function LobbyLeaderboardTable(_ref) {
@@ -5239,6 +5303,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../actions/modal_actions */ "./frontend/actions/modal_actions.js");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _actions_match_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../actions/match_actions */ "./frontend/actions/match_actions.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -5262,6 +5327,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var LobbyTable =
 /*#__PURE__*/
 function (_React$Component) {
@@ -5274,6 +5340,7 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(LobbyTable).call(this, props));
     _this.ensureLoggedIn = _this.ensureLoggedIn.bind(_assertThisInitialized(_this));
+    _this.createBotMatch = _this.createBotMatch.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -5282,6 +5349,24 @@ function (_React$Component) {
     value: function ensureLoggedIn() {
       if (this.props.currentUser) {
         this.props.createGameModal();
+      } else {
+        this.props.history.push("/login");
+      }
+    }
+  }, {
+    key: "createBotMatch",
+    value: function createBotMatch() {
+      var _this2 = this;
+
+      if (this.props.currentUser) {
+        this.props.createMatch({
+          blackPlayerId: this.props.currentUser.id,
+          player2Name: "ai_player_0",
+          matchType: "classical",
+          whitePlayerId: null
+        }).then(function (match) {
+          return _this2.props.history.push("matches/".concat(match.match.id));
+        });
       } else {
         this.props.history.push("/login");
       }
@@ -5322,6 +5407,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     },
     challengeFriendModal: function challengeFriendModal() {
       return dispatch(Object(_actions_modal_actions__WEBPACK_IMPORTED_MODULE_2__["challengeFriendModal"])());
+    },
+    createMatch: function createMatch(match) {
+      return dispatch(Object(_actions_match_actions__WEBPACK_IMPORTED_MODULE_4__["createMatch"])(match));
     },
     playComputerModal: function playComputerModal() {
       return dispatch(Object(_actions_modal_actions__WEBPACK_IMPORTED_MODULE_2__["playComputerModal"])());
@@ -5874,8 +5962,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../actions/modal_actions */ "./frontend/actions/modal_actions.js");
 /* harmony import */ var _create_game_form__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./create_game_form */ "./frontend/components/modal/create_game_form.jsx");
 /* harmony import */ var _challenge_friend_form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./challenge_friend_form */ "./frontend/components/modal/challenge_friend_form.jsx");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _play_computer_form__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./play_computer_form */ "./frontend/components/modal/play_computer_form.jsx");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
 
 
 
@@ -5902,7 +5992,7 @@ var Modal = function Modal(_ref) {
       break;
 
     case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_1__["PLAY_COMPUTER_MODAL"]:
-      component = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(PlayComputerForm, null);
+      component = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_play_computer_form__WEBPACK_IMPORTED_MODULE_4__["default"], null);
       break;
 
     case _actions_modal_actions__WEBPACK_IMPORTED_MODULE_1__["CHALLENGE_FRIEND_MODAL"]:
@@ -5948,7 +6038,147 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["withRouter"])(Object(react_redux__WEBPACK_IMPORTED_MODULE_4__["connect"])(mapStateToProps, mapDispatchToProps)(Modal)));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_6__["withRouter"])(Object(react_redux__WEBPACK_IMPORTED_MODULE_5__["connect"])(mapStateToProps, mapDispatchToProps)(Modal)));
+
+/***/ }),
+
+/***/ "./frontend/components/modal/play_computer_form.jsx":
+/*!**********************************************************!*\
+  !*** ./frontend/components/modal/play_computer_form.jsx ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _actions_match_actions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./../../actions/match_actions */ "./frontend/actions/match_actions.js");
+/* harmony import */ var _actions_modal_actions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./../../actions/modal_actions */ "./frontend/actions/modal_actions.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+
+var PlayComputerForm =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(PlayComputerForm, _React$Component);
+
+  function PlayComputerForm(props) {
+    var _this;
+
+    _classCallCheck(this, PlayComputerForm);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(PlayComputerForm).call(this, props));
+    _this.state = {
+      blackPlayerId: _this.props.currentUser.id,
+      player2Name: "ai_player_0",
+      matchType: "classical",
+      whitePlayerId: null
+    };
+    _this.setLevel = _this.setLevel.bind(_assertThisInitialized(_this));
+    _this.handleSubmit = _this.handleSubmit.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(PlayComputerForm, [{
+    key: "setLevel",
+    value: function setLevel(e) {
+      e.preventDefault();
+      this.setState({
+        player2Name: "ai_player_".concat(e.currentTarget.value)
+      });
+    }
+  }, {
+    key: "handleSubmit",
+    value: function handleSubmit(e) {
+      var _this2 = this;
+
+      e.preventDefault();
+      this.props.createMatch(this.state).then(function (payload) {
+        _this2.props.closeModal();
+
+        _this2.props.history.push("/matches/".concat(payload.match.id));
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Computer Difficulty"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("select", {
+        onChange: this.setLevel
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        value: "0"
+      }, "Level 0"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        value: "1"
+      }, "Level 1"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        disabled: true,
+        value: "2"
+      }, "Level 2"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        disabled: true,
+        value: "3"
+      }, "Level 3"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        disabled: true,
+        value: "4"
+      }, "Level 4"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        disabled: true,
+        value: "5"
+      }, "Level 5"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        disabled: true,
+        value: "6"
+      }, "Level 6"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("option", {
+        disabled: true,
+        value: "7"
+      }, "Level 7")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "submit",
+        className: "session-form-button",
+        onClick: this.handleSubmit
+      }, "Play Computer"));
+    }
+  }]);
+
+  return PlayComputerForm;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+var mapStateToProps = function mapStateToProps(state) {
+  return {
+    currentUser: state.entities.users[state.session.username]
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    createMatch: function createMatch(match) {
+      return dispatch(Object(_actions_match_actions__WEBPACK_IMPORTED_MODULE_3__["createMatch"])(match));
+    },
+    closeModal: function closeModal() {
+      return dispatch(Object(_actions_modal_actions__WEBPACK_IMPORTED_MODULE_4__["closeModal"])());
+    }
+  };
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["withRouter"])(Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["connect"])(mapStateToProps, mapDispatchToProps)(PlayComputerForm)));
 
 /***/ }),
 
@@ -6163,7 +6393,7 @@ function (_React$Component) {
           className: "match-link",
           key: match.id,
           onClick: _this5.bringToMatchPage(match.id)
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", null, "Match ", match.id, " against ", match.blackPlayerName));
+        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", null, "Match ", match.id, " against ", match.blackPlayerName === _this5.props.currentUser.username ? match.whitePlayerName : match.blackPlayerName));
       });
     }
   }, {
@@ -6432,7 +6662,7 @@ var mapStateToProps = function mapStateToProps(state) {
   return {
     currentUser: currentUser,
     matches: currentUser ? Object.values(state.entities.matches).filter(function (match) {
-      return match.blackPlayerName === currentUser.username || match.whitePlayerName === currentUser.username;
+      return (match.blackPlayerName === currentUser.username || match.whitePlayerName === currentUser.username) && match.pending;
     }) : []
   };
 };
@@ -7649,6 +7879,7 @@ var configureStore = function configureStore() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (configureStore);
+"";
 
 /***/ }),
 

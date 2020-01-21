@@ -3,6 +3,7 @@ import { closeModal, createGameModal, playComputerModal, challengeFriendModal } 
 import { CREATE_GAME_MODAL, PLAY_COMPUTER_MODAL, CHALLENGE_FRIEND_MODAL } from "./../../actions/modal_actions";
 import CreateGameForm from "./create_game_form";
 import ChallengeFriendForm from "./challenge_friend_form";
+import PlayComputerForm from "./play_computer_form";
 import { connect } from 'react-redux';
 import { withRouter } from "react-router-dom";
 

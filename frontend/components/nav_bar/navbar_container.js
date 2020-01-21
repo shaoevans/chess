@@ -9,7 +9,7 @@ const mapStateToProps = state => {
     return {
     currentUser: currentUser,
     matches: currentUser ? Object.values(state.entities.matches).filter(match => {
-            return (match.blackPlayerName === currentUser.username || match.whitePlayerName === currentUser.username)
+            return ((match.blackPlayerName === currentUser.username || match.whitePlayerName === currentUser.username) && match.pending)
         }) : []
     }
 }

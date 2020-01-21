@@ -697,6 +697,7 @@ li:hover ul {
                     margin: 5px;
                 }
                 .blog-content {
+                    width: 80%;
                     overflow: hidden;
                     white-space: nowrap;;
                     p {
@@ -1242,9 +1243,6 @@ i.valid {
     padding: 50px 50px 20px 50px;
     font-size: 2em;
     border-radius: 3px;
-    input {
-        width: 40%;
-    }
     a {
         color: $buttonblue;
         &:hover {
@@ -1334,7 +1332,7 @@ i.valid {
 
 }
 .forum-search-bar {
-    width: 30%;
+    width: 100%;
     font-size: 17px;
     a {
         color: $buttonblue;
@@ -1851,10 +1849,10 @@ i.valid {
 }
 
 #game {
-    // position: relative;
-    height: 800px;
+    position: relative;
+    height: 200px;
     width: 800px;
-    margin-top: 800px;
+    // margin-top: 800px;
     top: 800px;
     display: block;
 }

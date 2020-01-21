@@ -33,8 +33,12 @@ class Api::CommentsController < ApplicationController
         if params[:search] 
             @comments2 = []
             @posts = Post.where("title ILIKE ?", "%#{params[:search]}%").includes(:comments)
+            @users = User.where("username ILIKE ?", "%#{params[:search]}%").includes(:comments)
             @posts.each do |post|
                 @comments2.concat(post.comments)
+            end
+            @users.each do |user|
+                @comments2.concat(user.comments)
             end
             @comments = Comment.where("body ILIKE ?", "%#{params[:search]}%")
             @comments = (@comments2 + @comments).uniq.sort_by(&:updated_at)

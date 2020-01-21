@@ -25,7 +25,7 @@ class BlogIndex extends React.Component {
                     }
                 )
             }
-        } , 100);
+        } , 500);
         // window.addEventListener("onscroll", infiniteScroll())
         this.props.fetchBlogs(this.state.page)
             .then(() => this.setState(this.state))

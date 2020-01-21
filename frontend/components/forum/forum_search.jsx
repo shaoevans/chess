@@ -75,11 +75,12 @@ class ForumSearch extends React.Component {
                                 return <ForumSearchItem now={now} comment={comment} key={comment.id} index={i}/>
                             })
                         ) : (
-                            <tr>
-                                <td>
-                                "No results found"
-                                </td>
-                            </tr>
+                            null
+                            // <tr>
+                            //     <td>
+                            //     "No results found"
+                            //     </td>
+                            // </tr>
                         )}
                     </tbody>
                 </table>

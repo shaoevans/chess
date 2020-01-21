@@ -129,14 +129,20 @@ class ChessBoard extends React.Component {
     checkAiPlayer() {
         if (this.props.currentUser.username === this.convertTurnToOtherPlayer() && this.convertTurnToPlayer() === "ai_player_0") {
             const aiPlayer = new AIPlayer(this.state.board, this.state.board.turn[0]);
-            const aiMove = aiPlayer.getMove()
+            const aiMove = aiPlayer.getMove0()
             const move1 = aiMove[0];
             const move2 = aiMove[1];
             setTimeout(() => 
                 App.cable.subscriptions.subscriptions[0].speak({ matchId: this.props.chessMatch.id, move: this.moveToString(move1, move2) }),
                 1000)
-
-    
+        } else if (this.props.currentUser.username === this.convertTurnToOtherPlayer() && this.convertTurnToPlayer() === "ai_player_1") {
+            const aiPlayer = new AIPlayer(this.state.board, this.state.board.turn[0]);
+            const aiMove = aiPlayer.getMove1()
+            const move1 = aiMove[0];
+            const move2 = aiMove[1];
+            setTimeout(() => 
+                App.cable.subscriptions.subscriptions[0].speak({ matchId: this.props.chessMatch.id, move: this.moveToString(move1, move2) }),
+                1000)
         }
     }
 

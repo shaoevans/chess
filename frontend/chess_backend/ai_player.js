@@ -21,7 +21,7 @@ class AIPlayer {
     }
 
 
-    getMove() {
+    getMove0() {
         // if (this.level === 0) {
 
         const pieces = this.board.getPieces(this.color);
@@ -37,6 +37,27 @@ class AIPlayer {
             // let moves = treeNode.getMove()
             // return moves;
         // }
+    }
+
+    getMove1() {
+        const pieces = this.board.getPieces(this.color);
+        const possibleMoves = [];
+        let bestMove;
+        let max;
+        pieces.forEach(piece => {
+            piece.validMoves().forEach(move => {
+                possibleMoves.push([piece.position, move])
+            })
+        })
+        possibleMoves.forEach(move => {
+            let dupedBoard = this.board.dupe();
+            dupedBoard.movePiece(move[0], move[1])
+            let dupedBoardValue = dupedBoard.getBoardValue(this.color)
+            if (!max || dupedBoardValue > max) {
+                bestMove = move;
+            }
+        })
+        return bestMove;
     }
 }
 

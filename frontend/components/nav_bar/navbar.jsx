@@ -134,9 +134,11 @@ class NavBar extends React.Component {
     }
 
     matchesToListItems() {
-       return this.props.matches.map(match => {
-        // return <li className="match-link" key={match.id}><Link to={`/matches/${match.id}`}>Match {match.id} against {match.blackPlayerName}</Link></li>
-        return <li className="match-link" key={match.id} onClick={this.bringToMatchPage(match.id)}><button>Match {match.id} against {match.blackPlayerName}</button></li>
+        return this.props.matches.map(match => {
+            // return <li className="match-link" key={match.id}><Link to={`/matches/${match.id}`}>Match {match.id} against {match.blackPlayerName}</Link></li>
+            return  <li className="match-link" key={match.id} onClick={this.bringToMatchPage(match.id)}>
+                        <button>Match {match.id} against {match.blackPlayerName === this.props.currentUser.username ? match.whitePlayerName : match.blackPlayerName}</button>
+                    </li>
        })
     }
     currentUserSwitch() {

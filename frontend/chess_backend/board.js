@@ -13,7 +13,10 @@ class Board {
         this.turn = ["black", "white"]
         this.createBoard();
         if (moveString) {
-            this.setupBoard(moveString)
+            this.moveString === moveString;
+            this.setupBoard(moveString);
+        } else {
+            this.moveString === ""
         }
     }
 
@@ -106,18 +109,10 @@ class Board {
         for (let i = 0; i < pieces.length; i++) {
             
             if (pieces[i].validMoves().length) {
-            // if (piece && piece.validMoves().length) {
                 checkMate = false;
                 break;
             }
         }
-        // pieces.forEach(piece => {
-        //     if (piece.validMoves().length) {
-        //     // if (piece && piece.validMoves().length) {
-        //         checkMate = false;
-        //         break;
-        //     }
-        // })
         return checkMate;
     }
 
@@ -220,6 +215,37 @@ class Board {
 
     }
 
+    dupe() {
+        return new Board(this.moveString);
+        // let result = [];
+        // for (let i = 0; i < 8; i++) {
+        //     result.push([]);
+        //     for (let j = 0; j < 8; j++) {
+        //         result[i].push(this.getPiece([i, j]).clone())
+        //     }
+        // }
+        // return result;
+    }
+
+
+    otherColor(color) {
+        if (color === "black") {
+            return "white";
+        } else {
+            return "black";
+        }
+    }
+
+    getBoardValue(color) {
+        let value = 0;
+        this.getPieces(color).forEach(piece => {
+            value += piece.getPositionValue();
+        })
+        this.getPieces(this.otherColor(color)).forEach(piece => {
+            value -= piece.getPositionValue();
+        })
+        return value;
+    }
 }
 
 export default Board;
