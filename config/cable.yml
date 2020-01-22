@@ -1,8 +1,7 @@
 development:
   adapter: async
-  url: redis://redistogo:b7eb5bf462eead58bcbccf4c3198439d@pike.redistogo.com:9597/
 
 production:
   adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+  url: <%= ENV.fetch("REDIS_URL") { "redis://redistogo:b7eb5bf462eead58bcbccf4c3198439d@pike.redistogo.com:9597/" } %>
   channel_prefix: Chess_production
