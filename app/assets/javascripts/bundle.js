@@ -5397,6 +5397,26 @@ __webpack_require__.r(__webpack_exports__);
 
 var LobbyBlog = function LobbyBlog(_ref) {
   var blogs = _ref.blogs;
+  var imageUrls = {
+    1: _1,
+    2: _2,
+    3: _3,
+    4: _4,
+    5: _5,
+    6: _6,
+    7: _7,
+    8: _8,
+    9: _9,
+    10: _10,
+    11: _11,
+    12: _12,
+    13: _13,
+    14: _14,
+    15: _15,
+    16: _16,
+    17: _17,
+    18: _18
+  };
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "lobby-blog"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_table_header__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -5413,7 +5433,7 @@ var LobbyBlog = function LobbyBlog(_ref) {
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "blog-image"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
-      src: window["_".concat(blog.imageId)]
+      src: imageUrls[blog.imageId]
     })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
       className: "blog-content"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", {
