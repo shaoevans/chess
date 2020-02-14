@@ -10,7 +10,7 @@ class Board {
         this.blackLostPieces = [];
         this.selectPieceToPlace = this.selectPieceToPlace.bind(this);
         this.grid = [];
-        this.turn = ["black", "white"]
+        this.turn = ["white", "black"]
         this.createBoard();
         if (moveString) {
             this.moveString === moveString;

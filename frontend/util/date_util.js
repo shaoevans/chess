@@ -57,7 +57,9 @@ export const formatDate = date => {
         return `${Math.floor(difference/60)} hours ago`
     } else if (difference < 10080) {
         return `${Math.floor(difference/1440)} days ago`
+    } else if (difference < 43800) {
+        return `${Math.floor(difference/10080)} weeks ago`
     } else {
-        return `${Math.floor(difference/10080)} days ago`
+        return `${Math.floor(difference/43800)} months ago`
     }
 }

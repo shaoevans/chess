@@ -17,7 +17,7 @@ class ChessBoard extends React.Component {
             validMoves: [],
             lastMovePrev: null,
             lastMoveAfter: null,
-            pending: this.props.chessMatch? this.props.chessMatch.pending : true
+            pending: this.props.chessMatch ? this.props.chessMatch.pending : true
             // pending: false
         };
         this.selectPiece = this.selectPiece.bind(this);

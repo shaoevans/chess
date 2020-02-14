@@ -36,15 +36,21 @@ class Api::MatchesController < ApplicationController
     end
 
     def index
-        @user = User.find_by(id: params[:user_id])
-        if params[:current]
-            @matches = @user.current_matches
-        elsif params[:previous]
-            @matches = @user.previous_matches
+
+        if params[:random] 
+            @match = Match.where("pending = true").sample
+            render :show
         else
-            @matches = @user.matches
+            @user = User.find_by(id: params[:user_id])
+            if params[:current]
+                @matches = @user.current_matches
+            elsif params[:previous]
+                @matches = @user.previous_matches
+            else
+                @matches = @user.matches
+            end
+            render :index
         end
-        render :index
     end
 
     def show
@@ -54,6 +60,7 @@ class Api::MatchesController < ApplicationController
         else
             render json: ["cannot find page"], status: 404
         end
+
     end
 
 

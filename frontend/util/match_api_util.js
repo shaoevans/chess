@@ -35,3 +35,11 @@ export const createMatch = match => (
         data: { match }
     })
 )
+
+export const fetchRandomMatch = () => (
+    $.ajax({
+        method: "GET",
+        url: "/api/matches",
+        data: { random: true }
+    })
+)

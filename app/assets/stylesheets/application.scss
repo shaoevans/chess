@@ -89,7 +89,7 @@ h1, h2, p {
 /* CSS Reset */
 
 .lobby {
-    width: 85%;
+    width: 72%;
     margin: 0 auto;
     margin-bottom: 30px;
 }
@@ -477,7 +477,7 @@ li:hover ul {
         'tv leader leader puzzle'
         // 'about tours tours support'
         // '. simuls simuls .'
-        '. forum forum .'
+        '. forum forum support'
         '. blog blog .';
         // removed winners and added 2nd leader
     /* grid-template-columns: repeat(4, 1fr);
@@ -740,7 +740,7 @@ li:hover ul {
     grid-area: leader;
     box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
     ul {
-        height: 250px;
+        height: 270px;
         overflow: scroll;
         overflow-x: hidden;
     }
@@ -948,13 +948,48 @@ li:hover ul {
     // right: 0;
 
 }
+
+// Lobby TV
+
+.lobby-tv {
+    grid-area: tv;
+    .lobby-tv-info {
+        display: flex;
+        justify-content: space-between;
+        background-color: $white;
+        box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
+        border-radius: 3px;
+        padding: 15px;
+    }
+}
+
+// Lobby Puzzle
+
+.lobby-puzzle {
+    grid-area: puzzle;
+    .lobby-puzzle-info {
+        background-color: $white;
+        border-radius: 3px;
+        display: flex;
+        padding: 5px;
+        flex-wrap: wrap;
+        box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
+        div {
+            width: 100%;
+            display: block;
+            text-align: center;
+
+        }
+    }
+}
+
 /* Chess Game */
 
 .chess-board {
     width: 100%;
     display: grid;
     grid-template-rows: repeat(8, 1fr);
-    grid-area: tv;
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,0.225);
 }
 
 .chess-row {
@@ -1007,6 +1042,32 @@ i.valid2 {
     i {
         padding-top: 0.3em;
         padding-bottom: 0.3em;
+    }
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #B58763;
+}
+
+.odd-thumbnail-tile {
+    i {
+        padding-top: 0.2em;
+        padding-bottom: 0.2em;
+        font-size: 1.2vw;
+    }
+    background-color: #F0D8B5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.even-thumbnail-tile {
+    i {
+        padding-top: 0.2em;
+        padding-bottom: 0.2em;
+        font-size: 1.2vw;
     }
     position: relative;
     display: flex;
@@ -1785,20 +1846,17 @@ i.valid2 {
     }
     .user-body {
         width: 100%;
-        height: 800px;
-        padding: 3em;
+        height: 100%;
         background-color: $white;
         box-sizing: border-box;
         box-shadow: 0 2px 5px 0 rgba(0,0,0,0.225);
         border-radius: 3px;
         .user-body-header {
+            padding: 3em;
             display: flex;
             justify-content: space-between;
             .user-body-content {
                 font-size: 1.5em;
-                a {
-    
-                }
                 .games-link-button {
                     padding: .8em 1em;
                     border-radius: 3px;
@@ -1810,6 +1868,63 @@ i.valid2 {
                         box-shadow: 0 2px 5px 0 rgba(0,0,0,0.225)
                     }
                 }
+            }
+        }
+        .user-match-index {
+            .user-match-index-item {
+                font-family: "Noto Sans JP";
+                display: flex;
+                padding: 1em;
+                border: 1px solid lightgray;
+                .user-match-index-item-chess {
+                    width: 25%;
+                }
+                .user-match-index-item-info {
+                    margin-left: 20px;
+                    position: relative;
+                    width: 60%;
+                    i {
+                        font-size: 2.5em;
+                    }
+                    .user-match-index-item-info-header {
+                        display: flex;
+                        div {
+                            display: grid;
+                            padding: 0 10px;
+                            height: 40px;
+                            grid-template-rows: 3fr 1fr;     
+                            .user-match-index-item-info-mode {
+                                font-size: 1.3em;
+                            }
+                        }
+                
+                    }
+                    .user-match-index-item-battle {
+                        margin-top: 20px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        span {
+                            font-size: 1.5em;
+                            padding: 1em;
+                        }
+                    }
+                    .user-match-index-item-movestring {
+                        position: absolute;
+                        bottom: 0
+                    }
+                }
+                &:hover {
+                    background-color: #D1E4F6;
+                    cursor: pointer;
+
+                }
+            }
+            .even-match {
+                background-color: $white;
+            }
+            .odd-match {
+                background-color: #F7F6F5;
             }
         }
     }
@@ -1857,6 +1972,42 @@ i.valid2 {
     }
 }
 
+// Lobby Support
+
+.lobby-support {
+    grid-area: support;
+    display: grid;
+    grid-template-rows: repeat(2, 70px);
+    grid-gap: 20px; 
+    .lobby-support-item {
+        background-color: $white;
+        box-shadow: 0 2px 5px 0 rgba(0,0,0,0.225);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        color: #D59020;
+        padding: 0.5em;
+        font-family: "Noto Sans JP";
+        &:hover {
+            background-color: #D59020;
+            color: $white;
+        }
+        i {
+            font-size: 3.2em;
+            margin-left: 0.2em;
+        }
+        .lobby-support-info {
+
+            margin-left: 1em;
+            display: grid;
+            grid-template-rows: 1.5fr 1fr;
+            .lobby-support-info-header {
+                font-size: 1.5em;
+            }
+        }
+    }
+    
+}
 
 /* User Show */
 
@@ -2253,4 +2404,3 @@ a.current-page-button {
     font-size: 1.5vw;
 }
   
-// loader

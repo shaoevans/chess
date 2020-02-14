@@ -1,5 +1,6 @@
 export const RECEIVE_MATCHES = "RECEIVE_MATCHES"
 export const RECEIVE_MATCH = "RECEIVE_MATCH"
+export const RECEIVE_LOBBY_MATCH = "RECEIVE_LOBBY_MATCH"
 import * as MatchAPIUtil from "./../util/match_api_util";
 
 const receiveMatches = matches => ({
@@ -9,6 +10,11 @@ const receiveMatches = matches => ({
 
 const receiveAMatch = match => ({
     type: RECEIVE_MATCH,
+    match
+})
+
+const receiveLobbyMatch = match => ({
+    type: RECEIVE_LOBBY_MATCH,
     match
 })
 
@@ -26,3 +32,6 @@ export const createMatch = match => dispatch => MatchAPIUtil.createMatch(match)
 
 export const fetchAMatch = matchId => dispatch => MatchAPIUtil.fetchAMatch(matchId)
     .then(match => dispatch(receiveAMatch(match)));
+
+export const fetchLobbyMatch = () => dispatch => MatchAPIUtil.fetchRandomMatch()
+    .then(match => dispatch(receiveLobbyMatch(match)));

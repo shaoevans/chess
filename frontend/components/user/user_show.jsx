@@ -1,5 +1,7 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
+import ChessThumbnail from "../chess_board/chess_thumbnail";
+import { dateMaker } from "../../util/date_util";
 
 
 class UserShow extends React.Component {
@@ -23,6 +25,7 @@ class UserShow extends React.Component {
 
     render() {
         const { user } = this.props
+        const now = new Date();
         if (user) {
             return (
                 <div className="user-body-container">
@@ -84,6 +87,39 @@ class UserShow extends React.Component {
                             </div>
                             <Link className="games-link-button" to="/"><i className="fas fa-fire"></i> VIEW THE GAMES</Link>
                         </div>
+                        <ul className="user-match-index">
+                            {this.props.matches.map((match, i) => {
+                                const last = new Date(match.updatedAt);
+                                const difference = Math.floor((now - last)/(1000*60))
+                                return (
+                                    <li onClick={() => this.props.history.push(`/matches/${match.id}`)} key={match.id} className={`user-match-index-item ${i % 2 === 0 ? "even-match" : "odd-match"}`}>
+                                        <div className="user-match-index-item-chess">
+                                            <ChessThumbnail chessMatch={match}/>
+                                        </div>
+                                        <div className="user-match-index-item-info">
+                                            <div className="user-match-index-item-info-header">
+                                                <i className="fas fa-snowplow"></i>
+                                                <div>
+                                                    <span className="user-match-index-item-info-mode">Classical</span>
+                                                    <span>{dateMaker(difference)}</span>    
+                                                </div>
+                                            </div>
+                                            <div className="user-match-index-item-battle">
+                                                <span>{match.blackPlayerName}</span>
+                                                <i className="fas fa-fist-raised"></i>
+                                                <span>{match.whitePlayerName}</span>
+                                            </div>
+                                            <div className="user-match-index-item-movestring">
+                                                <span>
+                                                    {match.moveString.length > 10 ? `${match.moveString.slice(0, 24)} ...` : match.moveString} {match.moveString.split(" ").length} moves
+                                                </span>
+                                                    
+                                            </div>
+                                        </div>
+                                    </li>
+                                )
+                            })}
+                        </ul>
                     </div>
                     {/* <Switch> */}
                         {/* <Route path="/blog/:blogYear/:blogId"  component={}/> */}

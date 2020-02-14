@@ -158,7 +158,7 @@ class Tile extends React.Component {
         const { piece, selectPiece, ind } = this.props
         if ((ind[0] + ind[1]) % 2 === 0) {
             return (
-                <li onClick={selectPiece(piece.position, piece.color)} className={`odd-tile ${this.validTile()} ${this.isSelected()} ${this.isLastMovePrev()} ${this.isLastMoveAfter()} ${piece instanceof Pieces.King ? this.isInCheck() : null}`}>
+                <li onClick={selectPiece(piece.position, piece.color)} className={`odd-tile ${this.validTile()} ${this.isSelected()} ${this.isLastMovePrev()} ${this.isLastMoveAfter()} ${piece instanceof Pieces.King ? this.isInCheck() : ""}`}>
                     {this.greenDot()}
                     {piece.render()}
                     {this.tileLabels()}
@@ -166,7 +166,7 @@ class Tile extends React.Component {
             )
         } else {
             return (
-                <li onClick={selectPiece(piece.position, piece.color)} className={`even-tile ${this.validTile()} ${this.isSelected()} ${this.isLastMovePrev()} ${this.isLastMoveAfter()} ${piece instanceof Pieces.King ? this.isInCheck() : null}`}>
+                <li onClick={selectPiece(piece.position, piece.color)} className={`even-tile ${this.validTile()} ${this.isSelected()} ${this.isLastMovePrev()} ${this.isLastMoveAfter()} ${piece instanceof Pieces.King ? this.isInCheck() : ""}`}>
                     {this.greenDot()}
                     {piece.render()}
                     {this.tileLabels()}

@@ -20,9 +20,10 @@ class Api::UsersController < ApplicationController
     end
 
     def index
-        @users = User.all.page(params[:page])
+        @users = User.order(classical_elo: :desc).page(params[:page])
         render :index
     end
+
     def update
 
     end

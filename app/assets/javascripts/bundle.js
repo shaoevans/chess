@@ -289,21 +289,24 @@ var updateComment = function updateComment(comment) {
 /*!*******************************************!*\
   !*** ./frontend/actions/match_actions.js ***!
   \*******************************************/
-/*! exports provided: RECEIVE_MATCHES, RECEIVE_MATCH, fetchUserPreviousMatches, fetchUserCurrentMatches, fetchUserMatches, createMatch, fetchAMatch */
+/*! exports provided: RECEIVE_MATCHES, RECEIVE_MATCH, RECEIVE_LOBBY_MATCH, fetchUserPreviousMatches, fetchUserCurrentMatches, fetchUserMatches, createMatch, fetchAMatch, fetchLobbyMatch */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_MATCHES", function() { return RECEIVE_MATCHES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_MATCH", function() { return RECEIVE_MATCH; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_LOBBY_MATCH", function() { return RECEIVE_LOBBY_MATCH; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUserPreviousMatches", function() { return fetchUserPreviousMatches; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUserCurrentMatches", function() { return fetchUserCurrentMatches; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUserMatches", function() { return fetchUserMatches; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createMatch", function() { return createMatch; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchAMatch", function() { return fetchAMatch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchLobbyMatch", function() { return fetchLobbyMatch; });
 /* harmony import */ var _util_match_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../util/match_api_util */ "./frontend/util/match_api_util.js");
 var RECEIVE_MATCHES = "RECEIVE_MATCHES";
 var RECEIVE_MATCH = "RECEIVE_MATCH";
+var RECEIVE_LOBBY_MATCH = "RECEIVE_LOBBY_MATCH";
 
 
 var receiveMatches = function receiveMatches(matches) {
@@ -316,6 +319,13 @@ var receiveMatches = function receiveMatches(matches) {
 var receiveAMatch = function receiveAMatch(match) {
   return {
     type: RECEIVE_MATCH,
+    match: match
+  };
+};
+
+var receiveLobbyMatch = function receiveLobbyMatch(match) {
+  return {
+    type: RECEIVE_LOBBY_MATCH,
     match: match
   };
 };
@@ -352,6 +362,13 @@ var fetchAMatch = function fetchAMatch(matchId) {
   return function (dispatch) {
     return _util_match_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchAMatch"](matchId).then(function (match) {
       return dispatch(receiveAMatch(match));
+    });
+  };
+};
+var fetchLobbyMatch = function fetchLobbyMatch() {
+  return function (dispatch) {
+    return _util_match_api_util__WEBPACK_IMPORTED_MODULE_0__["fetchRandomMatch"]().then(function (match) {
+      return dispatch(receiveLobbyMatch(match));
     });
   };
 };
@@ -713,7 +730,7 @@ function () {
     this.blackLostPieces = [];
     this.selectPieceToPlace = this.selectPieceToPlace.bind(this);
     this.grid = [];
-    this.turn = ["black", "white"];
+    this.turn = ["white", "black"];
     this.createBoard();
 
     if (moveString) {
@@ -3138,6 +3155,209 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 
 /***/ }),
 
+/***/ "./frontend/components/chess_board/chess_thumbnail.jsx":
+/*!*************************************************************!*\
+  !*** ./frontend/components/chess_board/chess_thumbnail.jsx ***!
+  \*************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _tile__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tile */ "./frontend/components/chess_board/tile.jsx");
+/* harmony import */ var _chess_backend_board__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../chess_backend/board */ "./frontend/chess_backend/board.js");
+/* harmony import */ var _thumbnail_tile__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./thumbnail_tile */ "./frontend/components/chess_board/thumbnail_tile.jsx");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+
+
+var ChessThumbnail =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(ChessThumbnail, _React$Component);
+
+  function ChessThumbnail(props) {
+    var _this;
+
+    _classCallCheck(this, ChessThumbnail);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ChessThumbnail).call(this, props));
+    _this.state = {
+      board: new _chess_backend_board__WEBPACK_IMPORTED_MODULE_2__["default"](_this.props.chessMatch.moveString),
+      moveString: _this.props.chessMatch ? _this.props.chessMatch.moveString : "",
+      pieceSelected: null,
+      validMoves: [],
+      pending: _this.props.chessMatch ? _this.props.chessMatch.pending : true
+    };
+    return _this;
+  }
+
+  _createClass(ChessThumbnail, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.setState({
+        lastMovePrev: this.state.board.moveStringToMovePos(this.props.chessMatch.moveString.substring(this.props.chessMatch.moveString.length - 5))[0],
+        lastMoveAfter: this.state.board.moveStringToMovePos(this.props.chessMatch.moveString.substring(this.props.chessMatch.moveString.length - 5))[1]
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "chess-board"
+      }, this.state.board.grid.map(function (row, i) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          key: i,
+          className: "chess-row"
+        }, row.map(function (tile, j) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_thumbnail_tile__WEBPACK_IMPORTED_MODULE_3__["default"], {
+            key: "".concat(i).concat(j),
+            currentTurn: _this2.state.board.turn[0],
+            ind: [i, j],
+            piece: _this2.state.board.getPiece([i, j]),
+            lastMoveAfter: _this2.state.lastMoveAfter,
+            lastMovePrev: _this2.state.lastMovePrev
+          });
+        }));
+      }));
+    }
+  }]);
+
+  return ChessThumbnail;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (ChessThumbnail);
+
+/***/ }),
+
+/***/ "./frontend/components/chess_board/thumbnail_tile.jsx":
+/*!************************************************************!*\
+  !*** ./frontend/components/chess_board/thumbnail_tile.jsx ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _chess_backend_pieces__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./../../chess_backend/pieces */ "./frontend/chess_backend/pieces.js");
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
+
+
+var ThumbnailTile =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(ThumbnailTile, _React$Component);
+
+  function ThumbnailTile(props) {
+    var _this;
+
+    _classCallCheck(this, ThumbnailTile);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(ThumbnailTile).call(this, props));
+    _this.state = {};
+    return _this;
+  }
+
+  _createClass(ThumbnailTile, [{
+    key: "isLastMovePrev",
+    value: function isLastMovePrev() {
+      if (this.props.lastMovePrev && this.props.lastMovePrev[0] === this.props.ind[0] && this.props.lastMovePrev[1] === this.props.ind[1]) {
+        return "last-prev-tile";
+      } else {
+        return "";
+      }
+    }
+  }, {
+    key: "isLastMoveAfter",
+    value: function isLastMoveAfter() {
+      if (this.props.lastMoveAfter && this.props.lastMoveAfter[0] === this.props.ind[0] && this.props.lastMoveAfter[1] === this.props.ind[1]) {
+        return "last-after-tile";
+      } else {
+        return "";
+      }
+    }
+  }, {
+    key: "isInCheck",
+    value: function isInCheck() {
+      if (this.props.piece.inCheck()) {
+        if ((this.props.ind[0] + this.props.ind[1]) % 2 === 0) {
+          return "in-check-odd";
+        } else {
+          return "in-check-even";
+        }
+      } else {
+        return "";
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this$props = this.props,
+          piece = _this$props.piece,
+          ind = _this$props.ind;
+
+      if ((ind[0] + ind[1]) % 2 === 0) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "odd-thumbnail-tile ".concat(this.isLastMovePrev(), " ").concat(this.isLastMoveAfter(), " ").concat(piece instanceof _chess_backend_pieces__WEBPACK_IMPORTED_MODULE_1__["King"] ? this.isInCheck() : null)
+        }, piece.render());
+      } else {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+          className: "even-thumbnail-tile ".concat(this.isLastMovePrev(), " ").concat(this.isLastMoveAfter(), " ").concat(piece instanceof _chess_backend_pieces__WEBPACK_IMPORTED_MODULE_1__["King"] ? this.isInCheck() : null)
+        }, piece.render());
+      }
+    }
+  }]);
+
+  return ThumbnailTile;
+}(react__WEBPACK_IMPORTED_MODULE_0___default.a.Component);
+
+/* harmony default export */ __webpack_exports__["default"] = (ThumbnailTile);
+
+/***/ }),
+
 /***/ "./frontend/components/chess_board/tile.jsx":
 /*!**************************************************!*\
   !*** ./frontend/components/chess_board/tile.jsx ***!
@@ -3404,12 +3624,12 @@ function (_React$Component) {
       if ((ind[0] + ind[1]) % 2 === 0) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           onClick: selectPiece(piece.position, piece.color),
-          className: "odd-tile ".concat(this.validTile(), " ").concat(this.isSelected(), " ").concat(this.isLastMovePrev(), " ").concat(this.isLastMoveAfter(), " ").concat(piece instanceof _chess_backend_pieces__WEBPACK_IMPORTED_MODULE_1__["King"] ? this.isInCheck() : null)
+          className: "odd-tile ".concat(this.validTile(), " ").concat(this.isSelected(), " ").concat(this.isLastMovePrev(), " ").concat(this.isLastMoveAfter(), " ").concat(piece instanceof _chess_backend_pieces__WEBPACK_IMPORTED_MODULE_1__["King"] ? this.isInCheck() : "")
         }, this.greenDot(), piece.render(), this.tileLabels());
       } else {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
           onClick: selectPiece(piece.position, piece.color),
-          className: "even-tile ".concat(this.validTile(), " ").concat(this.isSelected(), " ").concat(this.isLastMovePrev(), " ").concat(this.isLastMoveAfter(), " ").concat(piece instanceof _chess_backend_pieces__WEBPACK_IMPORTED_MODULE_1__["King"] ? this.isInCheck() : null)
+          className: "even-tile ".concat(this.validTile(), " ").concat(this.isSelected(), " ").concat(this.isLastMovePrev(), " ").concat(this.isLastMoveAfter(), " ").concat(piece instanceof _chess_backend_pieces__WEBPACK_IMPORTED_MODULE_1__["King"] ? this.isInCheck() : "")
         }, this.greenDot(), piece.render(), this.tileLabels());
       }
     }
@@ -5079,8 +5299,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lobby_forum__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./lobby_forum */ "./frontend/components/lobby/lobby_forum.jsx");
 /* harmony import */ var _lobby_blog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lobby_blog */ "./frontend/components/lobby/lobby_blog.jsx");
 /* harmony import */ var _lobby_side__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lobby_side */ "./frontend/components/lobby/lobby_side.jsx");
-/* harmony import */ var _chess_board_chess_board__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../chess_board/chess_board */ "./frontend/components/chess_board/chess_board.jsx");
-/* harmony import */ var _actions_match_actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../actions/match_actions */ "./frontend/actions/match_actions.js");
+/* harmony import */ var _lobby_support__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./lobby_support */ "./frontend/components/lobby/lobby_support.jsx");
+/* harmony import */ var _lobby_tv__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./lobby_tv */ "./frontend/components/lobby/lobby_tv.jsx");
+/* harmony import */ var _lobby_puzzle__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./lobby_puzzle */ "./frontend/components/lobby/lobby_puzzle.jsx");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -5109,6 +5330,7 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
+
 var Lobby =
 /*#__PURE__*/
 function (_React$Component) {
@@ -5126,17 +5348,22 @@ function (_React$Component) {
       this.props.fetchLatestComments();
       this.props.fetchBlogs();
       this.props.fetchUsers();
+      this.props.fetchLobbyMatch();
     }
   }, {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "lobby"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lichess_background__WEBPACK_IMPORTED_MODULE_1__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_side__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_table__WEBPACK_IMPORTED_MODULE_2__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_leaderboard__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, this.props.lobbyMatch && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_tv__WEBPACK_IMPORTED_MODULE_8__["default"], {
+        chessMatch: this.props.lobbyMatch
+      }), this.props.lobbyMatch && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_puzzle__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        chessMatch: this.props.lobbyMatch
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lichess_background__WEBPACK_IMPORTED_MODULE_1__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_side__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_table__WEBPACK_IMPORTED_MODULE_2__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_leaderboard__WEBPACK_IMPORTED_MODULE_3__["default"], {
         users: this.props.users
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_forum__WEBPACK_IMPORTED_MODULE_4__["default"], {
         comments: this.props.comments
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_blog__WEBPACK_IMPORTED_MODULE_5__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_support__WEBPACK_IMPORTED_MODULE_7__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_blog__WEBPACK_IMPORTED_MODULE_5__["default"], {
         blogs: this.props.blogs
       })));
     }
@@ -5227,7 +5454,8 @@ var mapStateToProps = function mapStateToProps(state) {
     comments: Object.values(state.entities.comments),
     blogs: Object.values(state.entities.blogs).slice(0, 3),
     currentUser: state.entities.users[state.session.username],
-    users: Object.values(state.entities.users)
+    users: Object.values(state.entities.users),
+    lobbyMatch: state.ui.lobbyMatch
   };
 };
 
@@ -5239,8 +5467,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     fetchBlogs: function fetchBlogs() {
       return dispatch(Object(_actions_blog_actions__WEBPACK_IMPORTED_MODULE_3__["fetchBlogs"])(1));
     },
-    fetchAMatch: function fetchAMatch() {
-      return dispatch(Object(_actions_match_actions__WEBPACK_IMPORTED_MODULE_4__["fetchAMatch"])(1));
+    fetchLobbyMatch: function fetchLobbyMatch() {
+      return dispatch(Object(_actions_match_actions__WEBPACK_IMPORTED_MODULE_4__["fetchLobbyMatch"])());
     },
     fetchUsers: function fetchUsers() {
       return dispatch(Object(_actions_users_actions__WEBPACK_IMPORTED_MODULE_5__["fetchUsers"])(1));
@@ -5345,9 +5573,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var LobbyLeaderboardTable = function LobbyLeaderboardTable(_ref) {
-  var users = _ref.users;
+  var users = _ref.users,
+      history = _ref.history;
   return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, users.map(function (user, i) {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      onClick: function onClick() {
+        return history.push("users/".concat(user.username));
+      },
       key: user.id,
       className: i % 2 === 0 ? "gray lobby-leader-row" : "white lobby-leader-row"
     }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
@@ -5364,7 +5596,39 @@ var LobbyLeaderboardTable = function LobbyLeaderboardTable(_ref) {
   }));
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (LobbyLeaderboardTable);
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["withRouter"])(LobbyLeaderboardTable));
+
+/***/ }),
+
+/***/ "./frontend/components/lobby/lobby_puzzle.jsx":
+/*!****************************************************!*\
+  !*** ./frontend/components/lobby/lobby_puzzle.jsx ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _chess_board_chess_thumbnail__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../chess_board/chess_thumbnail */ "./frontend/components/chess_board/chess_thumbnail.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
+
+
+
+var LobbyPuzzle = function LobbyPuzzle(_ref) {
+  var chessMatch = _ref.chessMatch;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "lobby-puzzle"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_chess_board_chess_thumbnail__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    chessMatch: chessMatch
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "lobby-puzzle-info"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Puzzle of the day"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Black to play"))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(LobbyPuzzle));
 
 /***/ }),
 
@@ -5389,19 +5653,19 @@ var LobbySide = function LobbySide() {
     className: "lobby-side-item",
     href: "https://www.linkedin.com/in/evans-shao-b76201139/"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    "class": "fab fa-linkedin-in"
+    className: "fab fa-linkedin-in"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "LinkedIn")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     target: "_blank",
     className: "lobby-side-item",
     href: "https://github.com/shaoevans"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    "class": "fab fa-github"
+    className: "fab fa-github"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Github")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
     target: "_blank",
     className: "lobby-side-item",
     href: "https://angel.co/evans-shao"
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-    "class": "fab fa-angellist"
+    className: "fab fa-angellist"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "AngelList")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     className: "lobby-side-info"
   }, "Evanschess is a free (really), libre, no-ads, individually produced clone of", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
@@ -5411,6 +5675,47 @@ var LobbySide = function LobbySide() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LobbySide);
+
+/***/ }),
+
+/***/ "./frontend/components/lobby/lobby_support.jsx":
+/*!*****************************************************!*\
+  !*** ./frontend/components/lobby/lobby_support.jsx ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var LobbySupport = function LobbySupport() {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "lobby-support"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "lobby-support-item"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-briefcase"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "lobby-support-info"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "lobby-support-info-header"
+  }, "Hire Me"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Like what you see?"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    target: "_blank",
+    href: "https://lichess.org/learn#/",
+    className: "lobby-support-item"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    className: "fas fa-book"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "lobby-support-info"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+    className: "lobby-support-info-header"
+  }, "Learn"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Become a chess god"))));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (LobbySupport);
 
 /***/ }),
 
@@ -5575,6 +5880,45 @@ var LobbyTableHeader = function LobbyTableHeader(_ref) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LobbyTableHeader);
+
+/***/ }),
+
+/***/ "./frontend/components/lobby/lobby_tv.jsx":
+/*!************************************************!*\
+  !*** ./frontend/components/lobby/lobby_tv.jsx ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _chess_board_chess_thumbnail__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../chess_board/chess_thumbnail */ "./frontend/components/chess_board/chess_thumbnail.jsx");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
+
+
+
+var LobbyTV = function LobbyTV(_ref) {
+  var chessMatch = _ref.chessMatch,
+      history = _ref.history;
+
+  var onClick = function onClick() {
+    history.push("/matches/".concat(chessMatch.id));
+  };
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    onClick: onClick,
+    className: "lobby-tv"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_chess_board_chess_thumbnail__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    chessMatch: chessMatch
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "lobby-tv-info"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, chessMatch.blackPlayerName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "vs"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, chessMatch.whitePlayerName)));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["withRouter"])(LobbyTV));
 
 /***/ }),
 
@@ -7338,6 +7682,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _chess_board_chess_thumbnail__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../chess_board/chess_thumbnail */ "./frontend/components/chess_board/chess_thumbnail.jsx");
+/* harmony import */ var _util_date_util__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../util/date_util */ "./frontend/util/date_util.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7355,6 +7701,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+
 
 
 
@@ -7401,7 +7749,10 @@ function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      var _this4 = this;
+
       var user = this.props.user;
+      var now = new Date();
 
       if (user) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -7473,7 +7824,37 @@ function (_React$Component) {
           to: "/"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "fas fa-fire"
-        }), " VIEW THE GAMES"))));
+        }), " VIEW THE GAMES")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", {
+          className: "user-match-index"
+        }, this.props.matches.map(function (match, i) {
+          var last = new Date(match.updatedAt);
+          var difference = Math.floor((now - last) / (1000 * 60));
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+            onClick: function onClick() {
+              return _this4.props.history.push("/matches/".concat(match.id));
+            },
+            key: match.id,
+            className: "user-match-index-item ".concat(i % 2 === 0 ? "even-match" : "odd-match")
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            className: "user-match-index-item-chess"
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_chess_board_chess_thumbnail__WEBPACK_IMPORTED_MODULE_2__["default"], {
+            chessMatch: match
+          })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            className: "user-match-index-item-info"
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            className: "user-match-index-item-info-header"
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+            className: "fas fa-snowplow"
+          }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+            className: "user-match-index-item-info-mode"
+          }, "Classical"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, Object(_util_date_util__WEBPACK_IMPORTED_MODULE_3__["dateMaker"])(difference)))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            className: "user-match-index-item-battle"
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, match.blackPlayerName), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+            className: "fas fa-fist-raised"
+          }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, match.whitePlayerName)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+            className: "user-match-index-item-movestring"
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, match.moveString.length > 10 ? "".concat(match.moveString.slice(0, 24), " ...") : match.moveString, " ", match.moveString.split(" ").length, " moves"))));
+        }))));
       } else {
         return null;
       }
@@ -7499,13 +7880,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _user_show__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./user_show */ "./frontend/components/user/user_show.jsx");
 /* harmony import */ var _actions_users_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./../../actions/users_actions */ "./frontend/actions/users_actions.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+
 
 
 
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
   return {
-    user: state.entities.users[ownProps.match.params.username]
+    user: state.entities.users[ownProps.match.params.username],
+    matches: Object.values(state.entities.matches).filter(function (match) {
+      return match.blackPlayerName === ownProps.match.params.username || match.WhitePlayerName === ownProps.match.params.username;
+    })
   };
 };
 
@@ -7517,7 +7903,7 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["connect"])(mapStateToProps, mapDispatchToProps)(_user_show__WEBPACK_IMPORTED_MODULE_1__["default"]));
+/* harmony default export */ __webpack_exports__["default"] = (Object(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["withRouter"])(Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["connect"])(mapStateToProps, mapDispatchToProps)(_user_show__WEBPACK_IMPORTED_MODULE_1__["default"])));
 
 /***/ }),
 
@@ -7709,6 +8095,36 @@ var ForumsReducer = function ForumsReducer() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (ForumsReducer);
+
+/***/ }),
+
+/***/ "./frontend/reducers/lobby_match_reducer.js":
+/*!**************************************************!*\
+  !*** ./frontend/reducers/lobby_match_reducer.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _actions_match_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions/match_actions */ "./frontend/actions/match_actions.js");
+
+
+var LobbyMatchReducer = function LobbyMatchReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+  Object.freeze(state);
+
+  switch (action.type) {
+    case _actions_match_actions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_LOBBY_MATCH"]:
+      return action.match;
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (LobbyMatchReducer);
 
 /***/ }),
 
@@ -7945,10 +8361,13 @@ var SessionReducer = function SessionReducer() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _modal_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modal_reducer */ "./frontend/reducers/modal_reducer.js");
+/* harmony import */ var _lobby_match_reducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lobby_match_reducer */ "./frontend/reducers/lobby_match_reducer.js");
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = (Object(redux__WEBPACK_IMPORTED_MODULE_0__["combineReducers"])({
-  modal: _modal_reducer__WEBPACK_IMPORTED_MODULE_1__["default"]
+  modal: _modal_reducer__WEBPACK_IMPORTED_MODULE_1__["default"],
+  lobbyMatch: _lobby_match_reducer__WEBPACK_IMPORTED_MODULE_2__["default"]
 }));
 
 /***/ }),
@@ -8159,8 +8578,10 @@ var dateMaker = function dateMaker(difference) {
     return "".concat(Math.floor(difference / 60), " hours ago");
   } else if (difference < 10080) {
     return "".concat(Math.floor(difference / 1440), " days ago");
+  } else if (difference < 43800) {
+    return "".concat(Math.floor(difference / 10080), " weeks ago");
   } else {
-    return "".concat(Math.floor(difference / 10080), " days ago");
+    return "".concat(Math.floor(difference / 43800), " months ago");
   }
 };
 
@@ -8259,7 +8680,7 @@ var updateComment = function updateComment(comment) {
 /*!*****************************************!*\
   !*** ./frontend/util/match_api_util.js ***!
   \*****************************************/
-/*! exports provided: fetchUserCurrentMatches, fetchUserPreviousMatches, fetchUserMatches, fetchAMatch, createMatch */
+/*! exports provided: fetchUserCurrentMatches, fetchUserPreviousMatches, fetchUserMatches, fetchAMatch, createMatch, fetchRandomMatch */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8269,6 +8690,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchUserMatches", function() { return fetchUserMatches; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchAMatch", function() { return fetchAMatch; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createMatch", function() { return createMatch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchRandomMatch", function() { return fetchRandomMatch; });
 var fetchUserCurrentMatches = function fetchUserCurrentMatches(userId) {
   return $.ajax({
     method: "GET",
@@ -8305,6 +8727,15 @@ var createMatch = function createMatch(match) {
     url: "/api/matches",
     data: {
       match: match
+    }
+  });
+};
+var fetchRandomMatch = function fetchRandomMatch() {
+  return $.ajax({
+    method: "GET",
+    url: "/api/matches",
+    data: {
+      random: true
     }
   });
 };
