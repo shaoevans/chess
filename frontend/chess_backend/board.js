@@ -40,7 +40,13 @@ class Board {
         const moveArr = moveString.split(" ");
         moveArr.forEach(move => {
             const movesArr = this.moveStringToMovePos(move)
-            this.movePiece(movesArr[0], movesArr[1]);
+            if (this.getPiece(movesArr[0]) instanceof Pieces.King) {
+                // move king
+                // move rook
+                console.log("this is a king")
+            } else {
+                this.movePiece(movesArr[0], movesArr[1]);
+            }
             this.turn.push(this.turn.shift());
         })
     }
@@ -212,19 +218,11 @@ class Board {
         this.grid[pos2[0]][pos2[1]] = piece;
         piece.position = pos2;
         this.grid[initialPos[0]][initialPos[1]] = new Pieces.NullPiece(initialPos, this);
-
+        piece.justMoved();
     }
 
     dupe() {
         return new Board(this.moveString);
-        // let result = [];
-        // for (let i = 0; i < 8; i++) {
-        //     result.push([]);
-        //     for (let j = 0; j < 8; j++) {
-        //         result[i].push(this.getPiece([i, j]).clone())
-        //     }
-        // }
-        // return result;
     }
 
 

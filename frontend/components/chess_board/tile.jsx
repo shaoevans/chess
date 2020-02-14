@@ -8,16 +8,20 @@ class Tile extends React.Component {
     }
 
     greenDot() {
-        if (this.props.validMove) {
+        if (this.props.validMove && this.props.currentTurn === this.props.pieceSelected.color) {
             return <i className="valid fas fa-circle"></i>
+        } else if (this.props.validMove) {
+            return <i className="valid2 fas fa-circle"></i>
         } else {
             return null;
         }
     }
 
     validTile() {
-        if (this.props.validMove) {
+        if (this.props.validMove && this.props.currentTurn === this.props.pieceSelected.color) {
             return "valid-tile";
+        } else if (this.props.validMove) {
+            return "valid-tile2"
         } else {
             return "";
         }
@@ -154,7 +158,7 @@ class Tile extends React.Component {
         const { piece, selectPiece, ind } = this.props
         if ((ind[0] + ind[1]) % 2 === 0) {
             return (
-                <li onClick={selectPiece(piece.position)} className={`odd-tile ${this.validTile()} ${this.isSelected()} ${this.isLastMovePrev()} ${this.isLastMoveAfter()} ${piece instanceof Pieces.King ? this.isInCheck() : null}`}>
+                <li onClick={selectPiece(piece.position, piece.color)} className={`odd-tile ${this.validTile()} ${this.isSelected()} ${this.isLastMovePrev()} ${this.isLastMoveAfter()} ${piece instanceof Pieces.King ? this.isInCheck() : null}`}>
                     {this.greenDot()}
                     {piece.render()}
                     {this.tileLabels()}
@@ -162,7 +166,7 @@ class Tile extends React.Component {
             )
         } else {
             return (
-                <li onClick={selectPiece(piece.position)} className={`even-tile ${this.validTile()} ${this.isSelected()} ${this.isLastMovePrev()} ${this.isLastMoveAfter()} ${piece instanceof Pieces.King ? this.isInCheck() : null}`}>
+                <li onClick={selectPiece(piece.position, piece.color)} className={`even-tile ${this.validTile()} ${this.isSelected()} ${this.isLastMovePrev()} ${this.isLastMoveAfter()} ${piece instanceof Pieces.King ? this.isInCheck() : null}`}>
                     {this.greenDot()}
                     {piece.render()}
                     {this.tileLabels()}

@@ -36,6 +36,7 @@ class Comment extends React.Component {
         const {comment, index, path, now, fetchUser} = this.props
         const last = new Date(comment.updatedAt);
         const difference = Math.floor((now - last)/(1000*60))
+        console.log(comment);
         return ( 
             <li className="comment-container">
                 <div id={index} className="comment-header">

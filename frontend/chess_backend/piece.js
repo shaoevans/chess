@@ -5,6 +5,7 @@ class Piece {
         this.position = position;
         this.board = board;
         this.color = color;
+        this.hasMoved = false;
     }   
 
     isValidPos(pos) {
@@ -28,7 +29,9 @@ class Piece {
         }
     }
 
-
+    justMoved() {
+        this.hasMoved = true;
+    }
 
     validMoves() {
         return this.moves().filter(move => {

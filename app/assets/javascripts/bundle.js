@@ -406,7 +406,7 @@ var playComputerModal = function playComputerModal() {
 /*!*********************************************!*\
   !*** ./frontend/actions/session_actions.js ***!
   \*********************************************/
-/*! exports provided: RECEIVE_CURRENT_USER, LOGOUT_CURRENT_USER, RECEIVE_SESSION_ERRORS, loginUser, logoutUser, signupUser */
+/*! exports provided: RECEIVE_CURRENT_USER, LOGOUT_CURRENT_USER, RECEIVE_SESSION_ERRORS, CLEAR_SESSION_ERRORS, loginUser, logoutUser, signupUser, clearSessionErrors */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -414,14 +414,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_CURRENT_USER", function() { return RECEIVE_CURRENT_USER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGOUT_CURRENT_USER", function() { return LOGOUT_CURRENT_USER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_SESSION_ERRORS", function() { return RECEIVE_SESSION_ERRORS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CLEAR_SESSION_ERRORS", function() { return CLEAR_SESSION_ERRORS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginUser", function() { return loginUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logoutUser", function() { return logoutUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "signupUser", function() { return signupUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "clearSessionErrors", function() { return clearSessionErrors; });
 /* harmony import */ var _util_session_api_util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../util/session_api_util */ "./frontend/util/session_api_util.js");
 
 var RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER';
 var LOGOUT_CURRENT_USER = 'LOGOUT_CURRENT_USER';
 var RECEIVE_SESSION_ERRORS = 'RECEIVE_SESSION_ERRORS';
+var CLEAR_SESSION_ERRORS = "CLEAR_SESSION_ERRORS";
 
 var receiveCurrentUser = function receiveCurrentUser(currentUser) {
   return {
@@ -440,6 +443,12 @@ var receiveErrors = function receiveErrors(errors) {
   return {
     type: RECEIVE_SESSION_ERRORS,
     errors: errors
+  };
+};
+
+var clearErrors = function clearErrors() {
+  return {
+    type: CLEAR_SESSION_ERRORS
   };
 };
 
@@ -466,6 +475,11 @@ var signupUser = function signupUser(formUser) {
     }, function (errors) {
       return dispatch(receiveErrors(errors.responseJSON));
     });
+  };
+};
+var clearSessionErrors = function clearSessionErrors() {
+  return function (dispatch) {
+    return dispatch(clearErrors());
   };
 };
 
@@ -737,7 +751,13 @@ function () {
       moveArr.forEach(function (move) {
         var movesArr = _this.moveStringToMovePos(move);
 
-        _this.movePiece(movesArr[0], movesArr[1]);
+        if (_this.getPiece(movesArr[0]) instanceof _pieces__WEBPACK_IMPORTED_MODULE_0__["King"]) {
+          // move king
+          // move rook
+          console.log("this is a king");
+        } else {
+          _this.movePiece(movesArr[0], movesArr[1]);
+        }
 
         _this.turn.push(_this.turn.shift());
       });
@@ -922,18 +942,12 @@ function () {
       this.grid[pos2[0]][pos2[1]] = piece;
       piece.position = pos2;
       this.grid[initialPos[0]][initialPos[1]] = new _pieces__WEBPACK_IMPORTED_MODULE_0__["NullPiece"](initialPos, this);
+      piece.justMoved();
     }
   }, {
     key: "dupe",
     value: function dupe() {
-      return new Board(this.moveString); // let result = [];
-      // for (let i = 0; i < 8; i++) {
-      //     result.push([]);
-      //     for (let j = 0; j < 8; j++) {
-      //         result[i].push(this.getPiece([i, j]).clone())
-      //     }
-      // }
-      // return result;
+      return new Board(this.moveString);
     }
   }, {
     key: "otherColor",
@@ -989,6 +1003,7 @@ function () {
     this.position = position;
     this.board = board;
     this.color = color;
+    this.hasMoved = false;
   }
 
   _createClass(Piece, [{
@@ -1009,6 +1024,11 @@ function () {
       } else {
         return "black";
       }
+    }
+  }, {
+    key: "justMoved",
+    value: function justMoved() {
+      this.hasMoved = true;
     }
   }, {
     key: "validMoves",
@@ -1381,7 +1401,7 @@ function (_Piece5) {
       var diag1 = this.growUnblockedMovesInDir(1, 1);
       var diag2 = this.growUnblockedMovesInDir(1, -1);
       var diag3 = this.growUnblockedMovesInDir(-1, -1);
-      var diag4 = this.growUnblockedMovesInDir(1, 1);
+      var diag4 = this.growUnblockedMovesInDir(-1, 1);
       var diagonals = [diag1[diag1.length - 1], diag2[diag2.length - 1], diag3[diag3.length - 1], diag4[diag4.length - 1]];
 
       for (var i = 0; i < diagonals.length; i++) {
@@ -1446,6 +1466,35 @@ function (_Piece5) {
       return [[2, 1], [2, -1], [-2, 1], [-2, -1], [1, 2], [1, -2], [-1, 2], [-1, -2]];
     }
   }, {
+    key: "castle",
+    value: function castle() {
+      var results = [];
+
+      if (!this.hasMoved && !this.inCheck()) {
+        var horiz1 = this.growUnblockedMovesInDir(0, -1);
+        var horiz2 = this.growUnblockedMovesInDir(0, 1);
+
+        if (horiz1.length) {
+          var hRook = this.board.getPiece(horiz1[horiz1.length - 1]);
+
+          if (hRook instanceof Rook && !hRook.hasMoved && hRook.color === this.color) {
+            results.push([this.position[0], this.position[1] - 2]);
+          }
+        }
+
+        if (horiz2.length) {
+          var aRook = this.board.getPiece(horiz2[horiz2.length - 1]);
+          console.log(aRook);
+
+          if (aRook instanceof Rook && !aRook.hasMoved && aRook.color === this.color) {
+            results.push([this.position[0], this.position[1] + 2]);
+          }
+        }
+      }
+
+      return results;
+    }
+  }, {
     key: "render",
     value: function render() {
       if (this.color === "black") {
@@ -1461,7 +1510,7 @@ function (_Piece5) {
   }, {
     key: "moves",
     value: function moves() {
-      return this.steppableMoves(this.moveDirsArr());
+      return this.steppableMoves(this.moveDirsArr()).concat(this.castle());
     }
   }, {
     key: "clone",
@@ -1488,15 +1537,6 @@ function (_Piece6) {
   }
 
   _createClass(Pawn, [{
-    key: "atStartRow",
-    value: function atStartRow() {
-      if (this.color === "black") {
-        return this.position[0] === 6;
-      } else {
-        return this.position[0] === 1;
-      }
-    }
-  }, {
     key: "forwardDir",
     value: function forwardDir() {
       if (this.color === "black") {
@@ -1519,6 +1559,15 @@ function (_Piece6) {
       return positionValues[this.position[0]][this.position[1]] * this.value;
     }
   }, {
+    key: "justMoved",
+    value: function justMoved() {
+      this.hasMoved = true;
+
+      if (this.position[0] === 0 && this.color === "black" || this.position[0] === 7 && this.color === "white") {
+        this.board.grid[this.position[0]][this.position[1]] = new Queen(this.position, this.board, this.color);
+      }
+    }
+  }, {
     key: "forwardSteps",
     value: function forwardSteps() {
       var x = this.position[0];
@@ -1527,7 +1576,7 @@ function (_Piece6) {
 
       if (!(this.board.getPiece([x + forward, y]) instanceof NullPiece)) {
         return [];
-      } else if (this.atStartRow() && this.board.getPiece([x + forward + forward, y]) instanceof NullPiece) {
+      } else if (!this.hasMoved && this.board.getPiece([x + forward + forward, y]) instanceof NullPiece) {
         return [[x + forward, y], [x + forward + forward, y]];
       } else {
         return [[x + forward, y]];
@@ -2736,7 +2785,7 @@ function (_React$Component) {
     }
   }, {
     key: "selectPiece",
-    value: function selectPiece(pos) {
+    value: function selectPiece(pos, color) {
       var _this5 = this;
 
       return function (e) {
@@ -2746,10 +2795,10 @@ function (_React$Component) {
 
         var moveString = _this5.state.moveString;
 
-        if (!_this5.state.pieceSelected && piece.color === _this5.state.board.turn[0] && _this5.convertTurnToPlayer() === _this5.props.currentUser.username) {
+        if (!_this5.state.pieceSelected && _this5.currentUserColor() === color) {
           validMoves = piece.validMoves();
         } else {
-          if (Object(_util_array_util__WEBPACK_IMPORTED_MODULE_4__["isMoveInValidMoves"])(_this5.state.validMoves, pos)) {
+          if (Object(_util_array_util__WEBPACK_IMPORTED_MODULE_4__["isMoveInValidMoves"])(_this5.state.validMoves, pos) && _this5.convertTurnToPlayer() === _this5.props.currentUser.username) {
             var move1 = _this5.state.pieceSelected.position;
             var move2 = pos;
             App.cable.subscriptions.subscriptions[0].speak({
@@ -2785,6 +2834,15 @@ function (_React$Component) {
         return this.props.chessMatch.blackPlayerName;
       } else {
         return this.props.chessMatch.whitePlayerName;
+      }
+    }
+  }, {
+    key: "currentUserColor",
+    value: function currentUserColor() {
+      if (this.props.currentUser.username === this.props.chessMatch.whitePlayerName) {
+        return "white";
+      } else {
+        return "black";
       }
     }
   }, {
@@ -2832,6 +2890,7 @@ function (_React$Component) {
           result.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_tile__WEBPACK_IMPORTED_MODULE_2__["default"], {
             validMove: true,
             orientation: "white",
+            currentTurn: this.state.board.turn[0],
             lastMoveAfter: lastMoveAfter,
             lastMovePrev: lastMovePrev,
             pieceSelected: pieceSelected,
@@ -2844,6 +2903,7 @@ function (_React$Component) {
           result.push(react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_tile__WEBPACK_IMPORTED_MODULE_2__["default"], {
             validMove: false,
             orientation: "white",
+            currentTurn: this.state.board.turn[0],
             lastMoveAfter: lastMoveAfter,
             lastMovePrev: lastMovePrev,
             pieceSelected: pieceSelected,
@@ -2874,11 +2934,19 @@ function (_React$Component) {
           className: "fas fa-times"
         }));
       } else {
-        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
-          onClick: this.undoMove
-        }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
-          className: "fas fa-undo"
-        }));
+        if (!this.state.pending) {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+            disabled: true
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+            className: "fas fa-undo"
+          }));
+        } else {
+          return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+            onClick: this.undoMove
+          }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+            className: "fas fa-undo"
+          }));
+        }
       }
     }
   }, {
@@ -2918,6 +2986,7 @@ function (_React$Component) {
                 lastMovePrev: lastMovePrev,
                 pieceSelected: pieceSelected,
                 selectPiece: _this6.selectPiece,
+                currentTurn: _this6.state.board.turn[0],
                 ind: [i, j],
                 key: j,
                 piece: board.getPiece([i, j])
@@ -2925,6 +2994,7 @@ function (_React$Component) {
             } else {
               return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_tile__WEBPACK_IMPORTED_MODULE_2__["default"], {
                 validMove: false,
+                currentTurn: _this6.state.board.turn[0],
                 orientation: "black",
                 lastMoveAfter: lastMoveAfter,
                 lastMovePrev: lastMovePrev,
@@ -3119,9 +3189,13 @@ function (_React$Component) {
   _createClass(Tile, [{
     key: "greenDot",
     value: function greenDot() {
-      if (this.props.validMove) {
+      if (this.props.validMove && this.props.currentTurn === this.props.pieceSelected.color) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
           className: "valid fas fa-circle"
+        });
+      } else if (this.props.validMove) {
+        return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+          className: "valid2 fas fa-circle"
         });
       } else {
         return null;
@@ -3130,8 +3204,10 @@ function (_React$Component) {
   }, {
     key: "validTile",
     value: function validTile() {
-      if (this.props.validMove) {
+      if (this.props.validMove && this.props.currentTurn === this.props.pieceSelected.color) {
         return "valid-tile";
+      } else if (this.props.validMove) {
+        return "valid-tile2";
       } else {
         return "";
       }
@@ -3327,12 +3403,12 @@ function (_React$Component) {
 
       if ((ind[0] + ind[1]) % 2 === 0) {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-          onClick: selectPiece(piece.position),
+          onClick: selectPiece(piece.position, piece.color),
           className: "odd-tile ".concat(this.validTile(), " ").concat(this.isSelected(), " ").concat(this.isLastMovePrev(), " ").concat(this.isLastMoveAfter(), " ").concat(piece instanceof _chess_backend_pieces__WEBPACK_IMPORTED_MODULE_1__["King"] ? this.isInCheck() : null)
         }, this.greenDot(), piece.render(), this.tileLabels());
       } else {
         return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
-          onClick: selectPiece(piece.position),
+          onClick: selectPiece(piece.position, piece.color),
           className: "even-tile ".concat(this.validTile(), " ").concat(this.isSelected(), " ").concat(this.isLastMovePrev(), " ").concat(this.isLastMoveAfter(), " ").concat(piece instanceof _chess_backend_pieces__WEBPACK_IMPORTED_MODULE_1__["King"] ? this.isInCheck() : null)
         }, this.greenDot(), piece.render(), this.tileLabels());
       }
@@ -3415,7 +3491,7 @@ function (_React$Component) {
         className: "errors-header-info"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Return to ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         to: "/"
-      }, "the homepage ")), "or play this mini-game"))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      }, "the homepage "))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         id: "game"
       }));
     }
@@ -3530,6 +3606,7 @@ function (_React$Component) {
           fetchUser = _this$props.fetchUser;
       var last = new Date(comment.updatedAt);
       var difference = Math.floor((now - last) / (1000 * 60));
+      console.log(comment);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         className: "comment-container"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -3677,7 +3754,7 @@ function (_React$Component) {
         className: "subforum-table-title"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
         className: "fas fa-comments"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Lichess Forum")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Evanschess Forum")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
         onSubmit: this.changeSearchQuery
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
         className: "forum-search-bar",
@@ -5001,8 +5078,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lobby_leaderboard__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lobby_leaderboard */ "./frontend/components/lobby/lobby_leaderboard.jsx");
 /* harmony import */ var _lobby_forum__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./lobby_forum */ "./frontend/components/lobby/lobby_forum.jsx");
 /* harmony import */ var _lobby_blog__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./lobby_blog */ "./frontend/components/lobby/lobby_blog.jsx");
-/* harmony import */ var _chess_board_chess_board__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../chess_board/chess_board */ "./frontend/components/chess_board/chess_board.jsx");
-/* harmony import */ var _actions_match_actions__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../actions/match_actions */ "./frontend/actions/match_actions.js");
+/* harmony import */ var _lobby_side__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./lobby_side */ "./frontend/components/lobby/lobby_side.jsx");
+/* harmony import */ var _chess_board_chess_board__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../chess_board/chess_board */ "./frontend/components/chess_board/chess_board.jsx");
+/* harmony import */ var _actions_match_actions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../actions/match_actions */ "./frontend/actions/match_actions.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -5020,6 +5098,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -5053,7 +5132,7 @@ function (_React$Component) {
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "lobby"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lichess_background__WEBPACK_IMPORTED_MODULE_1__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_table__WEBPACK_IMPORTED_MODULE_2__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_leaderboard__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lichess_background__WEBPACK_IMPORTED_MODULE_1__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_side__WEBPACK_IMPORTED_MODULE_6__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_table__WEBPACK_IMPORTED_MODULE_2__["default"], null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_leaderboard__WEBPACK_IMPORTED_MODULE_3__["default"], {
         users: this.props.users
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_lobby_forum__WEBPACK_IMPORTED_MODULE_4__["default"], {
         comments: this.props.comments
@@ -5286,6 +5365,52 @@ var LobbyLeaderboardTable = function LobbyLeaderboardTable(_ref) {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (LobbyLeaderboardTable);
+
+/***/ }),
+
+/***/ "./frontend/components/lobby/lobby_side.jsx":
+/*!**************************************************!*\
+  !*** ./frontend/components/lobby/lobby_side.jsx ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+var LobbySide = function LobbySide() {
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "lobby-side"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    target: "_blank",
+    className: "lobby-side-item",
+    href: "https://www.linkedin.com/in/evans-shao-b76201139/"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    "class": "fab fa-linkedin-in"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "LinkedIn")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    target: "_blank",
+    className: "lobby-side-item",
+    href: "https://github.com/shaoevans"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    "class": "fab fa-github"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "Github")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    target: "_blank",
+    className: "lobby-side-item",
+    href: "https://angel.co/evans-shao"
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("i", {
+    "class": "fab fa-angellist"
+  }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, "AngelList")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: "lobby-side-info"
+  }, "Evanschess is a free (really), libre, no-ads, individually produced clone of", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
+    target: "_blank",
+    href: "http://www.lichess.org"
+  }, " lichess.org ")));
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (LobbySide);
 
 /***/ }),
 
@@ -6543,7 +6668,7 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         href: "#",
         className: "lichess-logo"
-      }, "lichess", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, ".org")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
+      }, "evanschess", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, ".org")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", {
         className: "left-nav-dropdown-item"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"], {
         className: "left-nav-button",
@@ -6793,6 +6918,11 @@ function (_React$Component) {
       });
     }
   }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.props.clearSessionErrors();
+    }
+  }, {
     key: "handleDemoUser",
     value: function handleDemoUser(num) {
       var _this4 = this;
@@ -6943,6 +7073,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     login: function login(formUser) {
       return dispatch(Object(_actions_session_actions__WEBPACK_IMPORTED_MODULE_2__["loginUser"])(formUser));
+    },
+    clearSessionErrors: function clearSessionErrors() {
+      return dispatch(Object(_actions_session_actions__WEBPACK_IMPORTED_MODULE_2__["clearSessionErrors"])());
     }
   };
 };
@@ -7085,6 +7218,11 @@ function (_React$Component) {
       }
     }
   }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.props.clearSessionErrors();
+    }
+  }, {
     key: "render",
     value: function render() {
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
@@ -7177,6 +7315,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     signup: function signup(formUser) {
       return dispatch(Object(_actions_session_actions__WEBPACK_IMPORTED_MODULE_2__["signupUser"])(formUser));
+    },
+    clearSessionErrors: function clearSessionErrors() {
+      return dispatch(Object(_actions_session_actions__WEBPACK_IMPORTED_MODULE_2__["clearSessionErrors"])());
     }
   };
 };
@@ -7742,6 +7883,9 @@ var SessionErrorsReducer = function SessionErrorsReducer() {
     case _actions_session_actions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_SESSION_ERRORS"]:
       return action.errors;
 
+    case _actions_session_actions__WEBPACK_IMPORTED_MODULE_0__["CLEAR_SESSION_ERRORS"]:
+      return [];
+
     default:
       return state;
   }
@@ -7879,7 +8023,6 @@ var configureStore = function configureStore() {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (configureStore);
-"";
 
 /***/ }),
 

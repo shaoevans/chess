@@ -34,7 +34,7 @@ class ForumIndex extends React.Component {
                 <div className="forum-table-header">
                     <div className="subforum-table-title">
                         <i className="fas fa-comments"></i>
-                        <span>Lichess Forum</span>
+                        <span>Evanschess Forum</span>
                     </div>
                     <form onSubmit={this.changeSearchQuery}> 
                         <input className="forum-search-bar" type="text" placeholder="Search" onChange={this.handleType}/>

@@ -28,6 +28,10 @@ class LoginForm extends React.Component {
             .then(() => this.props.history.replace("/"))
     }
 
+    componentWillUnmount() {
+        this.props.clearSessionErrors();
+    }
+
     handleDemoUser(num) {
         return (e) => {
             if (num === 1) {

@@ -9,6 +9,10 @@ class Api::UsersController < ApplicationController
             render json: @user.errors.full_messages, status: 404
         end
     end
+    
+    def top_ten
+        
+    end
 
     def show
         @user = User.find_by(username: params[:id])

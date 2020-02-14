@@ -25,7 +25,6 @@ class ErrorPage extends React.Component {
                         <span className="errors-header-error">PAGE NOT FOUND!</span>
                         <span className="errors-header-info">
                             <p>Return to <Link to="/">the homepage </Link></p> 
-                            or play this mini-game
                         </span>
                     </div>
                 </div>

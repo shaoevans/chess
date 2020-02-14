@@ -6,11 +6,12 @@ class QueueChannel < ApplicationCable::Channel
   end
 
   def queue(data)
-    if $redis.get("a") != nil
-      black_player_id = $redis.get("a").to_i
+    if $redis["a"] != nil
+      black_player_id = $redis["a"]
+      # black_player_id = $redis.get("a").to_i
       user = User.find_by(username: data['playerUsername'])
       white_player_id = user.id
-      $redis.del("a")
+      $redis.delete("a")
       if black_player_id != white_player_id 
         match = Match.create(match_type: "classical", black_player_id: black_player_id, white_player_id: white_player_id)
         socket = { matchId: match.id }
@@ -21,12 +22,12 @@ class QueueChannel < ApplicationCable::Channel
 
     else  
       user = User.find_by(username: data['playerUsername'])
-      $redis.set("a", user.id)
+      $redis["a"] = user.id
     end
   end
 
   def dequeue(data)
-    $redis.del("a")
+    $redis.delete("a")
   end
 
   def unsubscribed

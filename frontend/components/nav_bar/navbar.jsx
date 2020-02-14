@@ -252,7 +252,7 @@ class NavBar extends React.Component {
         return (
             <nav className="nav-bar">
                 <ul className="left-nav">
-                        <a href="#" className="lichess-logo">lichess
+                        <a href="#" className="lichess-logo">evanschess
                             <span>.org</span>
                         </a>
                     <li className="left-nav-dropdown-item">

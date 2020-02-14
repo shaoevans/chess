@@ -270,7 +270,7 @@ export class King extends Piece {
         const diag1 = this.growUnblockedMovesInDir(1, 1);
         const diag2 = this.growUnblockedMovesInDir(1, -1);
         const diag3 = this.growUnblockedMovesInDir(-1, -1);
-        const diag4 = this.growUnblockedMovesInDir(1, 1);
+        const diag4 = this.growUnblockedMovesInDir(-1, 1);
         const diagonals = [
             diag1[diag1.length-1],
             diag2[diag2.length-1],
@@ -354,6 +354,28 @@ export class King extends Piece {
         
     }
 
+    castle() {
+        const results = [];
+        if (!this.hasMoved && !this.inCheck()) {
+            const horiz1 = this.growUnblockedMovesInDir(0, -1);
+            const horiz2 = this.growUnblockedMovesInDir(0, 1);
+            if (horiz1.length) {
+                const hRook = this.board.getPiece(horiz1[horiz1.length-1]);
+                if (hRook instanceof Rook && !hRook.hasMoved && hRook.color === this.color) {
+                    results.push([this.position[0], this.position[1]-2])
+                }
+            }
+            if (horiz2.length) {
+                const aRook = this.board.getPiece(horiz2[horiz2.length-1]);
+                console.log(aRook);
+                if (aRook instanceof Rook && !aRook.hasMoved && aRook.color === this.color) {
+                    results.push([this.position[0], this.position[1]+2])
+                }
+            }
+        }
+        return results;
+    }
+
     render() {
         if (this.color === "black") {
             return <i className='black-piece fas fa-chess-king'></i>
@@ -363,7 +385,7 @@ export class King extends Piece {
     }
 
     moves() {
-        return this.steppableMoves(this.moveDirsArr())
+        return this.steppableMoves(this.moveDirsArr()).concat(this.castle());
     }
 
     clone() {
@@ -377,14 +399,6 @@ export class Pawn extends Piece{
     constructor(position, board, color) {
         super(position, board, color)
         this.value = 10;
-    }
-
-    atStartRow() {
-        if (this.color === "black") {
-            return (this.position[0] === 6);
-        } else {
-            return (this.position[0] === 1);
-        }
     }
 
     forwardDir() {
@@ -423,6 +437,13 @@ export class Pawn extends Piece{
         return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
+    justMoved() {
+        this.hasMoved = true;
+        if ((this.position[0] === 0 && this.color === "black") || (this.position[0] === 7 && this.color === "white")) {
+            this.board.grid[this.position[0]][this.position[1]] = new Queen(this.position, this.board, this.color);
+        }
+    }
+
 
     forwardSteps() {
         const x = this.position[0];
@@ -430,7 +451,7 @@ export class Pawn extends Piece{
         const forward = this.forwardDir();
         if (!(this.board.getPiece([x + forward, y]) instanceof NullPiece)) {
             return [];
-        } else if (this.atStartRow() && (this.board.getPiece([x + forward + forward, y]) instanceof NullPiece)) {
+        } else if (!this.hasMoved && (this.board.getPiece([x + forward + forward, y]) instanceof NullPiece)) {
             return [[x + forward, y],[x + forward + forward, y]];
         } else {
             return [[x + forward, y]]

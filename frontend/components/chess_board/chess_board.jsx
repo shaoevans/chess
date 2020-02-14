@@ -146,15 +146,15 @@ class ChessBoard extends React.Component {
         }
     }
 
-    selectPiece(pos) {
+    selectPiece(pos, color) {
         return (e) => {
             let validMoves;
             let piece = this.state.board.getPiece(pos);
             let moveString = this.state.moveString;
-            if (!this.state.pieceSelected && (piece.color === this.state.board.turn[0]) && (this.convertTurnToPlayer() === this.props.currentUser.username)) {
+            if (!this.state.pieceSelected && this.currentUserColor() === color) {
                 validMoves = piece.validMoves();
             } else {
-                if (isMoveInValidMoves(this.state.validMoves, pos)) {
+                if (isMoveInValidMoves(this.state.validMoves, pos) && (this.convertTurnToPlayer() === this.props.currentUser.username)) {
                     const move1 = this.state.pieceSelected.position;
                     const move2 = pos;
                     App.cable.subscriptions.subscriptions[0].speak({ matchId: this.props.chessMatch.id, move: this.moveToString(move1, move2) })
@@ -183,6 +183,14 @@ class ChessBoard extends React.Component {
             return this.props.chessMatch.blackPlayerName;
         } else {
             return this.props.chessMatch.whitePlayerName;
+        }
+    }
+
+    currentUserColor() {
+        if (this.props.currentUser.username === this.props.chessMatch.whitePlayerName) {
+            return "white";
+        } else {
+            return "black";
         }
     }
 
@@ -222,9 +230,27 @@ class ChessBoard extends React.Component {
         const result = []
         for (let j = 7; j >= 0; j--) {
             if (isMoveInValidMoves(this.state.validMoves, [i, j])) {
-                result.push(<Tile validMove={true} orientation="white" lastMoveAfter={lastMoveAfter} lastMovePrev={lastMovePrev} pieceSelected={pieceSelected} selectPiece={this.selectPiece} ind={[i, j]} key={j} piece={board.getPiece([i, j])}/>)
+                result.push(<Tile validMove={true} 
+                    orientation="white"  
+                    currentTurn={this.state.board.turn[0]}
+                    lastMoveAfter={lastMoveAfter} 
+                    lastMovePrev={lastMovePrev} 
+                    pieceSelected={pieceSelected}
+                    selectPiece={this.selectPiece} 
+                    ind={[i, j]} 
+                    key={j} 
+                    piece={board.getPiece([i, j])}/>)
             } else {
-                result.push(<Tile validMove={false} orientation="white" lastMoveAfter={lastMoveAfter} lastMovePrev={lastMovePrev} pieceSelected={pieceSelected} selectPiece={this.selectPiece} ind={[i, j]} key={j} piece={board.getPiece([i, j])}/>)
+                result.push(<Tile validMove={false} 
+                    orientation="white" 
+                    currentTurn={this.state.board.turn[0]} 
+                    lastMoveAfter={lastMoveAfter} 
+                    lastMovePrev={lastMovePrev} 
+                    pieceSelected={pieceSelected} 
+                    selectPiece={this.selectPiece} 
+                    ind={[i, j]} 
+                    key={j} 
+                    piece={board.getPiece([i, j])}/>)
             }
         }
         return (
@@ -246,7 +272,12 @@ class ChessBoard extends React.Component {
         if (this.state.moveString === "") {
             return <button><i className="fas fa-times"></i></button>
         } else {
-            return <button onClick={this.undoMove}><i className="fas fa-undo"></i></button>
+            if (!this.state.pending) {
+                return <button disabled><i className="fas fa-undo"></i></button>
+
+            } else {
+                return <button onClick={this.undoMove}><i className="fas fa-undo"></i></button>
+            }
         }
     }
 
@@ -275,11 +306,13 @@ class ChessBoard extends React.Component {
                                     lastMovePrev={lastMovePrev} 
                                     pieceSelected={pieceSelected} 
                                     selectPiece={this.selectPiece} 
+                                    currentTurn={this.state.board.turn[0]}
                                     ind={[i, j]} 
                                     key={j} 
                                     piece={board.getPiece([i, j])}/>
                                 } else {
                                     return <Tile validMove={false} 
+                                    currentTurn={this.state.board.turn[0]}
                                     orientation="black" 
                                     lastMoveAfter={lastMoveAfter} 
                                     lastMovePrev={lastMovePrev} 
