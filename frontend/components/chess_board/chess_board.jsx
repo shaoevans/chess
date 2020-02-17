@@ -20,6 +20,7 @@ class ChessBoard extends React.Component {
             pending: this.props.chessMatch ? this.props.chessMatch.pending : true
             // pending: false
         };
+        window.board = this.state.board;
         this.selectPiece = this.selectPiece.bind(this);
         this.undoMove = this.undoMove.bind(this);
         this.checkAiPlayer = this.checkAiPlayer.bind(this);
@@ -128,7 +129,7 @@ class ChessBoard extends React.Component {
 
     checkAiPlayer() {
         if (this.props.currentUser.username === this.convertTurnToOtherPlayer() && this.convertTurnToPlayer() === "ai_player_0") {
-            const aiPlayer = new AIPlayer(this.state.board, this.state.board.turn[0]);
+            const aiPlayer = new AIPlayer(this.state.board, this.state.board.turn[0], this.state.moveString);
             const aiMove = aiPlayer.getMove0()
             const move1 = aiMove[0];
             const move2 = aiMove[1];
@@ -136,7 +137,7 @@ class ChessBoard extends React.Component {
                 App.cable.subscriptions.subscriptions[0].speak({ matchId: this.props.chessMatch.id, move: this.moveToString(move1, move2) }),
                 1000)
         } else if (this.props.currentUser.username === this.convertTurnToOtherPlayer() && this.convertTurnToPlayer() === "ai_player_1") {
-            const aiPlayer = new AIPlayer(this.state.board, this.state.board.turn[0]);
+            const aiPlayer = new AIPlayer(this.state.board, this.state.board.turn[0], this.state.moveString);
             const aiMove = aiPlayer.getMove1()
             const move1 = aiMove[0];
             const move2 = aiMove[1];
@@ -150,6 +151,7 @@ class ChessBoard extends React.Component {
         return (e) => {
             let validMoves;
             let piece = this.state.board.getPiece(pos);
+            piece.getPositionValue();
             let moveString = this.state.moveString;
             if (!this.state.pieceSelected && this.currentUserColor() === color) {
                 validMoves = piece.validMoves();

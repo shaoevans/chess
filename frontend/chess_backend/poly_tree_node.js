@@ -2,26 +2,18 @@ class PolyTreeNode {
     constructor(board, color, levels, parent) {
         this.children = [];
         this.board = board;
-        this.Color = color;
+        this.color = color;
         this.levels = levels;
         this.parent = parent;
 
     }
 
-    getBoardValue(currentMin) {
-        if (this.levels === 0) {
-            const value = 0;
-            this.board.getPieces(this.color).forEach(piece => {
-                value += piece.getPositionValue();
-            })
-            return value;
-        } else {
-            this.addChildren();
-
-            this.getMinChildrenValue(currentMin)
-        }
+    getBoardValue() {
+        return this.board.getBoardValue(this.board.turn[0]);
     }
 
+    // if level is 0, evaluate heuristic score for every node
+    // if level is >0, evaluate min or max score for children
     dupe() {
         let result = [];
         for (let i = 0; i < 8; i++) {
@@ -35,7 +27,7 @@ class PolyTreeNode {
 
     addChildren() {
         const validMoves = []
-        this.board.getPieces(this.color).forEach(piece => {
+        this.board.getPieces(this.board.turn[0]).forEach(piece => {
             piece.validMoves.forEach(move => {
                 validMoves.push([piece.position, move])
             })
@@ -43,75 +35,33 @@ class PolyTreeNode {
         validMoves.forEach(move => {
             let dupedBoard = this.dupe();
             dupedBoard.movePiece(move[0], move[1]);
-            this.children.push(new PolyTreeNode(dupedBoard, this.color, this.otherColor, levels-1, ))
+            this.children.push(new PolyTreeNode(dupedBoard, this.color, this.otherColor, this.level - 1, ))
         })
     }
 
-    getMinChildrenValue(currentMin) {
-        let max;
-        this.children.forEach(child => {
-            let value = child.getBoardValue(currentMin);
-            if (currentMin && value < currentMin) {
-                return;
-            } else {
-                if (!max || value > max) {
-                    max = value;
-                }
-            }
-        })
-        return max;
+    getMinChildrenValue() {
+        if (this.level === 0) {
+            return this.getBoardValue();
+        } else {
+            this.addChildren();
+            return this.getMaxChildrenValue();
+        }
+    }
+    
+    getMaxChildrenValue() {
+        if (this.level === 0) {
+            return this.getBoardValue();
+        } else {
+            this.addChildren();
+            return this.getMinChildrenValue();
+        }
     }
 
 }
 
 export default PolyTreeNode;
 
-// class PolyTreeNode
-//     attr_reader :parent, :children, :value
-//     def initialize(value)
-//         @parent = nil
-//         @children = []
-//         @value = value
-//     end
 
-// def children
-//     result = []
-//     3.times do |i|
-//       3.times do |j|
-//         if @board.empty?([i,j])
-//           duped_board = @board.dup
-//           duped_board[[i,j]] = @next_mover_mark
-//           result << TicTacToeNode.new(duped_board, self.other_mark, [i, j])
-//         end
-//       end
-//     end
-//     result
-//   end
-// end
-
-
-
-
-
-//     def dfs(value)
-//         return self if @value == value
-//         @children.each do |child|
-//             search_result = child.dfs(value)
-//             return search_result if !search_result.nil?
-//         end 
-//         nil
-//     end
-
-//     def bfs(value)
-//         queue = [self]
-//         until queue.empty?
-//             node = queue.shift
-//             return node if node.value == value
-//             queue += node.children
-//         end
-//         nil
-//     end
-// end
 
 
 

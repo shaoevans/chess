@@ -20,9 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         store = configureStore();
     }
-    window.Board = new Board();
-    window.AIPlayer1 = new AIPlayer(window.Board, "black")
-    window.AIPlayer2 = new AIPlayer(window.Board, "white")
+    // window.Board = new Board();
     window.getState = store.getState;
 
     let oldRoot = document.getElementById("root")

@@ -8,10 +8,10 @@ class PlayComputerForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            blackPlayerId: this.props.currentUser.id,
+            whitePlayerId: this.props.currentUser.id,
             player2Name: "ai_player_0",
             matchType: "classical",
-            whitePlayerId: null
+            blackPlayerId: null
         }
         this.setLevel = this.setLevel.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);

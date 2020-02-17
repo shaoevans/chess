@@ -8,25 +8,11 @@ class LobbyTable extends React.Component {
     constructor(props) {
         super(props)
         this.ensureLoggedIn = this.ensureLoggedIn.bind(this);
-        this.createBotMatch = this.createBotMatch.bind(this);
     }
 
     ensureLoggedIn() {
         if (this.props.currentUser) {
             this.props.createGameModal();
-        } else {
-            this.props.history.push("/login");
-        }
-    }
-
-    createBotMatch() {
-        if (this.props.currentUser) {
-            this.props.createMatch({
-                blackPlayerId: this.props.currentUser.id,
-                player2Name: "ai_player_0",
-                matchType: "classical",
-                whitePlayerId: null
-            }).then(match => this.props.history.push(`matches/${match.match.id}`))
         } else {
             this.props.history.push("/login");
         }

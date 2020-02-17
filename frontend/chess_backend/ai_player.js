@@ -1,10 +1,12 @@
 import PolyTreeNode from "./poly_tree_node";
+import Board from "./board";
 
 class AIPlayer {
-    constructor(board, color, level) {
+    constructor(board, color, moveString) {
         this.board = board;
         this.color = color;
-        this.level = level;
+        this.moveString = moveString;
+        this.getMove1 = this.getMove1.bind(this);
     }
     // constructor(board, level) {
     //     this.polyTree =  new PolyTreeNode(board, level)
@@ -49,15 +51,22 @@ class AIPlayer {
                 possibleMoves.push([piece.position, move])
             })
         })
-        possibleMoves.forEach(move => {
-            let dupedBoard = this.board.dupe();
+        let move;
+        for (let i = 0; i < possibleMoves.length; i++) {
+            move = possibleMoves[i];
+            let dupedBoard = new Board(this.moveString);
             dupedBoard.movePiece(move[0], move[1])
             let dupedBoardValue = dupedBoard.getBoardValue(this.color)
             if (!max || dupedBoardValue > max) {
+                max = dupedBoardValue;
                 bestMove = move;
             }
-        })
+        }
         return bestMove;
+    }
+
+    getMove2() {
+        const pieces = this.board.getPieces(this.color);
     }
 }
 

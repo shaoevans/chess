@@ -34,6 +34,8 @@ export class Queen extends Piece {
 
             ]
         }
+        console.log(positionValues[this.position[0]][this.position[1]])
+        console.log("value", this.value)
         return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
@@ -86,6 +88,8 @@ export class Rook extends Piece {
                 [ 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0]
             ]
         }
+        console.log(positionValues[this.position[0]][this.position[1]])
+        console.log("value", this.value)
         return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
@@ -138,6 +142,8 @@ export class Bishop extends Piece {
 
             ]
         }
+        console.log(positionValues[this.position[0]][this.position[1]])
+        console.log("value", this.value, this)
         return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
@@ -190,6 +196,8 @@ export class Knight extends Piece {
                 [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]
             ]
         }
+        console.log(positionValues[this.position[0]][this.position[1]])
+        console.log("value", this.value, this)
         return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
@@ -226,7 +234,7 @@ export class Knight extends Piece {
 
 export class King extends Piece {
     constructor(position, board, color) {
-        super(position, board, color)
+        super(position, board, color);
         this.value = 900;
     }
 
@@ -255,6 +263,8 @@ export class King extends Piece {
                 [-3.0, -4.0, -4.0, -5.0, -5.0, -4.0, -4.0, -3.0]
             ]
         }
+        console.log(positionValues[this.position[0]][this.position[1]])
+        console.log("value", this.value, this)
         return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
@@ -434,6 +444,8 @@ export class Pawn extends Piece{
                 [ 0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0,  0.0],
             ]
         }
+        console.log(positionValues[this.position[0]][this.position[1]])
+        console.log("value", this.value, this)
         return positionValues[this.position[0]][this.position[1]] * this.value
     }
 
@@ -494,6 +506,10 @@ export class NullPiece extends Piece{
     constructor(position, board) {
         super(position, board, null)
         this.value = 0;
+    }
+
+    getPositionValue() {
+        return 0;
     }
 
     render() {

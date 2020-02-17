@@ -88,7 +88,7 @@ class UserShow extends React.Component {
                             <Link className="games-link-button" to="/"><i className="fas fa-fire"></i> VIEW THE GAMES</Link>
                         </div>
                         <ul className="user-match-index">
-                            {this.props.matches.map((match, i) => {
+                            {this.props.matches.map.length ?                             this.props.matches.map((match, i) => {
                                 const last = new Date(match.updatedAt);
                                 const difference = Math.floor((now - last)/(1000*60))
                                 return (
@@ -111,14 +111,16 @@ class UserShow extends React.Component {
                                             </div>
                                             <div className="user-match-index-item-movestring">
                                                 <span>
-                                                    {match.moveString.length > 10 ? `${match.moveString.slice(0, 24)} ...` : match.moveString} {match.moveString.split(" ").length} moves
+                                                    {match.moveString.length > 10 ? `${match.moveString.slice(0, 24)} ...` : match.moveString} {match.moveString.split(" ").length - 1} moves
                                                 </span>
                                                     
                                             </div>
                                         </div>
                                     </li>
                                 )
-                            })}
+                            }) : 
+                                <li>No Games Played</li>
+                            }
                         </ul>
                     </div>
                     {/* <Switch> */}

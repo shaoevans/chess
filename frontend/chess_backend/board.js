@@ -8,15 +8,14 @@ class Board {
         this.blackPieces = [];
         this.whiteLostPieces = [];
         this.blackLostPieces = [];
-        this.selectPieceToPlace = this.selectPieceToPlace.bind(this);
         this.grid = [];
         this.turn = ["white", "black"]
         this.createBoard();
         if (moveString) {
-            this.moveString === moveString;
             this.setupBoard(moveString);
+            this.moveString = moveString;
         } else {
-            this.moveString === ""
+            this.moveString = "";
         }
     }
 
@@ -40,13 +39,13 @@ class Board {
         const moveArr = moveString.split(" ");
         moveArr.forEach(move => {
             const movesArr = this.moveStringToMovePos(move)
-            if (this.getPiece(movesArr[0]) instanceof Pieces.King) {
-                // move king
-                // move rook
-                console.log("this is a king")
-            } else {
+            // if (this.getPiece(movesArr[0]) instanceof Pieces.King) {
+            //     // move king
+            //     // move rook
+            //     console.log("this is a king")
+            // } else {
                 this.movePiece(movesArr[0], movesArr[1]);
-            }
+            // }
             this.turn.push(this.turn.shift());
         })
     }
@@ -208,7 +207,7 @@ class Board {
     }
 
     movePiece(pos1, pos2) {
-       
+        // this.moveString += 
         const initialPos = pos1.slice();
         const piece = this.getPiece(pos1);
         const temp = this.getPiece(pos2);
@@ -221,9 +220,6 @@ class Board {
         piece.justMoved();
     }
 
-    dupe() {
-        return new Board(this.moveString);
-    }
 
 
     otherColor(color) {
@@ -244,6 +240,31 @@ class Board {
         })
         return value;
     }
+
+    dupe(board) {
+        const dupedBoard = new Board();
+        const result = [];
+        dupedBoard.whitePieces = [];
+        dupedBoard.blackPieces = [];
+        dupedBoard.grid = result;
+        dupedBoard.turn = board.turn;
+        for (let i = 0; i < 8; i++) {
+            result.push([]);
+            for (let j = 0; j < 8; j++) {
+                const newPiece = board.getPiece([i, j]).clone();
+                result[0].push(newPiece);
+                if (newPiece.color === "white") {
+                    dupedBoard.whitePieces.push(newPiece);
+                } else if (newPiece.color === "black") {
+                    dupedBoard.blackPieces.push(newPiece)
+                }
+            }
+        }
+
+
+
+    }
+
 }
 
 export default Board;
