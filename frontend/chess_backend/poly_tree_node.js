@@ -40,7 +40,7 @@ class PolyTreeNode {
     }
 
     getMinChildrenValue() {
-        if (this.level === 0) {
+        if (this.level === 1) {
             return this.getBoardValue();
         } else {
             this.addChildren();
@@ -49,7 +49,7 @@ class PolyTreeNode {
     }
     
     getMaxChildrenValue() {
-        if (this.level === 0) {
+        if (this.level === 1) {
             return this.getBoardValue();
         } else {
             this.addChildren();

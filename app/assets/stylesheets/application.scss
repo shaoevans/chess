@@ -94,6 +94,20 @@ h1, h2, p {
     margin-bottom: 30px;
 }
 
+.disabled-nav {
+    color: lightgray;
+    &:hover {
+        cursor: default;
+    }
+}
+
+li.disabled-nav {
+    color: green;
+    &:hover {
+        cursor: default;
+    }
+}
+
 .gray {
     background-color: #F7F7F5;
 }
@@ -445,6 +459,18 @@ i.black {
         a {
             padding: 10px;
             padding-right: 80px;
+        }
+    }
+    li.disabled-nav {
+        a {
+            color: lightgray;
+        }
+        &:hover {
+            a {
+                cursor: default;
+                background-color: white;
+            }
+
         }
     }
 }
@@ -1381,6 +1407,12 @@ i.valid2 {
     padding-left: 1.5em;
 }
 
+.post-table-footer {
+    padding-top: 30px;
+    font-size: 2em;
+    padding-bottom: 1.5em;
+    background-color: $white;
+}
 
 
 
@@ -1957,8 +1989,8 @@ i.valid2 {
         }
         span {
             font-weight: 200;
-            font-size: 1.5vw;
-            color: #4d4d4d;
+            font-size: 1vw;
+            color: gray;
         }
         &:hover {
             span {

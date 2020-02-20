@@ -8,6 +8,7 @@ class LobbyTable extends React.Component {
     constructor(props) {
         super(props)
         this.ensureLoggedIn = this.ensureLoggedIn.bind(this);
+        this.ensureComputerLogged = this.ensureComputerLogged.bind(this);
     }
 
     ensureLoggedIn() {
@@ -18,13 +19,21 @@ class LobbyTable extends React.Component {
         }
     }
 
+    ensureComputerLogged() {
+        if (this.props.currentUser) {
+            this.props.playComputerModal();
+        } else {
+            this.props.history.push("/login");
+        }
+    }
+
     render() {
-        const { challengeFriendModal, playComputerModal} = this.props;
+        const { challengeFriendModal } = this.props;
         return (
             <div className="lobby-table">
                 <button onClick={this.ensureLoggedIn}>QUICK MATCH</button>
                 <button onClick={challengeFriendModal}>PLAY WITH A FRIEND</button>
-                <button onClick={playComputerModal}>PLAY WITH THE COMPUTER</button>
+                <button onClick={this.ensureComputerLogged}>PLAY WITH THE COMPUTER</button>
                 <div className="lobby-table-info">
                     <p><span>1,000</span> players</p>
                     <p><span>1,000</span> games in play</p>

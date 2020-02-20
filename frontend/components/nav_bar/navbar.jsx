@@ -163,12 +163,12 @@ class NavBar extends React.Component {
                 <button className="right-nav-button"><i className="fas fa-cog"></i></button>
                 {this.state.settingDropDown && (
                     <ul className="navbar-setting-dropdown">
-                       <li><button className="navbar-setting-dropdown-button"><span>Language</span><i className="fas fa-chevron-right"></i></button></li>
-                       <li><button className="navbar-setting-dropdown-button"><span>Sound</span><i className="fas fa-chevron-right"></i></button></li>
-                       <li><button className="navbar-setting-dropdown-button"><span>Backboard</span><i className="fas fa-chevron-right"></i></button></li>
-                       <li><button className="navbar-setting-dropdown-button"><span>Board geometry</span><i className="fas fa-chevron-right"></i></button></li>
-                       <li><button className="navbar-setting-dropdown-button"><span>Board theme</span><i className="fas fa-chevron-right"></i></button></li>
-                       <li><button className="navbar-setting-dropdown-button"><span>Piece set</span><i className="fas fa-chevron-right"></i></button></li>
+                       <li><button className="navbar-setting-dropdown-button disabled-nav"><span>Language</span><i className="fas fa-chevron-right"></i></button></li>
+                       <li><button className="navbar-setting-dropdown-button disabled-nav"><span>Sound</span><i className="fas fa-chevron-right"></i></button></li>
+                       <li><button className="navbar-setting-dropdown-button disabled-nav"><span>Backboard</span><i className="fas fa-chevron-right"></i></button></li>
+                       <li><button className="navbar-setting-dropdown-button disabled-nav"><span>Board geometry</span><i className="fas fa-chevron-right"></i></button></li>
+                       <li><button className="navbar-setting-dropdown-button disabled-nav"><span>Board theme</span><i className="fas fa-chevron-right"></i></button></li>
+                       <li><button className="navbar-setting-dropdown-button disabled-nav"><span>Piece set</span><i className="fas fa-chevron-right"></i></button></li>
                        <li className="navbar-setting-dropdown-ping">
                            <div>
                                <p>PING <span>169</span> ms</p>
@@ -262,36 +262,36 @@ class NavBar extends React.Component {
                         <Link className="left-nav-button" to="/">PLAY</Link>
                         <ul className="left-nav-dropdown">
                             <li onClick={this.ensureLoggedIn}><Link to="/">Create a game</Link></li>
-                            <li><Link to="/">Tournaments</Link></li>
-                            <li><Link to="/">Simultaneous exhibitions</Link></li>
+                            <li className="disabled-nav"><Link to="/">Tournaments</Link></li>
+                            <li className="disabled-nav"><Link to="/">Simultaneous exhibitions</Link></li>
                         </ul>
                     </li>
                     <li className="left-nav-dropdown-item">
                         <Link className="left-nav-button" to="/">LEARN</Link>
                         <ul className="left-nav-dropdown">
-                            <li><Link to="/">Chess basics</Link></li>
-                            <li><Link to="/">Puzzles</Link></li>
-                            <li><Link to="/">Practice</Link></li>
-                            <li><Link to="/">Coordinates</Link></li>
-                            <li><Link to="/">Study</Link></li>
-                            <li><Link to="/">Coaches</Link></li>
+                            <li className="disabled-nav"><Link to="/">Chess basics</Link></li>
+                            <li className="disabled-nav"><Link to="/">Puzzles</Link></li>
+                            <li className="disabled-nav"><Link to="/">Practice</Link></li>
+                            <li className="disabled-nav"><Link to="/">Coordinates</Link></li>
+                            <li className="disabled-nav"><Link to="/">Study</Link></li>
+                            <li className="disabled-nav"><Link to="/">Coaches</Link></li>
                         </ul>
                     </li>
                     <li className="left-nav-dropdown-item">
                         <Link className="left-nav-button" to="/">WATCH</Link>
                         <ul className="left-nav-dropdown">
-                            <li><Link to="/">Lichess TV</Link></li>
-                            <li><Link to="/">Current games</Link></li>
-                            <li><Link to="/">Streamers</Link></li>
-                            <li><Link to="/">Broadcasts</Link></li>
-                            <li><Link to="/">Video Libraries</Link></li>
+                            <li className="disabled-nav"><Link to="/">Lichess TV</Link></li>
+                            <li className="disabled-nav"><Link to="/">Current games</Link></li>
+                            <li className="disabled-nav"><Link to="/">Streamers</Link></li>
+                            <li className="disabled-nav"><Link to="/">Broadcasts</Link></li>
+                            <li className="disabled-nav"><Link to="/">Video Libraries</Link></li>
                         </ul>
                     </li>
                     <li className="left-nav-dropdown-item">
                         <Link className="left-nav-button" to="/">COMMUNITY</Link>
                         <ul className="left-nav-dropdown">
-                            <li><Link to="/">Players</Link></li>
-                            <li><Link to="/">Teams</Link></li>
+                            <li className="disabled-nav"><Link to="/">Players</Link></li>
+                            <li className="disabled-nav"><Link to="/">Teams</Link></li>
                             <li><Link to="/forums">Forum</Link></li>
                             <li><Link to="/blog">Blog</Link></li>
                         </ul>
@@ -299,11 +299,11 @@ class NavBar extends React.Component {
                     <li className="left-nav-dropdown-item">
                         <Link className="left-nav-button" to="/">TOOLS</Link>
                         <ul className="left-nav-dropdown">
-                            <li><Link to="/">Analysis Board</Link></li>
-                            <li><Link to="/">Opening Explorer</Link></li>
-                            <li><Link to="/">Board Editor</Link></li>
-                            <li><Link to="/">Import Game</Link></li>
-                            <li><Link to="/">Advanced Search</Link></li>
+                            <li className="disabled-nav"><Link to="/">Analysis Board</Link></li>
+                            <li className="disabled-nav"><Link to="/">Opening Explorer</Link></li>
+                            <li className="disabled-nav"><Link to="/">Board Editor</Link></li>
+                            <li className="disabled-nav"><Link to="/">Import Game</Link></li>
+                            <li className="disabled-nav"><Link to="/">Advanced Search</Link></li>
                         </ul>
                     </li>
                 </ul>

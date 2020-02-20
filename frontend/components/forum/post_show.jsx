@@ -146,7 +146,7 @@ class PostShow extends React.Component {
                         })}
                     </ul>
                     {this.createCommentForm()}
-                    <div className="subforum-table-footer">
+                    <div className="post-table-footer">
                         {this.makeButtons(this.grabPage())}
                     </div>
                 </div>
