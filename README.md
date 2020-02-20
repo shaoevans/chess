@@ -4,6 +4,8 @@ It is a single-page web-app, using Ruby on Rails and React.js
 
 The inspiration for this project came from Lichess.org, the free Correspondence Chess site. The original idea was to copy and implement all lichess features, and then later add a checkers playing option to the website.
 
+![Evanschess Overview Demo](demos/evanschess.gif)
+
 ## Current Functionality Highlights
 
 * Hand-rolled User Authentication using BCrypt
@@ -128,6 +130,8 @@ isCheckMate(color) {
 ```
 `
 ### Live Chess and Spectating
+
+![Chess Gameplay Demo](demos/chess-ai.gif)
 
 I used action cable provided to implement that feeling of live chess moves updating, which allowed for both spectating and playing the game live. To do this, the front end chess board logic goes as follows:
 
