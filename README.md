@@ -240,6 +240,8 @@ received: data => {
 
 To queue for a game, I used redis, a super fast system that stores key value pairs for me which persists across the lifespan of channels. When the user hits the quick match button, a modal appears which upon mounting, creates a subscription to the queuing channel, and enqueues the user. Notice that I first check for existing subscriptions and remove them, so that my two subscriptions (chess matches and queuing) do not conflict with each other, and that I set a timeout on the app cable subscription creation since that is an asynchronous process.
 
+![Chess Queue Demo](demos/queue.gif)
+
 `
 ```
 
