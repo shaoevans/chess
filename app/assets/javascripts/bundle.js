@@ -6207,7 +6207,8 @@ function (_React$Component) {
       }, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("label", null, "Friend Name"), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("input", {
         type: "text",
         value: this.state.player2Name,
-        onChange: this.handleType("player2Name")
+        onChange: this.handleType("player2Name"),
+        placeholder: "Enter Friend's Username"
       })), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("div", {
         className: "mode-input"
       }, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("label", null, "Variant"), react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("select", null, react__WEBPACK_IMPORTED_MODULE_4___default.a.createElement("option", {

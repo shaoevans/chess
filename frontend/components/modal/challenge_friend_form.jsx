@@ -60,7 +60,7 @@ class ChallengeFriendForm extends React.Component {
                 <h2>Play with a friend</h2>
                 <div className="form-group">
                     <label>Friend Name</label>
-                    <input type="text" value={this.state.player2Name} onChange={this.handleType("player2Name")}/>
+                    <input type="text" value={this.state.player2Name} onChange={this.handleType("player2Name")} placeholder="Enter Friend's Username" />
                 </div>
                 <div className="mode-input">
                     <label>Variant</label>
