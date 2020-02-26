@@ -99,7 +99,6 @@ class NavBar extends React.Component {
         this.setState({search: false, searchInput: ""})
     }
 
-
     bringToMatchPage(matchId) {
         return (e) => {
             e.preventDefault();
