@@ -99,7 +99,7 @@ class NavBar extends React.Component {
     searchBarSubmit(event) {
         event.preventDefault();
         this.props.history.replace(`/users/${this.state.searchInput}`)
-        this.setState({search: false, searchInput: "d"})
+        this.setState({search: false, searchInput: ""})
     }
 
 
@@ -243,7 +243,7 @@ class NavBar extends React.Component {
                 {this.state.search && (
                     <span>
                         <form onSubmit={this.searchBarSubmit}>
-                            <input ref={this.search} autoFocus type="text" value={this.state.searchInput} onChange={this.handleSearchType} placeholder="Search"/>
+                            <input ref={this.search} autoFocus type="text" value={this.state.searchInput} onChange={this.handleSearchType} placeholder="Type In Username"/>
                         </form>
                     </span>
                 )}

@@ -6815,7 +6815,7 @@ function (_React$Component) {
       this.props.history.replace("/users/".concat(this.state.searchInput));
       this.setState({
         search: false,
-        searchInput: "d"
+        searchInput: ""
       });
     }
   }, {
@@ -7013,7 +7013,7 @@ function (_React$Component) {
         type: "text",
         value: this.state.searchInput,
         onChange: this.handleSearchType,
-        placeholder: "Search"
+        placeholder: "Type In Username"
       }))));
     }
   }, {
