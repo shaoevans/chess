@@ -4,6 +4,8 @@ It is a single-page web-app, using Ruby on Rails and React.js
 
 The inspiration for this project came from Lichess.org, the free Correspondence Chess site. The original idea was to copy and implement all lichess features, and then later add a checkers playing option to the website.
 
+![Evanschess Overview Demo](demos/evanschess.gif)
+
 ## Current Functionality Highlights
 
 * Hand-rolled User Authentication using BCrypt
@@ -129,6 +131,8 @@ isCheckMate(color) {
 `
 ### Live Chess and Spectating
 
+![Chess Gameplay Demo](demos/chess-ai.gif)
+
 I used action cable provided to implement that feeling of live chess moves updating, which allowed for both spectating and playing the game live. To do this, the front end chess board logic goes as follows:
 
 1. When a user selects a piece, if a piece is not already "selected" AND that piece belongs to him, then this piece is now "selected" and an board tiles will be updated to display that pieces valid moves
@@ -239,6 +243,8 @@ received: data => {
 ### Chess Queuing
 
 To queue for a game, I used redis, a super fast system that stores key value pairs for me which persists across the lifespan of channels. When the user hits the quick match button, a modal appears which upon mounting, creates a subscription to the queuing channel, and enqueues the user. Notice that I first check for existing subscriptions and remove them, so that my two subscriptions (chess matches and queuing) do not conflict with each other, and that I set a timeout on the app cable subscription creation since that is an asynchronous process.
+
+![Chess Queue Demo](demos/queue.gif)
 
 `
 ```
