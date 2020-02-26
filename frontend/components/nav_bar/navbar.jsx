@@ -93,9 +93,6 @@ class NavBar extends React.Component {
         }
     }
 
-
-
-
     searchBarSubmit(event) {
         event.preventDefault();
         this.props.history.replace(`/users/${this.state.searchInput}`)
