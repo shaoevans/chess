@@ -34,10 +34,11 @@ class BlogShow extends React.Component {
                                 <span><i className="fas fa-star"></i> {blog.category} </span>
                             </div>
                             <div className="blog-header-bottom-bottom">
-                                {blog.description}
+                                {blog.description}``
                             </div>
                         </div>
                         <div className="blog-show-body">
+                            {/* <img src="https://i.imgur.com/4AYV5V5.jpg"/> */}
                             <img src={window[`_${blog.imageId}`]}/>
                             <span>
                                 {blog.body}

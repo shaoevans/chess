@@ -2363,7 +2363,7 @@ function (_React$Component) {
           className: "fas fa-star"
         }), " ", blog.category, " ")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "blog-header-bottom-bottom"
-        }, blog.description)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        }, blog.description, "``")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
           className: "blog-show-body"
         }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
           src: window["_".concat(blog.imageId)]
