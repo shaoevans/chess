@@ -1,12 +1,17 @@
 import Piece from "./piece";
 import NullPiece from "./null_piece";
+import King from "./king";
 
 class Board {
-    constructor() {
+    constructor(moveString = "") {
         this.redPieces = [];
         this.blackPieces = [];
         this.grid = [];
+        this.moveString = moveString;
         this.createBoard();
+        if (this.moveString.length) {
+            this.setupBoard();
+        }
     }
     createBoard() {
         for (let i = 0; i < 8; i++) {
@@ -18,13 +23,34 @@ class Board {
     }
 
     selectPieceToPlace(i , j) {
-        if (i <= 1) {
-            return new Piece([i, j], this, "black")
-        } else if (i >= 6) {
-            return new Piece([i, j], this, "red")
+        let piece;
+        if ((i === 0 && j % 2 === 0) || (i === 1 && j % 2 !== 0) || (i === 2 && j % 2 === 0)) {
+            piece = new Piece([i, j], this, "black")
+            this.blackPieces.push(piece);
+        } else if ((i === 5 && j % 2 !== 0) || (i === 6 && j % 2 === 0) || (i === 7 && j % 2 !== 0)) {
+            piece = new Piece([i, j], this, "red")
+            this.redPieces.push(piece);
         } else {
-            return new NullPiece([i, j], this)
+            piece = new NullPiece([i, j], this)
         }
+        return piece;
+    }
+
+    getPiece(pos) {
+        return this.grid[pos[0]][pos[1]];
+    }
+
+    
+    movePiece(pos1, pos2) {
+        const initialPos = pos1.slice();
+        const piece = this.getPiece(pos1);
+        const temp = this.getPiece(pos2);
+        // if (!(temp instanceof NullPiece)) {
+        //     this.addLostPiece(temp);
+        // }
+        this.grid[pos2[0]][pos2[1]] = piece;
+        piece.position = pos2;
+        this.grid[initialPos[0]][initialPos[1]] = new NullPiece(initialPos, this);
     }
 }
 

@@ -14,7 +14,7 @@ class Piece {
             (pos[1] > 7)
         )
     }
-    
+
     growUnblockedMovesInDir(dx, dy) {
         const result = [];
         const x = this.position[0];
@@ -44,7 +44,6 @@ class Piece {
         return this.growUnblockedMovesInDir(forward,1).concat(this.growUnblockedMovesInDir(forward,-1), this.growUnblockedMovesInDir(1,-1), this.growUnblockedMovesInDir(-1,1));
     }
 
-
-    getForward
-
 }
+
+export default Piece;
