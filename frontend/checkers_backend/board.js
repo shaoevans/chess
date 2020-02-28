@@ -39,7 +39,6 @@ class Board {
     getPiece(pos) {
         return this.grid[pos[0]][pos[1]];
     }
-
     
     movePiece(pos1, pos2) {
         const initialPos = pos1.slice();
