@@ -452,7 +452,10 @@ export class Pawn extends Piece{
     justMoved() {
         this.hasMoved = true;
         if ((this.position[0] === 0 && this.color === "black") || (this.position[0] === 7 && this.color === "white")) {
-            this.board.grid[this.position[0]][this.position[1]] = new Queen(this.position, this.board, this.color);
+            const queen = new Queen(this.position, this.board, this.color);
+            const colorPieces = this.board.getPieces(this.color);
+            colorPieces[colorPieces.indexOf(this)] = queen;
+            this.board.grid[this.position[0]][this.position[1]] = queen;
         }
     }
 

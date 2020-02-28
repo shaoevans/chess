@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Root from "./components/root";
 import configureStore from "./store/store";
-import Board from "./chess_backend/board";
+import Board from "./checkers_backend/board";
 import AIPlayer from "./chess_backend/ai_player";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
         store = configureStore();
     }
-    // window.Board = new Board();
+    window.Board = new Board();
     window.getState = store.getState;
 
     let oldRoot = document.getElementById("root")
